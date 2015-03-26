@@ -1,0 +1,6 @@
+commit 4af9d97442f20696da797e46962aa4c54a46713f
+Merge: d6b4716 0524660
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Mon May 26 01:12:01 2014 -0400
+
+    Merge branch 'gh-pages' of https://github.com/teamsnowman/hextris into gh-pages

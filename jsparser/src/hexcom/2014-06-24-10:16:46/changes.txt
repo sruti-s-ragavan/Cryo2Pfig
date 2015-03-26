@@ -1,0 +1,5 @@
+commit f6b56382cf99c7668819b0e1d82451dede45216e
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jun 24 13:16:46 2014 -0400
+
+    fixed the whole weird stuff

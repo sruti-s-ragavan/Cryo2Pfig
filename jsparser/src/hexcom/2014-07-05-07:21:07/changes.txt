@@ -1,0 +1,5 @@
+commit 1f25b6ab91a7fef2592c8c0cb395058c53683071
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jul 5 10:21:07 2014 -0400
+
+    added restart messages for mobile + modified those for desktop, added timeout before being able to restart

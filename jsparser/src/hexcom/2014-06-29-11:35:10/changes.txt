@@ -1,0 +1,5 @@
+commit 93b8e4276a8d92f0a75668d735842812939d638f
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun Jun 29 14:35:10 2014 -0400
+
+    Removed spacebar speedup

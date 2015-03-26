@@ -1,0 +1,4 @@
+Variable declaration, class the variable is in, fully qualified variable name
+Vd offset, vName, vOffset
+Vd length, vName, len (entire declaration)
+Vd type - decided to omit, remember to remove from pfis.

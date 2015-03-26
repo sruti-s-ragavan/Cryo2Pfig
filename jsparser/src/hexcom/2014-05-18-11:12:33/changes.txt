@@ -1,0 +1,5 @@
+commit 4f3c7462125b3221abf6abe9a0a955856f6149b0
+Author: Mathew Huusko V <mhuusko5@gmail.com>
+Date:   Sun May 18 14:12:33 2014 -0400
+
+    Organize project slightly, clean html

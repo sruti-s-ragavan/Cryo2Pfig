@@ -1,0 +1,8 @@
+commit f82ce2e608c8e25ce934293db07e90147e586370
+Author: IceManQ <dnlrkorn@gmail.com>
+Date:   Mon Aug 18 08:27:09 2014 -0400
+
+    Color blind mode
+    
+    This is a very basic implementation of a color blind system, I added a
+    simple button under play (that doesn't fade)

@@ -1,0 +1,59 @@
+.navbar {
+	width: 80%;
+	margin: 0 auto;
+	/*background-color: #34495e;*/
+	padding: 2.5vmin 0;
+	text-align: center;
+}
+.navbar li {
+	display: inline-block;
+	text-align: center;
+	width: calc( 33% - 1.25vmin );
+	/*pointer-events: none;*/
+}
+#title {
+	color: #ecf0f1;
+	font-size: 6vmin;
+}
+#score {
+	font-size: 4vmin;
+	text-align: center;
+	width: 100%;
+}
+#highscores {
+	text-align: center;
+	list-style: none;
+}
+.not-visible {
+	display: none;
+}
+button {
+	color: #ecf0f1;
+	background-color: rgba(0,0,0,0);
+	border: 0;
+}
+button:focus {
+	outline: 0;
+}
+#openSideBar {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	z-index: 20000;
+	color:#000;
+	cursor:hand;
+	cursor:pointer;
+}
+
+#helpScreen {
+	height:100%;
+	width:100%;
+	z-index:10000;
+	position:absolute;
+	top:0%;
+	left:0%;
+	display:none;
+	color:#000;
+	background-color:rgba(255,255,255,0.5);
+}
+

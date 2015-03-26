@@ -1,0 +1,5 @@
+commit 4607423e0968bdc82e7a83e075608fcd03a1bb08
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Thu May 22 13:26:44 2014 -0400
+
+    fixed falling mechanics, tint and opacity no longer conflict

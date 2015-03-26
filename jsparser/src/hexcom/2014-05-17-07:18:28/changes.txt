@@ -1,0 +1,5 @@
+commit 47eed928cba3f4f153174b93eb8985d4fe1b65b0
+Author: Noah Moroze <noahm@moroze.com>
+Date:   Sat May 17 10:18:28 2014 -0400
+
+    Gitignore

@@ -1,0 +1,5 @@
+commit 98310798f7d3b0f1446da88fccbc90c7e8ea5e9f
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon Jul 21 21:41:04 2014 -0400
+
+    added showing and hiding of buttons, made buttons appear onload (instead of having ugly iframes / skeletons, other misc changes

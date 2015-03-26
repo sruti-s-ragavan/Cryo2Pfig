@@ -1,0 +1,5 @@
+commit 81f2d20f0267dbf08154c5dab44742b00b5f41a3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Jun 23 18:35:28 2014 -0400
+
+    tints to show combo timeout

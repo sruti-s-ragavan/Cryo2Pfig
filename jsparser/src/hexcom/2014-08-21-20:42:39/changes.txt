@@ -1,0 +1,5 @@
+commit ed0855a7a91d210a3cbabb6e475a353c226e8260
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Thu Aug 21 23:42:39 2014 -0400
+
+    twitter share button doesnt register as restart

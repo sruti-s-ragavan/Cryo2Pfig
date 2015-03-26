@@ -1,0 +1,5 @@
+commit 2a398e255b0c98606d3d4ae66516e196c1bbeb51
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Fri May 23 00:51:03 2014 -0400
+
+    added navbar, added pausing, changed score rendering

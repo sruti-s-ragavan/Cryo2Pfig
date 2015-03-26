@@ -1,0 +1,5 @@
+commit b931daf7c7112d9b4bf0a06853c6b0442c0f3f12
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Tue Jul 22 09:21:16 2014 -0400
+
+    fixed double restart issue in ios. added real handlers for helpText classes

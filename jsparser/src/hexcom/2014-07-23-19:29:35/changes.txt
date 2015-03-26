@@ -1,0 +1,5 @@
+commit 57eff790d9714f87467452327c8b1c7140cc73a2
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Wed Jul 23 22:29:35 2014 -0400
+
+    added handlers to prevent turning on pressing start btn

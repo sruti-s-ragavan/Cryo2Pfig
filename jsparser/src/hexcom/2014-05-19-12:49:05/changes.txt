@@ -1,0 +1,5 @@
+commit 6201181f03161fe5ec57a65a09e7b17491185bee
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 19 15:49:05 2014 -0400
+
+    added angular velocity

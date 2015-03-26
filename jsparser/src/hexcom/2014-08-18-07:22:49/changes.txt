@@ -1,0 +1,5 @@
+commit e4c52a3f5fc5d8cdc636c1b67ddae96a97ef672d
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Aug 18 10:22:49 2014 -0400
+
+    facebook share button aligned

@@ -1,0 +1,5 @@
+commit efba90831df941f4cc0b9d86fb1204e0a0a377cd
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jun 28 11:57:22 2014 -0400
+
+    fixed white gaps caused by constant, needless scaling during export

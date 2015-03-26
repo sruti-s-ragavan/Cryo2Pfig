@@ -1,0 +1,6 @@
+commit 766599bf01f3de82bcfb39a228e503a8209f70e9
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Wed Jul 16 00:08:57 2014 -0400
+
+    added fading helpText, removed old ogg declarations, removed old ogg
+    files

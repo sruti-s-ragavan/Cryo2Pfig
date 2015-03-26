@@ -1,0 +1,5 @@
+commit f08b6d8dc46ed0712d3bd6586e45c9682d02e17f
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Mon May 26 21:05:58 2014 -0400
+
+    help screen implemented

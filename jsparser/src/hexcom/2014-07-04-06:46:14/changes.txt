@@ -1,0 +1,5 @@
+commit d80156e3e068fc0eee63082543d1bc48699bd6d0
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Fri Jul 4 09:46:14 2014 -0400
+
+    Fixed the small text

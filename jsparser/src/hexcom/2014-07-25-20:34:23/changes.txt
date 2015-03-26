@@ -1,0 +1,5 @@
+commit f0a9a4ce9b489e96fbac18530d53ac987e151381
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Fri Jul 25 23:34:23 2014 -0400
+
+    fixed not being able to pause

@@ -1,0 +1,6 @@
+commit 54330cc1c0c9ba54b1855e86c52c0726d23a564e
+Merge: 1fb48b8 b5f6c21
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Aug 18 20:10:08 2014 -0400
+
+    Merge branch 'dev' of http://github.com/hextris/hextris into dev

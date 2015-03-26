@@ -1,0 +1,5 @@
+commit 291fb9002c442b4e35c222587fd6c7113508c7aa
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun Jun 22 22:58:15 2014 -0400
+
+    updated settings for mobile version

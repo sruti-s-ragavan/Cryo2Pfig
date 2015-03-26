@@ -1,0 +1,5 @@
+commit 5dab71e068ecbcea4607d9c1305bd88ba6cfaa2f
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Fri Aug 22 22:02:01 2014 -0400
+
+    got rid of mix panel

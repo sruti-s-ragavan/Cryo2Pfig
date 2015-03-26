@@ -1,0 +1,5 @@
+commit cb42564bb39f93db3661c50c831f99fbb1fdf78c
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:41:04 2014 -0400
+
+    removed clock hand

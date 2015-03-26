@@ -1,0 +1,5 @@
+commit fe3875f2a9546e6d1330f704478ccd4bd8b89bd7
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jul 19 16:19:07 2014 -0400
+
+    put instructions inside of pause menu

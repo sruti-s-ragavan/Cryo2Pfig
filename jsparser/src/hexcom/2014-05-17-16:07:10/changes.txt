@@ -1,0 +1,6 @@
+commit 7a2a86096620a67cdfae9f958215ee2eec5f674a
+Merge: 79462e4 fee067a
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Sat May 17 19:07:10 2014 -0400
+
+    Merge branch 'master' of https://github.com/teamsnowman/wastedtime

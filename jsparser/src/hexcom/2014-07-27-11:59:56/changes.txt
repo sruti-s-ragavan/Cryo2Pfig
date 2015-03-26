@@ -1,0 +1,7 @@
+commit 96c0fe89a4dd5adb8c971a5d6863400e70668d84
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun Jul 27 14:59:56 2014 -0400
+
+    fixed links opening not in new tab
+    
+    Please enter the commit message for your changes. Lines starting

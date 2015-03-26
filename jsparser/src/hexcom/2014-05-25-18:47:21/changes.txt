@@ -1,0 +1,5 @@
+commit 7e7c583d0ac8d0f4b7344e080d6ac6ef14120313
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Sun May 25 21:47:21 2014 -0400
+
+    added comments for checking

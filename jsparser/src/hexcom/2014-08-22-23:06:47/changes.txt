@@ -1,0 +1,5 @@
+commit f35601df68b1443b72d625e85ed34a26b1156873
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Sat Aug 23 02:06:47 2014 -0400
+
+    added https to facebook plugins

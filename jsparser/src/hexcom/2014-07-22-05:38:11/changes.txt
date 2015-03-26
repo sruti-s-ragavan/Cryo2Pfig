@@ -1,0 +1,5 @@
+commit d425f9d41ff4020c30fc3dd261beef21f83eba9e
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 08:38:11 2014 -0400
+
+    made it so if you score 0 it displays 0

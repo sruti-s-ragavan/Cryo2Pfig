@@ -1,0 +1,5 @@
+commit 99187e4cc96c19f9edb9dcdea0ff43413266e6da
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon Jul 28 21:20:44 2014 -0400
+
+    modified combo modifier

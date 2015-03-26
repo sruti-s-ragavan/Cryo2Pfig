@@ -1,0 +1,5 @@
+commit e4de6dab2a4ff8446d954edd2e6d47dc1a2f93d5
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Tue Jul 22 21:52:02 2014 -0400
+
+    removed redundant code, removed debugger statements

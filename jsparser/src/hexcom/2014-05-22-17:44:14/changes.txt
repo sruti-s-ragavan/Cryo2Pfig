@@ -1,0 +1,5 @@
+commit 29e71d9479e84ed00cfe4c2b7ba857c2fe917ec8
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Thu May 22 20:44:14 2014 -0400
+
+    faster fade

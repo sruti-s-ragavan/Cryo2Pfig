@@ -1,0 +1,5 @@
+commit 7258791d9c70f40193bd369acbbb8fb716fe09d6
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 27 19:52:48 2014 -0400
+
+    changed comboTimer to be based on waves

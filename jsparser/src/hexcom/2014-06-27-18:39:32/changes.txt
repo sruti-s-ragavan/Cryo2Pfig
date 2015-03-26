@@ -1,0 +1,5 @@
+commit 6f731d8598074781e887d6df90b27e40e8f83768
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Fri Jun 27 21:39:32 2014 -0400
+
+    converted completely to hex, added legacy support

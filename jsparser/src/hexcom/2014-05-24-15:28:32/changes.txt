@@ -1,0 +1,5 @@
+commit 10c8a0b28a980bef28ddec1db36b22ae1d641b8f
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 24 18:28:32 2014 -0400
+
+    fixed issues surrounding white blocks

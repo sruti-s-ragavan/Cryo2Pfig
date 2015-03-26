@@ -1,0 +1,6 @@
+commit af3381976ca142a7a21a4b20734234f09aa5ead3
+Merge: 57eff79 ac704c1
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Wed Jul 23 22:29:40 2014 -0400
+
+    Merge branch 'gh-pages' of https://github.com/hextris/hextris into gh-pages

@@ -1,0 +1,5 @@
+commit 96c2e56956363ffaa19109f897797fb2fcafc1ca
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Jun 23 20:18:32 2014 -0400
+
+    re-whitened text

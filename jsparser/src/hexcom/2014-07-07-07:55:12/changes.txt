@@ -1,0 +1,5 @@
+commit e4edf9901e96b4376bbac29b3264de16e1e784fe
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Jul 7 10:55:12 2014 -0400
+
+    made looping and autoplay in js

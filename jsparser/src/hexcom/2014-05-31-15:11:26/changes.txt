@@ -1,0 +1,8 @@
+commit 1ced9339a871b7abb2d0f0dc6a63b78f95a02660
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 18:11:26 2014 -0400
+
+    added click support for rotating the hexagon. consolidated touch
+    support. created pause button. created unselectable class for menus.
+    fixed being able to restart game while paused. now render every frame for
+    the pause menu now to avoid difficulties when resizing.

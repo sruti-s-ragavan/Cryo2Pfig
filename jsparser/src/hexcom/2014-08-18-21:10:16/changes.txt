@@ -1,0 +1,114 @@
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev
+commit d70b0f5e8c7406d459fd02a7e2a1a03c587887a0
+Merge: 811798e 45c082b
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 19 00:10:16 2014 -0400
+
+    Merge branch 'master' into dev

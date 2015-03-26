@@ -1,0 +1,5 @@
+commit 4b4471d7f7ab56c0bc80c141677b0145a8508e42
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Thu Jul 3 16:30:56 2014 -0400
+
+    added devMode, disabled debugging functions. first version of tutorial is done. added delay to gamePlay after pressing start to let the UI elements fade out.

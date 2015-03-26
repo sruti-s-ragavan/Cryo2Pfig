@@ -1,0 +1,5 @@
+commit a6af6db7556d6946c4bb4ac777914040da0238b2
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jul 19 22:03:22 2014 -0400
+
+    added phonegap handlers. integrated pause and info buttons

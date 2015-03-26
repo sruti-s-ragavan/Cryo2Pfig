@@ -1,0 +1,5 @@
+commit bd8b244b29fd29eaa9a3f2e496d552974249bdbd
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 27 19:56:49 2014 -0400
+
+    changed comboTime to 3.5

@@ -1,0 +1,5 @@
+commit 4a835411ce343a4b00f11219a3a74d9b32927c5a
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Sun Aug 17 21:05:34 2014 -0400
+
+    added links to ios / android

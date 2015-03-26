@@ -1,0 +1,5 @@
+commit 838c7070186254160dc2787f731e1bb864921305
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sat Jul 5 16:07:34 2014 -0400
+
+    added audio and scaled comboTimer I think

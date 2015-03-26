@@ -1,0 +1,5 @@
+commit 32eef0bc72752a1e13ec3e7ae6ea4210c4715811
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jun 28 14:42:55 2014 -0400
+
+    fixed demo level faultily calling the game over after start

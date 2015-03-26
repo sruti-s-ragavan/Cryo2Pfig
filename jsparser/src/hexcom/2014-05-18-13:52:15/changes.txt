@@ -1,0 +1,8 @@
+commit 9e49c5bd89fbe3914e2924a7f1172ad2dec0c037
+Merge: 257eebf ee706f3
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Sun May 18 16:52:15 2014 -0400
+
+    Merge pull request #1 from mhuusko5/master
+    
+    Some quick/small, but important changes to Hextris

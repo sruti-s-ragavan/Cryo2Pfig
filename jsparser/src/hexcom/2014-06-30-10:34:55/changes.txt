@@ -1,0 +1,5 @@
+commit 62c3611334ce460a43dfd9cdf9db0244a1f81e09
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Jun 30 13:34:55 2014 -0400
+
+    restart icon shown on resume

@@ -1,0 +1,5 @@
+commit 7d364578514a6228c2a8ba826373ad153aaeb728
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Wed Jul 23 22:00:46 2014 -0400
+
+    added info button support in home screen; made hit detection basde on canvas coordinates rather than DOM for info button

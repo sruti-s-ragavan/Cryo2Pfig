@@ -1,0 +1,5 @@
+commit 7dba7ffb8c07040b2357b3916b8f0c321879d47b
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun Jul 27 16:46:18 2014 -0400
+
+    moved scripts to head tag

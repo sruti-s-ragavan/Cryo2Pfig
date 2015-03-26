@@ -1,0 +1,5 @@
+commit e388cac85a301b1f06ad1c0d034eccbc444acd76
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jul 19 18:06:14 2014 -0400
+
+    fixed issue w/ tapping triggering multiple depths of btns

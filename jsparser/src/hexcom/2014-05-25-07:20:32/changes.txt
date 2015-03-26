@@ -1,0 +1,5 @@
+commit 2b52b641654f199705b12884ea302fed58023b3c
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Sun May 25 10:20:32 2014 -0400
+
+    deleted blocks can not partake in combos

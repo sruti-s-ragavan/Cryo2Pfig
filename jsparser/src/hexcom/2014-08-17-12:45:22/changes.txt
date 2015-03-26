@@ -1,0 +1,5 @@
+commit ac7745ebaf2ef5667e626caa940cd43671b260e1
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Sun Aug 17 15:45:22 2014 -0400
+
+    removed old license

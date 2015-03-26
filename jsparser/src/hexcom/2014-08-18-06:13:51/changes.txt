@@ -1,0 +1,8 @@
+commit fe17b9c4a2ac54e9e305ecd6bd464e54ecf8de1c
+Merge: 3266d42 ada5ebd
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Aug 18 09:13:51 2014 -0400
+
+    Merge pull request #85 from leereilly/awesomegraph
+    
+    Add Facebook opengraph metadata

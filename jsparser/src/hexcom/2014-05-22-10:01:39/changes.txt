@@ -1,0 +1,5 @@
+commit f5a305682335eab23b7f474540d6a9b88bf3a4df
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Thu May 22 13:01:39 2014 -0400
+
+    blocks now fade out based on their opacity before being destroyed

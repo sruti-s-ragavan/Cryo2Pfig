@@ -1,0 +1,5 @@
+commit db615d8af61e3994cf23353132599fe77966cdeb
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:15 2014 -0400
+
+    pause screen fades away

@@ -1,0 +1,5 @@
+commit 95f96138990efa1faff82775fa9e01de13c9813b
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Fri May 23 16:50:18 2014 -0400
+
+    added bouncing anim v2

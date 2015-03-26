@@ -1,0 +1,8 @@
+commit 66968088d533146b9d330e4587f3a00cbae2551b
+Merge: ac7745e 53d1da9
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Sun Aug 17 15:49:35 2014 -0400
+
+    Merge pull request #75 from xta/gh-pages
+    
+    fix Found a Bug Go Here url

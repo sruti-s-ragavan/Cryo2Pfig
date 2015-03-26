@@ -1,0 +1,5 @@
+commit 94a6610977a97cebcafc1acfdf4560d8ca003f4a
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Sun May 25 21:07:46 2014 -0400
+
+    remove test.js

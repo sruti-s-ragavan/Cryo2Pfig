@@ -1,0 +1,5 @@
+commit 2c6759262aa5f7684858762c9f164ece684e9d3c
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 24 15:35:38 2014 -0400
+
+    added new block initialization animation

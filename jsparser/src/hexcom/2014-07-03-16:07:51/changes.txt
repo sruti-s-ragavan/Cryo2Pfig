@@ -1,0 +1,5 @@
+commit 03692b426ec268a6be1d4f0bb399f1f487b783a6
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Thu Jul 3 19:07:51 2014 -0400
+
+    added custom fonts to Text() object

@@ -1,0 +1,5 @@
+commit 10a24d092e76220dc1d403c8db72a30fbd34f08d
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun May 25 01:11:24 2014 -0400
+
+    centered, resized canvas. made system to augment different aspects of the game for different devices.

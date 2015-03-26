@@ -1,0 +1,5 @@
+commit af6c0b13807a832dab673abbba9462e7e41eafe5
+Author: Noah Moroze <noahm@moroze.com>
+Date:   Tue May 20 20:33:44 2014 -0400
+
+    Render score on canvas for better performance

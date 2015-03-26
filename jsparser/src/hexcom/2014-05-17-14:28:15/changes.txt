@@ -1,0 +1,5 @@
+commit 0cbbc2f4631a0c04d5378a2128850f824e14072e
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Sat May 17 17:28:15 2014 -0400
+
+    checking working no anims

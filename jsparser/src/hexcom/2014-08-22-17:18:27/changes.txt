@@ -1,0 +1,5 @@
+commit c47b26d66b7b5571f8069480c7ec82965ffd165d
+Author: Lee Reilly <lee@leereilly.net>
+Date:   Fri Aug 22 17:18:27 2014 -0700
+
+    Add Twitter Summary Card metadata

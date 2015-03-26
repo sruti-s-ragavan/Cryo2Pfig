@@ -1,0 +1,5 @@
+commit 3a533d93b7cad101c68bce1a465e234f2adf26bc
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Wed Jul 23 09:47:03 2014 -0400
+
+    changed restart btn to always restart the game instead of sometimes also resuming

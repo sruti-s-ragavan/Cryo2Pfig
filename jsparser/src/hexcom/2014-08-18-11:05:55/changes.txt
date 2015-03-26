@@ -1,0 +1,5 @@
+commit b27a199a29ac2ac9bc7dd6f43241e4d14cdd6fa5
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Aug 18 14:05:55 2014 -0400
+
+    restart only shows on pause

@@ -1,0 +1,5 @@
+commit 01e84ce186908e1cd06d1155c150525a924d1552
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 1 11:18:13 2014 -0400
+
+    unhid all the buttons

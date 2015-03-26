@@ -1,0 +1,5 @@
+commit 4a95f2b7f0688b3c3541dda79dec2458959be0d6
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun Jun 22 15:16:28 2014 -0400
+
+    removed for-in loops, fixed issue in which the text would fade/blur too fast

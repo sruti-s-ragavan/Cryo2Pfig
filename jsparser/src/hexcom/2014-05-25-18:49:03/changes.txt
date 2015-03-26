@@ -1,0 +1,5 @@
+commit 918c8ab924f09f624bfdd21b9a907a39b05222ec
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Sun May 25 21:49:03 2014 -0400
+
+    create update.js, render.js

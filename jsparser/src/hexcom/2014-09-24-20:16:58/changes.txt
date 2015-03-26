@@ -1,0 +1,5 @@
+commit 8e9465421cf6ba11e0a380e139e5ee52e6bc3460
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Wed Sep 24 23:16:58 2014 -0400
+
+    added CNAME

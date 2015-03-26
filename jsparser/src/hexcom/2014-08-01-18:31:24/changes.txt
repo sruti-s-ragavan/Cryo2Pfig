@@ -1,0 +1,5 @@
+commit fd167d4599c7de14017e656c51208d3bf7e9cc6b
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Fri Aug 1 21:31:24 2014 -0400
+
+    fixed highscores not being saved

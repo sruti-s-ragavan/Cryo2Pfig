@@ -1,0 +1,5 @@
+commit 575a9f62e8a201570393ce1a45be3c2f932e2cdb
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 17 16:53:14 2014 -0400
+
+    added bad collision detection

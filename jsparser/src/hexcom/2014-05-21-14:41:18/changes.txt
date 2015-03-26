@@ -1,0 +1,5 @@
+commit 6eb13b72a49ea51ec9d96bb26cd3e8686a33cbd0
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Wed May 21 17:41:18 2014 -0400
+
+    removed useless translation + did some jslinting

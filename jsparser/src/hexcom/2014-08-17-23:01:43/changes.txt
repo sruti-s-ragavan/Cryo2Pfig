@@ -1,0 +1,7 @@
+commit ada5ebda28a335960dbce6c0e5816bac5774e08e
+Author: Lee Reilly <lee@leereilly.net>
+Date:   Sun Aug 17 23:01:43 2014 -0700
+
+    Add basic Facebook opengraph metadata
+    
+    This will make it more visually appealing when the link is shared on Facebook -- increasing engagement, likes, stars, reviews, etc.

@@ -1,0 +1,5 @@
+commit aeb17cfec59ee139eeef5ee59bad48d3d924cd60
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Sun May 25 00:59:56 2014 -0400
+
+    better scoring

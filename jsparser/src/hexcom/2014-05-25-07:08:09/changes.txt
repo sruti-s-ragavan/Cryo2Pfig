@@ -1,0 +1,5 @@
+commit 3f0040c213cf5f3bb557f26f531074b52c2de5d3
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Sun May 25 10:08:09 2014 -0400
+
+    got rid of useless lane calculation

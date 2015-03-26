@@ -1,0 +1,5 @@
+commit 73d275857b117f33a15a96c71b77c39888a9c948
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 10:38:33 2014 -0400
+
+    intro leads in and loop loops

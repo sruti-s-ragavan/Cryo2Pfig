@@ -1,0 +1,5 @@
+commit 2831ad3ddc133b5377e2d81aba2dc2f9a71075bc
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Fri Jul 4 12:42:22 2014 -0400
+
+    replaced comboMultiplier -> comboTime

@@ -1,0 +1,5 @@
+commit 4c9876160960ac4160d2036ba9e50030bbfa3647
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Wed May 21 17:27:11 2014 -0400
+
+    removed asdf.png

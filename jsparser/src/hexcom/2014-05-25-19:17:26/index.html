@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>Hextris</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui"/>
+        <link rel="icon" type="image/png" href="favicon.ico">
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <style>
+            @font-face {
+                font-family: 'Roboto';
+                font-style: normal;
+                font-weight: 400;
+                src: local('Roboto Regular'), local('Roboto-Regular'), url("fonts/roboto.woff") format('woff');
+            }
+
+            * {
+                padding: 0;
+                margin: 0;
+            }
+
+            body {
+                color: #ecf0f1;
+                font-family: 'Roboto', sans-serif;
+                background-color:#ecf0f1;
+            }
+
+            #clickToExit {
+                cursor:pointer;
+            }
+
+            #canvas {
+                position: absolute;
+                left:0;
+                right:0;
+                /*height:100%;
+                width:100%;*/
+                background-color:#ecf0f1;
+                z-index:3;
+            }
+
+            #title {
+                z-index:99999;
+                margin-top:20px;
+                color:#2c3e50;
+            }
+        </style>
+    </head>
+    <body>
+	<canvas id="canvas"></canvas> 
+	<div id='devtools' style='z-index:3;display:none;position:absolute;left:50%;width:400px;height:400px;top:50%;margin-top:-200px;margin-left:-200px;'>
+	    <h2 id = 'clickToExit' style = 'background-color:#fff;color:#000'>Click to exit</h2>
+            <textarea id ='devtoolsText' style = 'height:300px;width:400px;'></textarea>
+        </div>
+        <script type = 'text/javascript' src="vendor/hammer.min.js"></script>
+        <script type = 'text/javascript' src="vendor/keypress.min.js"></script>
+        <script type = 'text/javascript' src="vendor/jquery.js"></script>
+        <script type = 'text/javascript' src="js/view.js"></script>
+        <script type = 'text/javascript' src="js/wavegen.js"></script>
+        <script type = 'text/javascript' src="js/math.js"></script>
+        <script type = 'text/javascript' src="js/entities.js"></script>
+        <script type = 'text/javascript' src="js/input.js"></script>
+        <script type = 'text/javascript' src="js/checking.js"></script>
+        <script type = 'text/javascript' src="js/main.js"></script>
+        <script type = 'text/javascript' src="js/analytics.js"></script>
+    </body>
+</html>

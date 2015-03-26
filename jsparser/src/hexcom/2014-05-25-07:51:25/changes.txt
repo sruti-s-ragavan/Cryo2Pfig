@@ -1,0 +1,5 @@
+commit bf3c247533f28913bf06cda4626bc38de62b7aff
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Sun May 25 10:51:25 2014 -0400
+
+    clean script created

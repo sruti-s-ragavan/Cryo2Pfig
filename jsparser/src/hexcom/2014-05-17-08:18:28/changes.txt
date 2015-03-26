@@ -1,0 +1,6 @@
+commit f0f2b2d08da5e1b2f1d00edd10939bc220d304d2
+Merge: 58b4c39 665a75c
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Sat May 17 11:18:28 2014 -0400
+
+    merge conflict resolve

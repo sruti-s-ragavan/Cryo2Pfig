@@ -1,0 +1,5 @@
+commit 9f1e6aaca2b5f2fc0822fb4d33f8c01b0f4f8ef0
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Tue May 20 17:09:39 2014 -0400
+
+    no diagonals for real

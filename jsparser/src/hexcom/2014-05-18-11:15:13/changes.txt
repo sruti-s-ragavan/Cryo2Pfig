@@ -1,0 +1,5 @@
+commit 4965e7a956cfd3553083b5d08c09a4dc1d36b414
+Author: Mathew Huusko V <mhuusko5@gmail.com>
+Date:   Sun May 18 14:15:13 2014 -0400
+
+    Some simple reformatting, fix a couple linting errors

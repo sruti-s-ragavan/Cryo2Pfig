@@ -1,0 +1,6 @@
+commit 035ae2da91b07b7c927f73897788f6b8831c7b24
+Merge: b7fb4ab 41afa3c
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Sun May 25 22:27:16 2014 -0400
+
+    fixed onblur pausing bug

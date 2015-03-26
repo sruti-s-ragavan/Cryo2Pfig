@@ -1,0 +1,6 @@
+commit f6513fcdd74e61f9e85caac4bbe613a502a45f4c
+Merge: baea4e4 ecdc93b
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 27 21:23:57 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages

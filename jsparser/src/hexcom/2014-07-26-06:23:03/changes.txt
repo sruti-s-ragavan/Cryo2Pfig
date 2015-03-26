@@ -1,0 +1,6 @@
+commit e69482b453aea3903d4f6159ccc0f8bf7add68be
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jul 26 09:23:03 2014 -0400
+
+    fixed pause button toggling in the opposite manner. added more
+    highscores infrastructure to make it more reliable / more modular

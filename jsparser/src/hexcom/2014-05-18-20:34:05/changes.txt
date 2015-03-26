@@ -1,0 +1,5 @@
+commit 7e4b9a21061b3b31edfb847800105ea9e741c257
+Author: Garrett Finucane <garrett@archer.home>
+Date:   Sun May 18 23:34:05 2014 -0400
+
+    more sensoble timing

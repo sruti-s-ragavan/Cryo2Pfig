@@ -1,0 +1,5 @@
+commit 05246608ce8c9d1f05e585fe3d5fa90071bf5431
+Author: Noah Moroze <noahm@moroze.com>
+Date:   Mon May 26 01:11:13 2014 -0400
+
+    Fixed problems with not resetting save

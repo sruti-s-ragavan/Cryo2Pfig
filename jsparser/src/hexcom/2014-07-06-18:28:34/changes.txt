@@ -1,0 +1,5 @@
+commit 17666fdbed32bfad4f617bc8afd8302f3dd7bcd8
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun Jul 6 21:28:34 2014 -0400
+
+    disabled dragging on screen

@@ -1,0 +1,5 @@
+commit 9d6e482c8629fce173e4a3bf55be83c592051e4d
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Mon Aug 25 23:09:21 2014 -0400
+
+    added to info text for speedups

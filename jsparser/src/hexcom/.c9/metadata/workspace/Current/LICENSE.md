@@ -1,0 +1,1 @@
+{"title":"LICENSE.md","tooltip":"/Current/LICENSE.md","filter":false,"hash":"216e0259b963b345d4196a02a1536c0cfff6c1b1","undoManager":{"mark":0,"position":-1,"stack":[]},"timestamp":1420748247000}

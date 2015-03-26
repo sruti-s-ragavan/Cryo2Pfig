@@ -1,0 +1,5 @@
+commit feea8c4b858ecf22f56315f8bfc476d3d4a321db
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jun 28 15:33:31 2014 -0400
+
+    removed useless opacity settings

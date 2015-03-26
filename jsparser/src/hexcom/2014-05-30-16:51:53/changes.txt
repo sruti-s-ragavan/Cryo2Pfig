@@ -1,0 +1,5 @@
+commit b51a73481d06fca30f2038b1d2fc0f60f860cd48
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Fri May 30 19:51:53 2014 -0400
+
+    save state fixed. simultaneous checking works

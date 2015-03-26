@@ -1,0 +1,5 @@
+commit 80d904cee61fb6696217712a8c430e150572bc7b
+Author: Noah Moroze <noahm@moroze.com>
+Date:   Tue May 20 08:30:14 2014 -0400
+
+    Split loop into game update and render, separated graphics-related code

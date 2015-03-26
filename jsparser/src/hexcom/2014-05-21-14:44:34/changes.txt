@@ -1,0 +1,5 @@
+commit 56d34d4d2d96eb3250a428c263cd091febc97f13
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Wed May 21 17:44:34 2014 -0400
+
+    removed innerhtml scoring statement

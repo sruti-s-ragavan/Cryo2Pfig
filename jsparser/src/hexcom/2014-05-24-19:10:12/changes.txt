@@ -1,0 +1,5 @@
+commit 078093eff4e30e7d889f59b2b775a9c65377c8eb
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 24 22:10:12 2014 -0400
+
+    readded pausing onblur, removed debugger statements

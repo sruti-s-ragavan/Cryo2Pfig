@@ -1,0 +1,5 @@
+commit ee706f3704767549b17345ffb03ac739a6bb74ec
+Author: Mathew Huusko V <mhuusko5@gmail.com>
+Date:   Sun May 18 14:48:50 2014 -0400
+
+    Support retina displays (multiple X rendering)

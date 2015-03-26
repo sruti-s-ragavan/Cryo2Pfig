@@ -1,0 +1,6 @@
+commit 43d3fa45160bdb7ec927d0cdff27a5241417b85e
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 21:43:12 2014 -0400
+
+    cleaned up main, made new difficulty scaling system, removed .swp files,
+    added greater support for mobile (responsiveness of btns)

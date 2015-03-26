@@ -1,0 +1,6 @@
+commit 33ba72f12c7cf106bdb7a889242847b1b6dcd2fb
+Merge: 8943a95 d4b288d
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Fri Aug 22 20:48:34 2014 -0400
+
+    Merge branch 'leereilly-twitter-summary-card' into gh-pages

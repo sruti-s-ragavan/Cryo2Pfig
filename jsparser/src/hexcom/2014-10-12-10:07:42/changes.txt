@@ -1,0 +1,6 @@
+commit 2cf5ad64156fcc44f2f3e469bfea43f6f7caabdf
+Merge: dd05aeb 4a62640
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Sun Oct 12 13:07:42 2014 -0400
+
+    Merge branch 'gh-pages' of https://github.com/Hextris/hextris into gh-pages

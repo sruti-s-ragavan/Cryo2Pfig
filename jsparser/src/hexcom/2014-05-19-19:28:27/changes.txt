@@ -1,0 +1,5 @@
+commit fe310d2fe8c41acfbd6e2432dc6f4e2e76819ad6
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon May 19 22:28:27 2014 -0400
+
+    better sounds two at a time

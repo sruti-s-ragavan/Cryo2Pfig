@@ -1,0 +1,6 @@
+commit 8317f48249b2174bdc209b196955e7c900b37e02
+Merge: 74e23d3 41664aa
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Thu Sep 4 20:20:05 2014 -0400
+
+    Merge branch 'gh-pages' of https://github.com/Hextris/hextris into gh-pages

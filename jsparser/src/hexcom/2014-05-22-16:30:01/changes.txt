@@ -1,0 +1,5 @@
+commit d5eedd0f5bcd147aca409207356e8ff8cec68992
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Thu May 22 19:30:01 2014 -0400
+
+    fixed scoring

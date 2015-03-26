@@ -1,0 +1,5 @@
+commit b3aac51fd313cba112acf024ebacaa53fbf45fe8
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jun 28 13:44:43 2014 -0400
+
+    removed white gaps, changed method for starting previously saved game to calling resumeGame (after init is called)

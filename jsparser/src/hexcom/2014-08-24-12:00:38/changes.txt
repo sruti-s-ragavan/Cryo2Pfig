@@ -1,0 +1,5 @@
+commit 148f5abbf00300a1c80c880913b2aa03db005c02
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Aug 24 15:00:38 2014 -0400
+
+    different rush color

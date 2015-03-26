@@ -1,0 +1,5 @@
+commit 56e458851fc20afb5f64646f29d54b45705672e0
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Fri Jul 4 19:08:49 2014 -0400
+
+    almost done with tutorial. fixed devmode not being able to be enabled

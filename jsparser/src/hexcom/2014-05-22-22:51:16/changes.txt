@@ -1,0 +1,5 @@
+commit 324aaa7b5dfa503cd416adc6cf29735b0336e54d
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Fri May 23 01:51:16 2014 -0400
+
+    added localStorage highscores

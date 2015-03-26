@@ -1,0 +1,5 @@
+commit 740309af13f133fc7bcf0af6b86c0367a9f1da06
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun Jul 20 18:25:31 2014 -0400
+
+    updated icons + added ios / anrdoid icons

@@ -1,0 +1,5 @@
+commit b100a0c72213847e192bd13c36ae56a3866c925a
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Wed Jul 2 23:51:34 2014 -0400
+
+    removed entities.js from index.html

@@ -1,0 +1,5 @@
+commit 367bbd8656791f8957efdbfb317bcbccbe0081c4
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Sat May 24 15:42:40 2014 -0400
+
+    fixed restart bug

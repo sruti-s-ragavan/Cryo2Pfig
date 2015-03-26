@@ -1,0 +1,5 @@
+commit 8863a41f69d20cc201549ce24136749a7ba4c7c7
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Sat May 24 14:15:07 2014 -0400
+
+    wavegen back to normal

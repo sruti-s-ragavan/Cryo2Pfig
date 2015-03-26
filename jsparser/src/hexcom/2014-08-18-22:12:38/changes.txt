@@ -1,0 +1,5 @@
+commit 9995b136f96f2f228aeda8cdebf100029d8e5cef
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Aug 19 01:12:38 2014 -0400
+
+    fixed share text for mobile

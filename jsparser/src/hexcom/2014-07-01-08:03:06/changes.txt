@@ -1,0 +1,6 @@
+commit 429de31d14a0e8ba78f2254c03238f23e0b43db8
+Merge: d8420a7 7fec2e3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 1 11:03:06 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/teamsnowman/hextris into gh-pages

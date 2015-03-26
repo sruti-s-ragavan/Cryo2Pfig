@@ -1,0 +1,5 @@
+commit 8174f59b18236f943aa420d0cdd543888e852059
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun Jul 27 21:28:56 2014 -0400
+
+    made minimum speed larger

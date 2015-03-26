@@ -1,0 +1,5 @@
+commit 5b096a6107d3365cd98a52e63508e78706e0c707
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sat Jul 26 19:58:58 2014 -0400
+
+    made combo reflect timer

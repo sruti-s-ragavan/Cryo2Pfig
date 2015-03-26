@@ -1,0 +1,5 @@
+commit 1c20d0faf34411c7c3e80207c271b58b4f37868a
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Fri Jun 27 19:10:49 2014 -0400
+
+    extended reset to enter key press as well in the title screen

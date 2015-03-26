@@ -1,0 +1,5 @@
+commit 4a3386e87aae4102d0507ff14737386d1387a125
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun Jun 22 00:26:46 2014 -0400
+
+    added scaling text, fits to y dimension; formatted js

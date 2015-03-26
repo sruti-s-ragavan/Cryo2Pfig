@@ -1,0 +1,5 @@
+commit 2c3b9cbba0ce77cf7835a3e68c2ae50ac95b5e88
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Jun 23 22:31:25 2014 -0400
+
+    refreshing no longer clears at start

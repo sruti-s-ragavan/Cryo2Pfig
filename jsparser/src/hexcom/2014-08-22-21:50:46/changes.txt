@@ -1,0 +1,5 @@
+commit 30c41cef0228f9b3c5ed15fb50bf291b4ba6b151
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sat Aug 23 00:50:46 2014 -0400
+
+    fixed infobutton not triggering

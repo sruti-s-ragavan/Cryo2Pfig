@@ -1,0 +1,5 @@
+commit 7e673ef3b663f59753c69b39550a9e6313dd13a1
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sat Aug 9 09:39:02 2014 -0400
+
+    fixed pause button not resetting on restart

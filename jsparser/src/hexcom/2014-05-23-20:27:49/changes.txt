@@ -1,0 +1,5 @@
+commit bf7cf8c0f8a2c43abe37601ee5062a28c2330799
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Fri May 23 23:27:49 2014 -0400
+
+    generations of waves start at a faster speed but reach mins slower

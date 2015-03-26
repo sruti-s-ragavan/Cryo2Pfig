@@ -1,0 +1,5 @@
+commit a8b6d36fd7e1eb643eb87244754a3a6dc88f974f
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Thu May 22 14:19:58 2014 -0400
+
+    added combo detecting

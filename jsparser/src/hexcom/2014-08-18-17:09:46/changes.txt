@@ -1,0 +1,5 @@
+commit ce6709cb9ad230ad2efa13f29340fe0885683b9a
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Aug 18 20:09:46 2014 -0400
+
+    setInterval for physics

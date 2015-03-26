@@ -1,0 +1,2 @@
+create table logger_log("index" int(10), user varchar(50), date varchar(50), action varchar(50), target varchar(50), referrer varchar(50), agent varchar(50));
+.read output4.txt

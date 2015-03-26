@@ -1,0 +1,5 @@
+commit c058745071db2e6fe3ae2f909fd055a1e6807428
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun Jul 27 20:06:31 2014 -0400
+
+    updated wave generation slightly

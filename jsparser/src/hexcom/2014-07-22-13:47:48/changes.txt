@@ -1,0 +1,120 @@
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages
+commit c118f24049913aafc047173f49a5bdd4da83f3e7
+Merge: db615d8 b9cb183
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jul 22 16:47:48 2014 -0400
+
+    Merge branch 'gh-pages' of http://github.com/hextris/hextris into gh-pages

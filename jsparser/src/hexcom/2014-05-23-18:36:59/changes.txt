@@ -1,0 +1,5 @@
+commit 3dad2f1e9ca0cf99aa6a08cdd98fefb1d5e1d5e7
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Fri May 23 21:36:59 2014 -0400
+
+    less consolidateBlocks

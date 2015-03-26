@@ -1,0 +1,5 @@
+commit 79ee722e9cb65caaf8deb05ceb9f3b84bd581943
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Tue Jun 24 09:23:43 2014 -0400
+
+    fixed issue in which blocks were added twice (init was called twice)

@@ -1,0 +1,5 @@
+commit 2b3168425ec18818c5b75605251c6a1d6f91022b
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jul 5 09:57:51 2014 -0400
+
+    fixed end game text

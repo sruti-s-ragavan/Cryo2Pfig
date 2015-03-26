@@ -1,0 +1,5 @@
+commit 6275f00dedb8723fa7173c016b55e4615cfd7f0c
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Fri Jul 25 23:10:23 2014 -0400
+
+    made pause button switch states based on the actual gameState value rather than handlers

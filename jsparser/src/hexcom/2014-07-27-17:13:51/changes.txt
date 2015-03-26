@@ -1,0 +1,5 @@
+commit a544bb3966a066d7795adad7b233af240c5aa1b2
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun Jul 27 20:13:51 2014 -0400
+
+    removed randInt from updating wavegens"

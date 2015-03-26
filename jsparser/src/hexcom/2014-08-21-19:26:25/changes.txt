@@ -1,0 +1,5 @@
+commit 93e955f1ba4a9b0f19466b4e9fa43ba9aa39f050
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Thu Aug 21 22:26:25 2014 -0400
+
+    softened difficulty curve

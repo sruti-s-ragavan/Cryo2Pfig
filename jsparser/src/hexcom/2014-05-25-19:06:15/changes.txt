@@ -1,0 +1,5 @@
+commit c7061997f61db7ab8e46edfe6ad665db4b24f09e
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Sun May 25 22:06:15 2014 -0400
+
+    no circular references halfway comments

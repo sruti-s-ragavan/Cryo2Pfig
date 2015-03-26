@@ -1,0 +1,5 @@
+commit af612dcedb867d8e26fe53017f7a1b26460e3dee
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Sat May 24 14:54:59 2014 -0400
+
+    fixed touch maybe

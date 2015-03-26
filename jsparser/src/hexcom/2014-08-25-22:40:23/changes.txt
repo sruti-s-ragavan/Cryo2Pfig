@@ -1,0 +1,5 @@
+commit 554c23590087f0091667f71ab07858130a649293
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 26 01:40:23 2014 -0400
+
+    tried to balance more

@@ -1,0 +1,5 @@
+commit 652facccab9399b6244ffc62b5c2030a654060c8
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Sep 2 15:34:36 2014 -0400
+
+    made icons bold

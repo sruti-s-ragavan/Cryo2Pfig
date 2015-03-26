@@ -1,0 +1,5 @@
+commit 5b3e6b918729b80ffb3315640ff38acf12c25e15
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 15:18:51 2014 -0400
+
+    no jagged lines switch no one line not multiple

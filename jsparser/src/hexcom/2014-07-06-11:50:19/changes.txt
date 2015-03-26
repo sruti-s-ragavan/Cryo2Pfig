@@ -1,0 +1,85 @@
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed
+commit 8a2fe354afcb35ebab4d37987c8a334ef20ed7f3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 6 14:50:19 2014 -0400
+
+    removed spacing between timer and hexagon when zoomed

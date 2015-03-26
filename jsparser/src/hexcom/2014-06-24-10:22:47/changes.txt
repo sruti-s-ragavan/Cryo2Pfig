@@ -1,0 +1,5 @@
+commit fdf92b5b2f3acd102d59eb47825d9d43b19a9b38
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jun 24 13:22:47 2014 -0400
+
+    timer drawn beneath blocks and goes backwards

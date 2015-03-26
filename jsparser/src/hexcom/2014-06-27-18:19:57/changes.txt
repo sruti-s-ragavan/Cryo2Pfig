@@ -1,0 +1,5 @@
+commit 0e29354d029315b52998f3468895a241e46215e3
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Fri Jun 27 21:19:57 2014 -0400
+
+    fixed initial setup not rendering correctly in menu

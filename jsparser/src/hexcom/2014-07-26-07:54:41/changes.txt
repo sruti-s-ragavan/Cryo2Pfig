@@ -1,0 +1,5 @@
+commit 87c2638a7ff8165b560467e4f5df914b9496076f
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jul 26 10:54:41 2014 -0400
+
+    added effects of creationSpeedModifier

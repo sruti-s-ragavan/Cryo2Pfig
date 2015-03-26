@@ -1,0 +1,5 @@
+commit 5e60841fb69246636d5d18ea9aa7631e599170ab
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Fri Jun 27 22:15:16 2014 -0400
+
+    converted animLoop to a switch case

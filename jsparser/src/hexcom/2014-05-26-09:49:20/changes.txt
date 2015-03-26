@@ -1,0 +1,85 @@
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks
+commit 573f2c5afbc881c374b949abec880fd9c844df17
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 26 12:49:20 2014 -0400
+
+    added findCenterOfBlocks

@@ -1,0 +1,5 @@
+commit df82f5fee8b5c40b1a012f9d1fb731b178cde382
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 24 19:50:57 2014 -0400
+
+    changed ramping in difficulty

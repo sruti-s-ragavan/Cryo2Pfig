@@ -1,0 +1,5 @@
+commit 51c479ed772b4506c75ce4b6f75ac660bf38e8cb
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 24 12:09:46 2014 -0400
+
+    made timing for wavegeneration iteration rather than time based

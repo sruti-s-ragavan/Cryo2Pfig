@@ -1,0 +1,5 @@
+commit 56e9893c2082b534d4cd67bf4111e5d9b4d3a479
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 26 14:05:28 2014 -0400
+
+    increased speed on mobile slightly

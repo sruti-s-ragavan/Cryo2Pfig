@@ -1,0 +1,5 @@
+commit 8943a958e6eb147bfa2552a4e3aaf81046a3c9cb
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Wed Aug 20 13:10:18 2014 -0400
+
+    info button fixed

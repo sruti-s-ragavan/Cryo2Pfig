@@ -1,0 +1,6 @@
+commit 94e71a3b217f636fc3cd72f34df203a3d276abe9
+Merge: 0323e72 b8460c0
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jul 27 20:05:12 2014 -0400
+
+    changed comboTime to 4

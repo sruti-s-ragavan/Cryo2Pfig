@@ -1,0 +1,5 @@
+commit 6e6d6b03567bafb064568c6bcd5dbe3b786dcddc
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Mon May 19 21:52:31 2014 -0400
+
+    made blocks smaller. still have to update the boundary to reflect this.

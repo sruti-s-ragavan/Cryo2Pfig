@@ -1,0 +1,6 @@
+commit 492a84d1e65bf65cbb875d3fd4ec8c003009928c
+Merge: bd85d7a f82ce2e
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Aug 18 09:34:15 2014 -0400
+
+    Merge branch 'colorblind' of https://github.com/IceManQ/hextris into IceManQ-colorblind

@@ -1,0 +1,5 @@
+commit c92124375c8072a9130bdfa02bbdce32f9a88c30
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun Jun 29 14:25:40 2014 -0400
+
+    fixed bug in which pause btn didn't show up after resuming a game

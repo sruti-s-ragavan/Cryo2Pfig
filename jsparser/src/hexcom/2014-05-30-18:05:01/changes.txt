@@ -1,0 +1,5 @@
+commit 8cb927920c5f336cc6db3afc3bdb1c6534b7e891
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Fri May 30 21:05:01 2014 -0400
+
+    fade in on restart

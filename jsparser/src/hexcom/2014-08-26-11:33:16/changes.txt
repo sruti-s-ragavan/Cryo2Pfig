@@ -1,0 +1,5 @@
+commit f591dafcc04ddf04fe91e98422fd54014b3fcf89
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 26 14:33:16 2014 -0400
+
+    added get-ad-free mesage for ios/android

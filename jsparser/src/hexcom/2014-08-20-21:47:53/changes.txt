@@ -1,0 +1,5 @@
+commit 485cfefddcbbb610d30e9c006937fd065a9f83f0
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Thu Aug 21 00:47:53 2014 -0400
+
+    made text/score effects time based

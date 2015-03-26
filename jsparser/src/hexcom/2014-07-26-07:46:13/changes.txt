@@ -1,0 +1,5 @@
+commit fd116df56e6a4cd396c84575b2cedf6c9d59ef39
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jul 26 10:46:13 2014 -0400
+
+    made the game easier on mobile. fixed issue where wave generator wasn't being updated

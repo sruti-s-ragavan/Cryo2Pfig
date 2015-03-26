@@ -1,0 +1,5 @@
+commit 60a3947264fe4b8d7cc131dbf7e3f66ea83e7e3e
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Fri Jun 27 21:31:59 2014 -0400
+
+    fixed issues surrounding checking and faulty hex -> rgb translations

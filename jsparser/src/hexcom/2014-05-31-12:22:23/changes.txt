@@ -1,0 +1,5 @@
+commit 311ca69d8e9ab255308438ebfb2bbf3099d044e7
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 15:22:23 2014 -0400
+
+    changed magnitude to scale with the actual scale of the canvas, fixed fontawesome issues

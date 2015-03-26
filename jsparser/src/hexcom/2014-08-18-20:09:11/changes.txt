@@ -1,0 +1,5 @@
+commit 43d6c60778536fce8e48a1755e44a367925af727
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Mon Aug 18 23:09:11 2014 -0400
+
+    made game easier + made gradient more smooth

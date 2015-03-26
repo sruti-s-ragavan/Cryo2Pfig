@@ -1,0 +1,6 @@
+commit 8d2d966b09c115720af6a4aa399d1c95aa3e17ab
+Merge: 9fc709f 8ece1c2
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Sat May 17 18:47:37 2014 -0400
+
+    added init/reset function

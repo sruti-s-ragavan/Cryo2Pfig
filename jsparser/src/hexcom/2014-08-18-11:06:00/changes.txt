@@ -1,0 +1,6 @@
+commit e01eee7db4cb15a9873e64e49d15dc2ed9090a87
+Merge: b27a199 2b6068d
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Aug 18 14:06:00 2014 -0400
+
+    Merge branch 'dev' into gh-pages

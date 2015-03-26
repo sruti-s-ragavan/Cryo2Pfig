@@ -1,0 +1,5 @@
+commit 90c68d21ef6036cfc92a333c8b248481b2f2007d
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 21:54:23 2014 -0400
+
+    lowered difficulty

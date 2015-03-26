@@ -1,0 +1,5 @@
+commit b1676d912e91780b3a9bdfa134946caaa6f05d69
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jun 28 11:24:47 2014 -0400
+
+    fixed clicking on btn, started adding start->play transition anims

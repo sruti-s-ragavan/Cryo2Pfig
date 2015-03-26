@@ -1,0 +1,5 @@
+commit a5dbcf2c1cf077cf7f486815bd9c1dfb11b9b85d
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Sat Jun 7 19:13:57 2014 -0400
+
+    Delete .index.html.swp

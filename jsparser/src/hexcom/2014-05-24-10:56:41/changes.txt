@@ -1,0 +1,5 @@
+commit 8c14cc9463098a26f8045ea1bdb676606bbfd7fc
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Sat May 24 13:56:41 2014 -0400
+
+    no undefined colors

@@ -1,0 +1,5 @@
+commit cc449cc482704f08e427ff6b2a47bdff2ae17f02
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Sat Aug 23 01:16:15 2014 -0400
+
+    fixed help button in gameplay

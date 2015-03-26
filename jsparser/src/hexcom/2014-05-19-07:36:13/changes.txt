@@ -1,0 +1,5 @@
+commit a56c017467c2dc0ae8e1963461b88f2c7569e9ec
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon May 19 10:36:13 2014 -0400
+
+    Fixed checking as far as I can tell

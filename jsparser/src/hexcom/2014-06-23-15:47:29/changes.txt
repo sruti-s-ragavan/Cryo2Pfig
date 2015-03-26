@@ -1,0 +1,5 @@
+commit 233538c745f1d426763b7a492deefd9ebef0d190
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Jun 23 18:47:29 2014 -0400
+
+    faded to immediate background

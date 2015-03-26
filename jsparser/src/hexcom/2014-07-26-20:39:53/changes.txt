@@ -1,0 +1,5 @@
+commit ca52eedeb7e38af458d86056aeb3ba406d0514f6
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Sat Jul 26 20:39:53 2014 -0700
+
+    Increased speed slightly

@@ -1,0 +1,5 @@
+commit aef9eb31c95345c4c88700018d4574a4f51c86dd
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Fri May 23 01:10:12 2014 -0400
+
+    added high score displaying

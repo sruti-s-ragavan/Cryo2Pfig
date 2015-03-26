@@ -1,0 +1,5 @@
+commit 5b9ffb408a5fe815119e0a9437c140c9e6a04b1b
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun Jul 20 23:13:43 2014 -0400
+
+    fixed link text, fixed covering info btn issue

@@ -1,0 +1,5 @@
+commit eebf616cfcf79a6beac41b3196d0cdbd993c02c5
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Wed Aug 20 00:56:29 2014 -0400
+
+    Info button stuck thing is over

@@ -1,0 +1,5 @@
+commit 45c082bdbc70ebf4dd159595aa2533a17d504e24
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Aug 19 00:04:50 2014 -0400
+
+    fixing infinite growth

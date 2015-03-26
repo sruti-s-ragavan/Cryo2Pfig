@@ -1,0 +1,5 @@
+commit 18f1b5fc63e11c2b65ce8af46d5fd806190cdee7
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Aug 18 12:07:43 2014 -0400
+
+    fixed so star count shows

@@ -1,0 +1,5 @@
+commit 3ae8fb12916ff42f273529729bb3ef09f4a3d0d1
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Thu Jul 31 16:55:56 2014 -0400
+
+    fixed highscore doubling?

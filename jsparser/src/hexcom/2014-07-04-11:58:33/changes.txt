@@ -1,0 +1,5 @@
+commit b0d4c4340ac83acca4186d2caeebfecf56eb7ec1
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Fri Jul 4 14:58:33 2014 -0400
+
+    instructions on mobile

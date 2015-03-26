@@ -1,0 +1,5 @@
+commit 9116411bb9af3bebf5d1050baeb2eead84b4fe38
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Sat May 24 13:11:17 2014 -0400
+
+    better modular arithmetic

@@ -1,0 +1,5 @@
+commit f1d491cc3acfb1851a0e0dbfa00cac84e6377c9d
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Fri Jul 4 20:33:26 2014 -0400
+
+    fixed pausing Paused -> paused

@@ -1,0 +1,5 @@
+commit 9c481130869ed40f7852c78f131d33bca6df038e
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Sun Jun 22 13:25:20 2014 -0400
+
+    no pausing at game over

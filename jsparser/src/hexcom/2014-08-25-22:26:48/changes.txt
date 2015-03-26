@@ -1,0 +1,5 @@
+commit 1483e4f8d543484626a46a71a9fd072febae77ac
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Tue Aug 26 01:26:48 2014 -0400
+
+    reduced beginning speed

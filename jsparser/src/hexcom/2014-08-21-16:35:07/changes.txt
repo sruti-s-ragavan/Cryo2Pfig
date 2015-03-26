@@ -1,0 +1,5 @@
+commit 1fe19be7dca13d35e2c687303139cb54752ab4c2
+Author: Logan Engstrom <meadowstream@users.noreply.github.com>
+Date:   Thu Aug 21 19:35:07 2014 -0400
+
+    decreased difficulty on mobile and desktop, with varying difficulty levels. fixed issue in which time deltas would add up over non-play game states

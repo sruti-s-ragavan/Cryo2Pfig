@@ -1,0 +1,5 @@
+commit debba1e2f9f4b50e83fa77744cedb33bb8f8f8df
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jul 5 00:32:54 2014 -0400
+
+    fixed issues around pausing and toggling the info button at the same time

@@ -1,0 +1,100 @@
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred
+commit 4aa17f79ef965d1e0d50ae8a3deedaae8af0bfec
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 31 11:26:15 2014 -0400
+
+    consolidated style sheets, made pause anim take 300 ms rather than 500, made game not start until becoming unblurred

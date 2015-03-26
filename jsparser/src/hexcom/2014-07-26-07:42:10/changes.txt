@@ -1,0 +1,5 @@
+commit 29997d072e931a143b12f642a132618d2a909b48
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat Jul 26 10:42:10 2014 -0400
+
+    enabled all patterns

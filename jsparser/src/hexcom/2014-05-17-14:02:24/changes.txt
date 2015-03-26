@@ -1,0 +1,5 @@
+commit 57f6e61c53f55b8700c0fed018b39bbd0d70d14e
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 17 17:02:24 2014 -0400
+
+    fixed collision detection

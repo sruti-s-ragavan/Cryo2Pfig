@@ -1,0 +1,5 @@
+commit 767ba0e727f26a73111643a7f2353d27eb2c9c14
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Mon Jun 23 22:21:36 2014 -0400
+
+    high scores better

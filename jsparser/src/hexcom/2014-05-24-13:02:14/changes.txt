@@ -1,0 +1,5 @@
+commit 74cf58faccc43e91d8885f93f3b2d96887d67c57
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sat May 24 16:02:14 2014 -0400
+
+    fixed speeding up used to create an additional concurrent game loop when enter was pressed

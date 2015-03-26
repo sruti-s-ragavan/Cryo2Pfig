@@ -1,0 +1,5 @@
+commit 2f66138ddc6fcec8a0e00e1bcad2f2e881d952f2
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Fri Jul 4 16:42:55 2014 -0400
+
+    Fixed instruction text in mobile

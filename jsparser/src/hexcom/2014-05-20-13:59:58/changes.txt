@@ -1,0 +1,5 @@
+commit 137d2567ec049ba6e0e81e0cfc2a9af13157b999
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Tue May 20 16:59:58 2014 -0400
+
+    no diagonals

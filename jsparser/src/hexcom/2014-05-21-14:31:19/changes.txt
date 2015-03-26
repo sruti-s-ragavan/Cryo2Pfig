@@ -1,0 +1,6 @@
+commit f6ecba50247bfe8d29efb8547da174bb8a850841
+Merge: 4c98761 8219515
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Wed May 21 17:31:19 2014 -0400
+
+    fixed merge conflicts

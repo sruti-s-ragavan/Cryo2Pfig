@@ -1,0 +1,5 @@
+commit 16c4502a1c37c202e6f97f2da90a093f20a68b9f
+Author: garrettdreyfus <garrettdreyfus@gmail.com>
+Date:   Sun May 25 11:15:22 2014 -0400
+
+    pausing fixed

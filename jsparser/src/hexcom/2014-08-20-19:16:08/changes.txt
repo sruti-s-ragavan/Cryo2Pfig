@@ -1,0 +1,5 @@
+commit 97d14814c032e9ec1b5141ffcd8023b2ad317eab
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Wed Aug 20 22:16:08 2014 -0400
+
+    fixed 80% sure

@@ -1,0 +1,5 @@
+commit 353709c07920104c8305f5007a35abe0df39c0c3
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Tue Jun 24 13:41:40 2014 -0400
+
+    moved incrementing MainClock.ct from render to update

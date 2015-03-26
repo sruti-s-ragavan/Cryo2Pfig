@@ -1,0 +1,5 @@
+commit 8e4d09e3224384004281dca7d7456eb72580987c
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Sat May 17 17:10:35 2014 -0400
+
+    added modals, changed game shape, changed colors

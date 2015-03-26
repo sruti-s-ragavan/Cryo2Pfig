@@ -1,0 +1,5 @@
+commit 47e0e9632d38219bd2a8892e2e41b31b97de28b9
+Author: Noah Moroze <noahm@moroze.com>
+Date:   Fri May 23 13:01:51 2014 -0400
+
+    Properly set default highscores

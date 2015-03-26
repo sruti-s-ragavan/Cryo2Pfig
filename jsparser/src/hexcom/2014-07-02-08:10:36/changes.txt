@@ -1,0 +1,5 @@
+commit 3764ececd860c3a03e11acddc668504c939855c4
+Author: Garrett Finucane <garrettdreyfus@gmail.com>
+Date:   Wed Jul 2 11:10:36 2014 -0400
+
+    Fixed flickering after pause

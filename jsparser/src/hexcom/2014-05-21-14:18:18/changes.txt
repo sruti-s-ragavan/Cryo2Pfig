@@ -1,0 +1,5 @@
+commit 797701c4e4f75e664d91cab67721b5376066dc4d
+Author: Michael Yang <themichaelyang@gmail.com>
+Date:   Wed May 21 17:18:18 2014 -0400
+
+    changed shadow to gradient

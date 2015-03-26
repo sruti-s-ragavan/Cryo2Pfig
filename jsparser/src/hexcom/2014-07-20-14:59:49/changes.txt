@@ -1,0 +1,5 @@
+commit c31027b157b2b76fce1dc498045155e8f7420ad7
+Author: meadowstream <meadowstream@users.noreply.github.com>
+Date:   Sun Jul 20 17:59:49 2014 -0400
+
+    updated logos
