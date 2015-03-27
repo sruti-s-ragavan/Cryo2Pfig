@@ -627,10 +627,6 @@ def get_array(dir, out_file):
         f.close()
         #call(["php", "fileIterator.php", dir_to_run]);	
 
-
-def single_folder_array_gen(path):
-    
-
 def array_gen(fn):
  
     i=0
@@ -650,30 +646,47 @@ def array_gen(fn):
             r.join()
             s.join()
             i=i+4
-        obj_list = []
-        schema = { "functions":{"mergeStrategy":"append"}, "invocations":{"mergeStrategy":"append"}, "lengths":{"mergeStrategy":"append"}}
+        results = []
+	f = open(fn+'1.txt', 'r')
+        results = []
+        for line in f:
+            results.append(json.loads(line))
         
-        merger = Merger(schema)
-    
-        f = open(fn+'1.txt','r')
+
+	f = open(fn+'2.txt', 'r')
         for line in f:
-            obj_list.append(json.loads(line))
-        f = open(fn+'2.txt','r')
+            results.append(json.loads(line))
+        
+
+	f = open(fn+'3.txt', 'r')
         for line in f:
-            obj_list.append(json.loads(line))
-        f = open(fn+'3.txt','r')
+            results.append(json.loads(line))
+        
+
+	f = open(fn+'4.txt', 'r')
         for line in f:
-            obj_list.append(json.loads(line))
-        f = open(fn+'4.txt','r')
-        for line in f:
-            obj_list.append(json.loads(line))
-        final_obj = json.dumps({"functions":{},"invocations":{},"lengths":{}});
-        for obj in obj_list:
-	    final_obj= merger.merge(final_obj,obj)
-        f = open("fullAST.txt", 'a')
-        f.write(json.dumps(final_obj))
-    #print json.dumps(final_obj,)
-        miv_array = final_obj
+            results.append(json.loads(line))
+        
+        lengths = []
+        folder_arrays = []
+        for singleFolderArray in results:
+            lengths.append(singleFolderArray[-1])
+            singleFolderArray.pop()
+            folder_arrays.append(singleFolderArray)
+        
+        compressedLengths = []
+        for x in lengths:
+            compressedLengths.extend(x["lengths"])
+        lengths = {}
+        lengths["lengths"] = compressedLengths
+        master = [[]]
+        for x in folder_arrays:
+            master[0].extend(x)
+        master.append(lengths)
+        #print json.dumps(compressedLengths)
+        #print json.dumps(master)
+
+        miv_array = master
     else:
        f = open("fullAST.txt", 'r')
        miv_array = f.read()
