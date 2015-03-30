@@ -340,7 +340,6 @@ class Converter:
             print json.dumps(event,sort_keys=True, indent=4, separators=(',',':'))
         else:
             print event['event-type']'''
-        #print event['title']
         document_name = event['title']
 	
         new_event['action'] = action
@@ -506,6 +505,7 @@ class Converter:
         unconverted_events = dict()
         k = 'title'
         for event in cryolog.events:
+            print event['sequence-id']
             if((k in event) and ((event['title'] in ["Immediate","Terminal","Preferences"]) or "[P]" in event['title'])):
                 pass
             else:    
@@ -628,9 +628,10 @@ def get_array(dir, out_file):
         #call(["php", "fileIterator.php", dir_to_run]);	
 
 def array_gen(fn):
- 
+    
     i=0
     if(os.path.isfile("fullAST.txt")==False):   
+        '''
         while(i<len(src_list)-4):
             print i
             p=multiprocessing.Process(target=get_array, args=(src_list[i], fn+'1.txt',))
@@ -646,9 +647,9 @@ def array_gen(fn):
             r.join()
             s.join()
             i=i+4
+        '''
         results = []
 	f = open(fn+'1.txt', 'r')
-        results = []
         for line in f:
             results.append(json.loads(line))
         
@@ -676,7 +677,8 @@ def array_gen(fn):
         
         compressedLengths = []
         for x in lengths:
-            compressedLengths.extend(x["lengths"])
+            if x:
+                compressedLengths.extend(x["lengths"])
         lengths = {}
         lengths["lengths"] = compressedLengths
         master = [[]]
@@ -691,7 +693,7 @@ def array_gen(fn):
        f = open("fullAST.txt", 'r')
        miv_array = f.read()
     global doc_line_list
-    print miv_array
+    #print miv_array
     doc_line_list =miv_array.pop()
     doc_line_list = doc_line_list["lengths"]
 
