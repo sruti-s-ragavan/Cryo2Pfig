@@ -148,7 +148,8 @@ function variable_identifier($source, $fstring){
 									$var_length +=1;
 									$var_header = $var_header = $tokens[$j][1];
 									//generate variable entry for variable array.
-									$variable_stats[] = array("src" => $source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" =>$var_header, "filepath" => ''. $source);
+									global $src_arg;
+									$variable_stats[] = array("src" =>$src_arg. $source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" =>$var_header, "filepath" => ''. $source);
 									//echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br>End: $end <br>Contents: $substring <br>Var Header: $var_header<br><br>";
 									break 2;
 								}
@@ -180,7 +181,8 @@ function variable_identifier($source, $fstring){
 									$var_length +=1;
 									$var_header = $tokens[$j][1];
 									//generate variable entry for variable array.
-									$variable_stats[] = array("src" => $source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $var_header, "filepath" => ''. $source);
+									global $src_arg;
+									$variable_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $var_header, "filepath" => ''. $source);
 									//echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br>End: $end <br>Contents: $substring <br>Var Header: $var_header<br><br>";
 									break 2;
 								}else{ 
@@ -251,7 +253,8 @@ function invocation_identifier($source,$file_array, $fstring){
 						//echo $invocation_name;
 						$inv_path = get_invocation_full_path($invocation_name,$file_array,$source);
 						//add to call array
-						$invocation_stats[] = array("src" => $source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $call_header, "filepath" => "".$source , "invsrc" => $inv_path);
+						global $src_arg;
+						$invocation_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $call_header, "filepath" => "".$source , "invsrc" => $inv_path);
 						//echo "<b>" . $tokens[$i][1]."</b> <br>Start: $sum<br>Length: $length<br> End: $end <br>Contents: $substring <br>Invocation header = $inv_path<br>";
 						
 						break;
@@ -326,7 +329,8 @@ function function_identifier($source, $fstring){
 									$function_call_length +=1;
 									$function_header = substr($code, sum_to_token($tokens,$i), $function_call_length);
 									//generate function entry for function array.
-									$function_stats[] = array("src" => $source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $function_header, "filepath" => ''. $source);
+									global $src_arg;
+									$function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $function_header, "filepath" => ''. $source);
 									//echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br>End: $end <br>Contents: $substring <br>Function Header: $function_header<br>Source File: $source<br><br>";
 									break 2;
 								}
@@ -362,7 +366,8 @@ function function_identifier($source, $fstring){
 						$function_nests[] = array(sum_to_token($tokens,$i), $end, $function_header);
 						$nested_within = array();
 						//generate function entry in function array
-						$function_stats[] = array("src" => $source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $function_header, "filepath" => ''.$source);
+						global $src_arg;
+						$function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $function_header, "filepath" => ''.$source);
 						//echo "function header = $function_header <br>";
 						//echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br> End: $end <br>Contents: $substring <br>Function header:$function_header!<br>Source File: $source<br><br>";
 						break;
@@ -537,7 +542,7 @@ function nested_functions($file_array){
 function get_line_lengths($file_name_array, $n){
 	
 	$file_lengths = array();
-	
+	global $src_arg;
 	foreach($file_name_array as $file){ 
 		$fName = $file . "";
 		//$file_lengths[] = $fName
@@ -549,7 +554,7 @@ function get_line_lengths($file_name_array, $n){
 				// process the line read.
 			}
 			//echo("hell0");
-			$file_lengths["lengths"][]=  array("file"=>substr($fName, strlen($n)) ,"len" =>$len);
+			$file_lengths["lengths"][]=  array("file"=>$src_arg . substr($fName, strlen($n)) ,"len" =>$len);
 		} else {
 			echo("error");
 		}
@@ -570,6 +575,7 @@ function merge_arrays($one, $two, $key1, $key2){
 }
 
 $file = $argv[1];
+$src_arg = strstr($argv[1],'/hex');
 $file_name_array = file_array($file);
 
 /*

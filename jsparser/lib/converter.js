@@ -41,6 +41,15 @@ function generateTokenArray(contents) {
     return tokenArray;
 }
 
+function checkForLoop(token_array){
+ for(token in token_array){
+	if(token == JS_FOR){
+		
+	}
+}
+function checkPatterns(token_array){
+	checkForLoop(token_array);
+}
 function getLineLengths(path, tokenArray) {
 	var lineNumber, startPosition, endPosition, lineLength;
 	var tokenIndex = 0;

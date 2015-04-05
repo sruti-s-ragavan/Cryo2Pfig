@@ -49,12 +49,12 @@ a {
 
 #score {
 	font-size: 4vmin;
-	text-align: margin-top ;
-	width: 40%;
+	text-align: center;
+	width: 30%;
 }
 
 #highscores {
-	text-align: margin-top;
+	text-align: center;
 	list-style: none;
 }
 

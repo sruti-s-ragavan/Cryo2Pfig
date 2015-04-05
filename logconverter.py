@@ -166,12 +166,14 @@ class Converter:
     def check_doc_opened(self,event,document_name):
         new_events = []
         global opened_doc_list
-        print opened_doc_list
         print document_name
         if(document_name in opened_doc_list):
             return
+        if(document_name[-2:] !='js'):
+            return 
         else:
             opened_doc_list.append(document_name)
+            print "going into convert_open_document_event"
             new_events = self.convert_open_document_event(event,document_name)
             return new_events
     def __init__(self):
@@ -223,7 +225,6 @@ class Converter:
     def convert_change_cursor_event(self, event):
         """The event when someone clicks a different place in the code"""
         new_event = self.new_event(event)
-        jsonprettyprint(event)
         document_name = event['path']
         position = event['position'] 
         line = position['line'] 
@@ -237,8 +238,9 @@ class Converter:
         new_event['action'] = 'Text selection offset'
         new_event['target'] = document_name
         sum = self.get_offset_position(document_name, line, column)
-        if(sum == -1):
+        if(sum == -1 or sum == None):
             print("document not found. setting offset to 0")
+            exit()
             new_event['referrer'] = 0
         else:
             new_event['referrer'] = sum
@@ -253,7 +255,6 @@ class Converter:
         """When the user edits code"""
         new_event = self.new_event(event)
         document_name = event['path']
-        #jsonprettyprint(event)
         code_summary = event['code-summary']
         ast_node_count = code_summary['ast-node-count']
 
@@ -273,18 +274,18 @@ class Converter:
 
         return new_event
     def get_offset_position(self, document_name, line, column):
-        sum = 0
-        #print(document_name)
-    
+        sum = 0    
+ 
         for item in doc_line_list:
-            if(item['file'] ==document_name):
+            if(item['file'] == document_name):
                 
                 for i in range(0, line):
                     if(i == line - 1):
                         sum += column
                     else:
+                        print item['len']
+                        print i
                         sum += item['len'][i]
-                #print sum
                 return sum
                 
     def convert_change_selection_event(self, event):
@@ -331,15 +332,6 @@ class Converter:
         """
 
         new_event = self.new_event(event)
-        '''if(event['event-type'] == "create-tab"):
-            for item in event['configuration']:
-                if (item['name'] == 'editor'):
-                    document_name = item['children'][0]['children'][0]['document-name']
-                    #print json.dumps(item['children'],sort_keys=True, indent=4, separators=(',',':'))
-        elif(event['event-type'] == "close-tab"):
-            print json.dumps(event,sort_keys=True, indent=4, separators=(',',':'))
-        else:
-            print event['event-type']'''
         document_name = event['title']
 	
         new_event['action'] = action
@@ -412,7 +404,9 @@ class Converter:
         function_list = []
         call_list = []
         var_dec_list = []
-        for item in miv_array: 
+        x = 0
+        for item in miv_array:
+             
             if(item['functions'] ==None):
                 pass
             else:
@@ -427,30 +421,18 @@ class Converter:
                 #var_dec_list += item['variables']
         declaration_type = 'Method declaration'
         for item in function_list:
-            print item['src'] 
-            print document_name
             if(item['src']==document_name):
                 new_events = event_tuple_generate(new_events,self,item,event,declaration_type,document_name)
             
         declaration_type = 'Method invocation'
         for item in call_list:
-            print item['src'] 
-            print document_name
             if(item['src']==document_name):
                 new_events = event_tuple_generate(new_events,self,item,event,declaration_type,document_name)
             
         declaration_type = 'Variable declaration'
         for item in var_dec_list:
-            print item['src'] 
-            print document_name
             if(item['src']==document_name):
                 new_events = event_tuple_generate(new_events,self,item,event,declaration_type,document_name)
-        '''
-        print "printing new events:\n"
-        pp = pprint.PrettyPrinter(indent=4)
-        pp.pprint(new_events);
-        print "\n printed new events"     
-        '''
         return new_events
 
 
@@ -505,8 +487,10 @@ class Converter:
         unconverted_events = dict()
         k = 'title'
         for event in cryolog.events:
-            print event['sequence-id']
+            print str(event['sequence-id']) + " " + event['event-type']
             if((k in event) and ((event['title'] in ["Immediate","Terminal","Preferences"]) or "[P]" in event['title'])):
+                pass
+            if(('path' in event) and event['path'][-2:] != 'js'):
                 pass
             else:    
                 event_type = event['event-type']
@@ -516,12 +500,14 @@ class Converter:
                     if(event['syntax'] in ['text','css', 'html']):
                         pass
                     else:
-                        print event['sequence-id']
                         document_name = event['path']
                         action = event['action']
                         text = ""
-                        if action == "insertText" or action == "removeText":
-                            text = event['text']
+                        if action == "insert":
+                            print event
+                        if action == "insert" or action == "remove":
+                            for t in event['lines']:
+                                text +=t 
                         elif action == "insertLines" or action == "removeLines":
                             lines = event['lines']
                             for line in lines:
@@ -600,12 +586,12 @@ def update_file(file_path, actionType, text, line_number, column):
             
     # column numbers in log not zero indexed
     index = cur_index + column - 1
-    #print "Index: %d" % index
-    #print "Contents before index: %s" % contents[:index]
-    #print text
-    #print "Contents after index: %s" % contents[index:]
-    
-    if actionType == "insertText" or actionType == "insertLines":
+    print "Index: %d" % index
+    print "Contents before index: %s" % contents[:index]
+    print "text - " +text
+    print "Contents after index: %s" % contents[index:]
+    print actionType
+    if actionType == "insert" or actionType == "insertLines":
         #insert text into string
         updated_contents = contents[:index] + text + contents[index:]
     else:
@@ -621,7 +607,6 @@ def get_array(dir, out_file):
     if dir not in ['.c9', '.cryolite']:
         f = open(out_file,'a')
         dir_to_run = "./jsparser/src/hexcom/" + dir
-	#print dir_to_run
         out = subprocess.check_output(["php", "./jsparser/fileIterator.php", dir_to_run])
         f.write(out)
         f.close()
@@ -631,6 +616,7 @@ def array_gen(fn):
     
     i=0
     if(os.path.isfile("fullAST.txt")==False):   
+        print "in if statement"
         '''
         while(i<len(src_list)-4):
             print i
@@ -649,22 +635,22 @@ def array_gen(fn):
             i=i+4
         '''
         results = []
-	f = open(fn+'1.txt', 'r')
+        f = open(fn+'1.txt', 'r')
         for line in f:
             results.append(json.loads(line))
         
 
-	f = open(fn+'2.txt', 'r')
+        f = open(fn+'2.txt', 'r')
         for line in f:
             results.append(json.loads(line))
         
 
-	f = open(fn+'3.txt', 'r')
+        f = open(fn+'3.txt', 'r')
         for line in f:
             results.append(json.loads(line))
         
 
-	f = open(fn+'4.txt', 'r')
+        f = open(fn+'4.txt', 'r')
         for line in f:
             results.append(json.loads(line))
         
@@ -685,76 +671,19 @@ def array_gen(fn):
         for x in folder_arrays:
             master[0].extend(x)
         master.append(lengths)
-        #print json.dumps(compressedLengths)
-        #print json.dumps(master)
-
+        global miv_array
         miv_array = master
+        f = open("fullAST.txt", 'a+')
+        f.write(json.dumps(miv_array))
     else:
        f = open("fullAST.txt", 'r')
-       miv_array = f.read()
+       miv_array = json.loads(f.read())
     global doc_line_list
-    #print miv_array
+
     doc_line_list =miv_array.pop()
     doc_line_list = doc_line_list["lengths"]
+    miv_array = miv_array[0] #collapse the array
 
-'''
-def array_gen(sys.argv[1]):
-    print "in array_gen(sys.argv[1])"
-    h = httplib.HTTPConnection('web.engr.oregonstate.edu')
-    headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
-    h.request('POST', '/~hillc/jsparser/fileIterator.php', '', headers)
-    r = h.getresponse()
-    global miv_array
-    #print r.read()
-    miv_array = simplejson.loads(r.read())
-    global doc_line_list
-    doc_line_list =miv_array.pop()
-    doc_line_list = doc_line_list["lengths"]
-'''
-'''def array_gen(file_list):
-    files = " ".join(file_list)
-    
-    cmd = "./jsparser/converter.js " + files
-    response = muterun_js(cmd);
-    if response.exitcode == 0:
-        response = response.stdout
-        if DEBUG == True:
-            print response
-        # convert string to nested dictionaries, arrays
-    #result = ast.literal_eval(response)
-        result = json.loads(response)
-    return result[0]
-    else:
-        print sys.stderr.write(response.stderr)
-    
-    # The following code could be used to run the JS without the use of the Naked framework
-    # Instead it requires the subprocess module
-    #cmd = "node ../jsparser/converter.js " + user_file
-    #process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    #stdout = []
-    #while True:
-        #line = process.stdout.readline()
-        #stdout.append(line)
-        #if line == '' and process.poll() != None:
-            #break
-    #end = ''.join(stdout)
-    #print end
-    #return end
-    '''
-''';
-file_list = []
-
-
-
-for subdir, dirs, files in os.walk(rootdir):
-    for file in files:
-        file = os.path.join(subdir, file)
-        file_list.append(file)
-        
-response = array_gen(sys.argv[1])
-miv_array.append(response)
-doc_line_list.append(response["lengths"])
-'''
 rootdir = './jsparser/src'
 src_list = [name for name in os.listdir("./jsparser/src/hexcom") if os.path.isdir(os.path.join(
 "./jsparser/src/hexcom", name))]

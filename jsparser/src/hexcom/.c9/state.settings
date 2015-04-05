@@ -30,18 +30,17 @@
             "@ace": 1,
             "@acestatus": 1,
             "@divider": 5,
-            "@document": 18,
+            "@document": 5,
             "@form": 4,
-            "@imgview": 1,
             "@immediate": 1,
             "@menu": 46,
             "@menuitem": 479,
-            "@pane": 11,
-            "@postmessage": 9,
-            "@preview": 9,
-            "@session": 14,
-            "@tab": 3,
-            "@undoManager": 18
+            "@pane": 33,
+            "@postmessage": 3,
+            "@preview": 1,
+            "@session": 5,
+            "@tab": 2,
+            "@undoManager": 5
         }
     },
     "findinfiles": {
@@ -58,8 +57,7 @@
     },
     "panecycle": {
         "json()": [
-            "tab1",
-            "preview-/Current/index.html"
+            "tab1"
         ]
     },
     "panels": {
@@ -90,22 +88,15 @@
         }
     },
     "projecttree": {
-        "@scrollpos": 16372,
+        "@scrollpos": 12739,
         "@showfs": true,
         "expanded": {
             "json()": [
                 "/",
                 "/2014-05-20-13:50:21/js",
                 "/Current",
-                "/2014-05-17-07:15:59",
-                "/2014-07-04-13:43:01",
-                "/2014-09-04-18:23:31",
-                "/Current/style/fa/fonts",
-                "/Current/style/fa/css",
-                "/Current/style",
-                "/Current/style/fonts",
-                "/Current/style/fa",
-                "/2014-05-17-16:02:28"
+                "/Current/js_v9",
+                "/2014-07-31-13:47:44"
             ]
         }
     },
@@ -115,141 +106,26 @@
     "search-history": {
         "search": {
             "json()": [
-                "roboto",
-                "dash",
-                "score",
-                "center",
-                "score",
-                "above",
-                "top",
                 "isstate"
             ]
         }
     },
     "tabs": {
         "json()": {
-            "focus": "/Current/index.html",
-            "nodes": [
-                {
-                    "type": "pane",
-                    "name": "pane0",
-                    "nodes": [
-                        {
-                            "type": "tab",
-                            "name": "tab0",
-                            "path": "/Current/style/style.css",
-                            "className": [
-                                "tab0"
-                            ],
-                            "document": {
-                                "changed": false,
-                                "meta": {
-                                    "timestamp": 1423171427000
-                                },
-                                "filter": true,
-                                "title": "style.css",
-                                "tooltip": "/Current/style/style.css",
-                                "ace": {}
-                            },
-                            "editorType": "ace",
-                            "active": false
-                        },
-                        {
-                            "type": "tab",
-                            "name": "tab1",
-                            "path": "/Current/index.html",
-                            "className": [
-                                "tab1",
-                                "focus"
-                            ],
-                            "document": {
-                                "changed": false,
-                                "meta": {
-                                    "timestamp": 1423173736132
-                                },
-                                "filter": true,
-                                "title": "index.html",
-                                "tooltip": "/Current/index.html",
-                                "ace": {}
-                            },
-                            "editorType": "ace",
-                            "active": true
-                        },
-                        {
-                            "type": "tab",
-                            "name": "tab2",
-                            "path": "/2014-05-17-16:02:28/index.html",
-                            "className": [
-                                "tab2",
-                                "changed"
-                            ],
-                            "document": {
-                                "changed": true,
-                                "meta": {
-                                    "timestamp": 1423172411878
-                                },
-                                "filter": true,
-                                "title": "index.html",
-                                "tooltip": "/2014-05-17-16:02:28/index.html",
-                                "ace": {}
-                            },
-                            "editorType": "ace",
-                            "active": false
-                        }
-                    ],
-                    "skin": "editor_tab",
-                    "skinset": "default",
-                    "meta": {
-                        "accessList": [
-                            "tab1",
-                            "tab2",
-                            "tab0"
-                        ]
-                    }
-                },
-                {
-                    "type": "pane",
-                    "name": "pane10",
-                    "nodes": [
-                        {
-                            "type": "tab",
-                            "name": "preview-/Current/index.html",
-                            "path": null,
-                            "className": [
-                                "preview--Current-index-html"
-                            ],
-                            "document": {
-                                "changed": false,
-                                "meta": {
-                                    "timestamp": 1423173737562
-                                },
-                                "filter": true,
-                                "title": "[P] /Current/index.html",
-                                "preview": {
-                                    "path": "/Current/index.html",
-                                    "previewer": "preview.browser"
-                                }
-                            },
-                            "editorType": "preview",
-                            "active": true
-                        }
-                    ],
-                    "width": "50%",
-                    "skin": "editor_tab",
-                    "skinset": "default",
-                    "meta": {
-                        "accessList": [
-                            "preview-/Current/index.html"
-                        ]
-                    }
-                }
-            ],
-            "type": "hsplitbox"
+            "focus": null,
+            "meta": {
+                "accessList": []
+            },
+            "name": "pane0",
+            "nodes": [],
+            "skin": "editor_tab",
+            "skinset": "default",
+            "type": "pane"
         }
     },
     "tree_selection": {
         "json()": [
-            "/Current/index.html"
+            "/2014-07-31-13:47:44/index.html"
         ]
     }
 }

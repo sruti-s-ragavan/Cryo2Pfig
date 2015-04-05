@@ -512,10 +512,11 @@ def loadPaths():
 		if loc:
 			add_offset(agent, timestamp, loc, target, referrer)
 			t = timestamp
-	c.close()
+	#c.close() -Commenting this out just to see if it works : CH
 	
 	c.execute("select timestamp,action,target,referrer,agent from logger_log where action in ('Text selection offset') order by timestamp")
 	for row in c:
+		print row
 		timestamp, action, agent, target, referrer = \
 			(iso8601.parse_date(row['timestamp']),
 			 row['action'],
@@ -1095,6 +1096,7 @@ def check_language(sourcefile):
 	conn = sqlite3.connect(sourcefile)
 	conn.row_factory = sqlite3.Row
 	c = conn.cursor()
+	lang = ''
 	c.execute("select action,target from logger_log where action=('Language')")
 	for row in c:
 		lang = row['target']
