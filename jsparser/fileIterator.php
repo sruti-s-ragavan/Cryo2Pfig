@@ -3,6 +3,7 @@ require 'lib/jparser-1-0-0/jparser-libs/jtokenizer.php';
 error_reporting(0);
 set_time_limit (0);
 ini_set('memory_limit','128M');
+ini_set("auto_detect_line_endings", true);
 function fix_comment_line_error($tokens, $j){
 	$comment_count = 0;
 	for($x = 0;$x<$j;$x++){

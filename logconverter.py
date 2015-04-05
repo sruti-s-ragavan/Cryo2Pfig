@@ -278,13 +278,12 @@ class Converter:
  
         for item in doc_line_list:
             if(item['file'] == document_name):
-                
+                print "get offset position:"
+                print item['len']
                 for i in range(0, line):
                     if(i == line - 1):
                         sum += column
                     else:
-                        print item['len']
-                        print i
                         sum += item['len'][i]
                 return sum
                 
@@ -503,11 +502,11 @@ class Converter:
                         document_name = event['path']
                         action = event['action']
                         text = ""
-                        if action == "insert":
-                            print event
+                        print event['lines']
                         if action == "insert" or action == "remove":
-                            for t in event['lines']:
-                                text +=t 
+                            for i in range(0,len(event['lines'])-1):
+                                text+=event['lines'][i]+'\n'
+                            text+=event['lines'][-1]
                         elif action == "insertLines" or action == "removeLines":
                             lines = event['lines']
                             for line in lines:
@@ -516,7 +515,16 @@ class Converter:
                         column = event['start']['column']
                         new_events = self.check_keys(self.convert_change_document_event(event),new_events)
                         update_file(document_name, action, text, line, column)
-                        array_gen(sys.argv[1])
+                        array_gen_single_folder(event['path'])
+                        for doc in doc_line_list:
+                            if(doc['file']  == event['path']):
+                                print "main Loop:"
+                                print doc
+                        f = open("./jsparser/src" + event['path'],'r')
+                        lines = []
+                        for l in f:
+                            lines.append(len(l))
+                        print lines
                 elif event_type == 'close-tab':
                     new_events = self.check_keys(self.convert_tab_event(event, 'Part closed'),new_events)
                 elif event_type == 'create-tab':
@@ -586,17 +594,21 @@ def update_file(file_path, actionType, text, line_number, column):
             
     # column numbers in log not zero indexed
     index = cur_index + column - 1
-    print "Index: %d" % index
-    print "Contents before index: %s" % contents[:index]
+    #print "Index: %d" % index
+    #print "Contents before index: %s" % contents[:index]
     print "text - " +text
-    print "Contents after index: %s" % contents[index:]
-    print actionType
+    #print "Contents after index: %s" % contents[index:]
+    #print actionType
+    print contents
+    print "updated contents"
     if actionType == "insert" or actionType == "insertLines":
         #insert text into string
         updated_contents = contents[:index] + text + contents[index:]
+        print updated_contents
     else:
         #skip over deleted text while copying string
         updated_contents = contents[:index] + contents[(index + len(text)):]
+        print updated_contents
         
     # write updated string to file
     file = open(rootdir+ "/" + file_path, "w")
@@ -605,21 +617,44 @@ def update_file(file_path, actionType, text, line_number, column):
 
 def get_array(dir, out_file):
     if dir not in ['.c9', '.cryolite']:
-        f = open(out_file,'a')
+        f = ''
+        if(out_file):
+            f = open(out_file,'a')
         dir_to_run = "./jsparser/src/hexcom/" + dir
         out = subprocess.check_output(["php", "./jsparser/fileIterator.php", dir_to_run])
-        f.write(out)
-        f.close()
+        if(out_file):
+            f.write(out)
+            f.close()
+        else:
+            return out
         #call(["php", "fileIterator.php", dir_to_run]);	
-
+def array_gen_single_folder(fn):
+    k = fn.rfind('/')
+    global miv_array
+    global doc_line_list
+    new_data = json.loads(get_array(fn[len('/hexcom/'):k], None))
+    lengths = new_data[-1]
+    new_data.pop()
+    for item in lengths['lengths']:
+    	i=0
+        for doc in doc_line_list:
+            if(doc['file']  == item['file']):
+                doc_line_list[i] = item
+                break
+            i=i+1    
+    for item in new_data:
+        i=0
+        for doc in miv_array:
+            if((doc['functions'] != [] and item['functions'] != []) and (item['functions'][0]['src'] == doc['functions'][0]['src'])):
+                miv_array[i] = doc
+            i=i+1
 def array_gen(fn):
     
     i=0
     if(os.path.isfile("fullAST.txt")==False):   
-        print "in if statement"
-        '''
+
         while(i<len(src_list)-4):
-            print i
+            print str(i) + src_list[i]
             p=multiprocessing.Process(target=get_array, args=(src_list[i], fn+'1.txt',))
             p.start()
             q=multiprocessing.Process(target=get_array, args=(src_list[i+1],fn+'2.txt',))
@@ -633,7 +668,6 @@ def array_gen(fn):
             r.join()
             s.join()
             i=i+4
-        '''
         results = []
         f = open(fn+'1.txt', 'r')
         for line in f:
