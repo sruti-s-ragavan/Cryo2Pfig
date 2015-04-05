@@ -13,4 +13,7 @@ function handler (req, res) {
 			return res.end('<h3>Error loading ' + __dirname + req['url'] + '</h3>');
 		}
 
-		res.writeHead(200);			res.end(data);		});		
+		res.writeHead(200);
+		res.end(data);
+	});
+}
