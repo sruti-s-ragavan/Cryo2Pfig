@@ -423,7 +423,8 @@ def loadPaths():
 		if(verbose2): print "\tAdding ", loc2, "with method", target, "and offset of", referrer, "at time", str(timestamp)
 	def add_offset_JavaScript(agent, timestamp, loc, target, referrer):
 		#split on '/', then check for the js extension. if it's there, join everything after into a string.
-		loc2 = loc.split('/')
+                '''		
+                loc2 = loc.split('/')
 		i = 0
 		for L in loc2:
 			if('.js' in L):
@@ -433,6 +434,8 @@ def loadPaths():
 		for item in loc2[i:]:
 			temp += item
 		loc2 = temp
+                '''
+                loc2 = loc
 		if agent not in offsets:
 			offsets[agent] = {}
 		if loc2 not in offsets[agent]:

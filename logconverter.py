@@ -358,7 +358,7 @@ class Converter:
             
         def event_tuple_generate(new_events,self,item,event,declaration_type,document_name):
             header = normalizer(item["header"])
-            filepath = normalizer(item["filepath"])
+            filepath = normalizer(item["src"])
             if("invsrc" in item.keys()):
                 invsrc = normalizer(item["invsrc"])
             contents = normalizer(item["contents"])
@@ -366,7 +366,6 @@ class Converter:
                 #declaration
                 new_event = self.new_event(event)
                 new_event['action'] = declaration_type
-
                 new_event['target'] = filepath
                 new_event['referrer'] = filepath + ';.' +header
                 new_events.append(new_event)
@@ -518,6 +517,7 @@ class Converter:
                         line = event['start']['line']
                         column = event['start']['column']
                         new_events = self.check_keys(self.convert_change_document_event(event),new_events)
+                        print event
                         update_file(document_name, action, text, line, column)
                         array_gen_single_folder(event['path'])
                         '''for doc in doc_line_list:
@@ -596,7 +596,7 @@ def update_file(file_path, actionType, text, line_number, column):
             break
         cur_index = cur_index + 1
         
-            
+    print cur_index
     # column numbers in log not zero indexed
     index = cur_index + column - 1
     #print "Index: %d" % index
@@ -608,8 +608,8 @@ def update_file(file_path, actionType, text, line_number, column):
     #print "updated contents"
     if actionType == "insert" or actionType == "insertLines":
         #insert text into string
-        updated_contents = contents[:index] + text + contents[index:]
-        print contents[index-25:index] + text + contents[index:index+25]
+        updated_contents = contents[:index] + text + contents[index+1:]
+        print updated_contents[index-10:index+10]
     else:
         #skip over deleted text while copying string
         updated_contents = contents[:index] + contents[(index + len(text)):]

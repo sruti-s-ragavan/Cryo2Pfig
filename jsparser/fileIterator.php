@@ -608,6 +608,7 @@ $array_merged = merge_arrays($file_functions_array, $file_invocations_array,"fun
 //$array_merged = nested_variables($array_merged);
 $array_merged = nested_invocations($array_merged);
 $array_merged[] = get_line_lengths($file_name_array, $file);
+
 //pretty_print_file_array($array_merged);
 echo json_encode($array_merged);
 
