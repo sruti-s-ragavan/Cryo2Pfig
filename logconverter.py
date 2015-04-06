@@ -331,7 +331,11 @@ class Converter:
         """
 
         new_event = self.new_event(event)
-        document_name = event['title']
+        print event
+        if('path' in event.keys()):
+            document_name = event['path']
+        else:
+            document_name = event['title']
 	
         new_event['action'] = action
         new_event['target'] = os.path.basename(document_name)
@@ -516,7 +520,7 @@ class Converter:
                         new_events = self.check_keys(self.convert_change_document_event(event),new_events)
                         update_file(document_name, action, text, line, column)
                         array_gen_single_folder(event['path'])
-                        for doc in doc_line_list:
+                        '''for doc in doc_line_list:
                             if(doc['file']  == event['path']):
                                 print "main Loop:"
                                 print doc
@@ -525,6 +529,7 @@ class Converter:
                         for l in f:
                             lines.append(len(l))
                         print lines
+                        '''
                 elif event_type == 'close-tab':
                     new_events = self.check_keys(self.convert_tab_event(event, 'Part closed'),new_events)
                 elif event_type == 'create-tab':
@@ -599,16 +604,16 @@ def update_file(file_path, actionType, text, line_number, column):
     print "text - " +text
     #print "Contents after index: %s" % contents[index:]
     #print actionType
-    print contents
-    print "updated contents"
+    #print contents
+    #print "updated contents"
     if actionType == "insert" or actionType == "insertLines":
         #insert text into string
         updated_contents = contents[:index] + text + contents[index:]
-        print updated_contents
+        print contents[index-25:index] + text + contents[index:index+25]
     else:
         #skip over deleted text while copying string
         updated_contents = contents[:index] + contents[(index + len(text)):]
-        print updated_contents
+        #print updated_contents
         
     # write updated string to file
     file = open(rootdir+ "/" + file_path, "w")
