@@ -530,6 +530,7 @@ class Converter:
                             lines.append(len(l))
                         print lines
                         '''
+                
                 elif event_type == 'close-tab':
                     new_events = self.check_keys(self.convert_tab_event(event, 'Part closed'),new_events)
                 elif event_type == 'create-tab':
@@ -557,6 +558,7 @@ class Converter:
                 if event_type in unconverted_events:
                     unconverted_events[event_type] += 1
                 else:
+                
                     unconverted_events[event_type] = 1
         '''
         queued_events = []
@@ -580,9 +582,19 @@ class Converter:
         return new_pfislog
 
 def update_file(file_path, actionType, text, line_number, column):
-
+    print line_number
+    print column
     # open file and read in string
     file = open(rootdir+ "/" + file_path, "r")
+    i = 0
+    sum = 0
+    for line in file:
+        if i == line_number-1:
+            sum+=column
+            break
+        sum+=len(line)
+        i+=1
+    file.seek(0)
     contents = file.read()
     file.close
         
@@ -594,9 +606,7 @@ def update_file(file_path, actionType, text, line_number, column):
             cur_line = cur_line + 1
         if(cur_line ==line_number):
             break
-        cur_index = cur_index + 1
-        
-    print cur_index
+        cur_index = cur_index + 1  
     # column numbers in log not zero indexed
     index = cur_index + column - 1
     #print "Index: %d" % index
@@ -608,11 +618,11 @@ def update_file(file_path, actionType, text, line_number, column):
     #print "updated contents"
     if actionType == "insert" or actionType == "insertLines":
         #insert text into string
-        updated_contents = contents[:index] + text + contents[index+1:]
-        print updated_contents[index-10:index+10]
+        updated_contents = contents[:sum-1] + text + contents[sum-1:]
+        print updated_contents[sum-20:sum+20]
     else:
         #skip over deleted text while copying string
-        updated_contents = contents[:index] + contents[(index + len(text)):]
+        updated_contents = contents[:sum-1] + contents[(sum-1 + len(text)):]
         #print updated_contents
         
     # write updated string to file
