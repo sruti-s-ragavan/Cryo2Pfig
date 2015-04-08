@@ -255,7 +255,7 @@ function invocation_identifier($source,$file_array, $fstring){
 						$inv_path = get_invocation_full_path($invocation_name,$file_array,$source);
 						//add to call array
 						global $src_arg;
-						$invocation_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $call_header, "filepath" => "".$source , "invsrc" => $inv_path);
+						$invocation_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $call_header, "filepath" => "".$source , "invsrc" => $src_arg.$inv_path);
 						//echo "<b>" . $tokens[$i][1]."</b> <br>Start: $sum<br>Length: $length<br> End: $end <br>Contents: $substring <br>Invocation header = $inv_path<br>";
 						
 						break;
