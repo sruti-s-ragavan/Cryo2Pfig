@@ -6,7 +6,8 @@ import pprint
 import subprocess
 import httplib,urllib
 import multiprocessing
-import simplejson, json 
+import simplejson, json
+import shutil
 from jsonmerge import Merger
 from Naked.toolshed.shell import execute_js, muterun_js
 # imports for JSON and for communication with PHP site that Charles made
@@ -229,8 +230,7 @@ class Converter:
         position = event['position'] 
         line = position['line'] 
         column = position['column'] 
-        
-        #We don't have information about the code when converting this event. Needs to be calculated with Charles' code. 
+
         offset = 0
         document_name = event['path']
         new_events = self.check_doc_opened(event,document_name)
@@ -288,8 +288,6 @@ class Converter:
                 return sum
                 
     def convert_change_selection_event(self, event):
-        jsonprettyprint(event)
-        #exit()
         """When the user highlights code"""
         new_event = self.new_event(event)
         document_name = event['path']
@@ -535,49 +533,27 @@ class Converter:
                         print event
                         update_file(document_name, action, text, line, column)
                         array_gen_single_folder(event['path'])
-                        '''for doc in doc_line_list:
-                            if(doc['file']  == event['path']):
-                                print "main Loop:"
-                                print doc
-                        f = open("./jsparser/src" + event['path'],'r')
-                        lines = []
-                        for l in f:
-                            lines.append(len(l))
-                        print lines
-                        '''
+                elif event_type == 'copy-workspace-directory':
+                    copy_dir(event['paths'][0], event['paths'][1])
+                    add_dir_to_miv(event['paths'][1])
                 elif event_type == 'close-tab':
                     new_events = self.check_keys(self.convert_tab_event(event, 'Part closed'),new_events)
-                    #print new_events ###################################################
-                    #exit()
                 elif event_type == 'create-tab':
-                   new_events = self.check_keys(self.convert_tab_event(event, 'Part opened'),new_events)
-                    #print new_events ###################################################
-                    #exit()
+                    new_events = self.check_keys(self.convert_tab_event(event, 'Part opened'),new_events)
                 elif event_type == 'deactivate-tab':
                     new_events = self.check_keys(self.convert_tab_event(event, 'Part deactivated'),new_events)
-                    #print new_events
-                    #exit()
                 elif event_type == 'expand-workspace-tree-node':
                     # commenting out package explorer stuff
                     #new_events = self.check_keys(self.convert_expand_workspace_tree_node_event(event),new_events)
                     pass
                 elif event_type == 'change-cursor':
                     new_events = self.check_keys(self.convert_change_cursor_event(event),new_events)
-                    #print new_events
-                    #exit()
-                elif event_type == 'change-selection':#still need to work on line 310
+                elif event_type == 'change-selection':
                     new_events = self.check_keys(self.convert_change_selection_event(event),new_events)
-                    #print new_events
-                    #exit()
                 elif event_type == 'select-workspace-tree-nodes':
                     new_events = self.check_keys(self.convert_select_workspace_tree_nodes_event(event),new_events)
-                    #print new_events
-                    #exit()
-                #pass
                 elif event_type == 'start-logging':
                     new_events = self.check_keys(self.convert_start_logging_event(event),new_events)
-                    #print new_events
-                    #exit()
                 elif event_type == 'update-workspace-tree':
                     # commenting out package explorer stuff
                     #new_events = self.check_keys(self.convert_update_workspace_tree_event(event),new_events)
@@ -607,6 +583,11 @@ class Converter:
 
         new_pfislog = Pfislog(events=new_events)
         return new_pfislog
+def copy_dir(old, new):
+    old = rootdir+old
+    new = rootdir+new 
+    if(not(os.path.isdir(new)) and os.path.isdir(old)):
+        shutil.copytree(old,new)
 
 def update_file(file_path, actionType, text, line_number, column):
     print line_number
@@ -669,6 +650,22 @@ def get_array(dir, out_file):
         else:
             return out
         #call(["php", "fileIterator.php", dir_to_run]);	
+def add_dir_to_miv(fn):
+    print "adding " + fn + " to miv"
+    k = fn.rfind('/')
+    print k
+    global miv_array
+    global doc_line_list
+    print "sending " + fn[k:] + " as an arg to get_array"
+    new_data = json.loads(get_array(fn[k:], None))
+    print "got new data"
+    lengths = new_data[-1]
+    new_data.pop()
+    for item in lengths['lengths']:
+    	doc_line_list.append(item)
+    for item in new_data:
+        miv_array.append(item)
+    print "added " + fn + " to miv"
 def array_gen_single_folder(fn):
     k = fn.rfind('/')
     global miv_array
@@ -763,9 +760,9 @@ rootdir = './jsparser/src'
 src_list = [name for name in os.listdir("./jsparser/src/hexcom") if os.path.isdir(os.path.join(
 "./jsparser/src/hexcom", name))]
 array_gen(sys.argv[1])
-cryolog = Cryolog('cryolite.log')
+cryolog = Cryolog(sys.argv[2])
 pfislog = Pfislog('pfis.log') # here as an example. The new_pfislog is what gets exported.
 converter = Converter()
 new_pfislog = converter.convert_cryolog_to_pfislog(cryolog)
 if __name__ == '__main__':
-    new_pfislog.export_to_file('output.txt')
+    new_pfislog.export_to_file(sys.argv[3])
