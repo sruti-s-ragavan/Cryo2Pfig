@@ -167,14 +167,12 @@ class Converter:
     def check_doc_opened(self,event,document_name):
         new_events = []
         global opened_doc_list
-        print document_name
         if(document_name in opened_doc_list):
             return
         if(document_name[-2:] !='js'):
             return 
         else:
             opened_doc_list.append(document_name)
-            print "going into convert_open_document_event"
             new_events = self.convert_open_document_event(event,document_name)
             return new_events
     def __init__(self):
@@ -278,8 +276,6 @@ class Converter:
  
         for item in doc_line_list:
             if(item['file'] == document_name):
-                print "get offset position:"
-                print item['len']
                 for i in range(0, line):
                     if(i == line - 1):
                         sum += column
@@ -344,7 +340,6 @@ class Converter:
         """
 
         new_event = self.new_event(event)
-        print event
         if('path' in event.keys()):
             document_name = event['path']
         else:
@@ -518,7 +513,6 @@ class Converter:
                         document_name = event['path']
                         action = event['action']
                         text = ""
-                        print event['lines']
                         if action == "insert" or action == "remove":
                             for i in range(0,len(event['lines'])-1):
                                 text+=event['lines'][i]+'\n'
@@ -530,7 +524,6 @@ class Converter:
                         line = event['start']['line']
                         column = event['start']['column']
                         new_events = self.check_keys(self.convert_change_document_event(event),new_events)
-                        print event
                         update_file(document_name, action, text, line, column)
                         array_gen_single_folder(event['path'])
                 elif event_type == 'copy-workspace-directory':
@@ -590,8 +583,6 @@ def copy_dir(old, new):
         shutil.copytree(old,new)
 
 def update_file(file_path, actionType, text, line_number, column):
-    print line_number
-    print column
     # open file and read in string
     file = open(rootdir+ "/" + file_path, "r")
     i = 0
@@ -619,7 +610,7 @@ def update_file(file_path, actionType, text, line_number, column):
     index = cur_index + column - 1
     #print "Index: %d" % index
     #print "Contents before index: %s" % contents[:index]
-    print "text - " +text
+    #print "text - " +text
     #print "Contents after index: %s" % contents[index:]
     #print actionType
     #print contents
@@ -627,7 +618,7 @@ def update_file(file_path, actionType, text, line_number, column):
     if actionType == "insert" or actionType == "insertLines":
         #insert text into string
         updated_contents = contents[:sum-1] + text + contents[sum-1:]
-        print updated_contents[sum-20:sum+20]
+        #print updated_contents[sum-20:sum+20]
     else:
         #skip over deleted text while copying string
         updated_contents = contents[:sum-1] + contents[(sum-1 + len(text)):]
@@ -651,21 +642,21 @@ def get_array(dir, out_file):
             return out
         #call(["php", "fileIterator.php", dir_to_run]);	
 def add_dir_to_miv(fn):
-    print "adding " + fn + " to miv"
+    #print "adding " + fn + " to miv"
     k = fn.rfind('/')
-    print k
+    #print k
     global miv_array
     global doc_line_list
-    print "sending " + fn[k:] + " as an arg to get_array"
+    #print "sending " + fn[k:] + " as an arg to get_array"
     new_data = json.loads(get_array(fn[k:], None))
-    print "got new data"
+    #print "got new data"
     lengths = new_data[-1]
     new_data.pop()
     for item in lengths['lengths']:
     	doc_line_list.append(item)
     for item in new_data:
         miv_array.append(item)
-    print "added " + fn + " to miv"
+    #print "added " + fn + " to miv"
 def array_gen_single_folder(fn):
     k = fn.rfind('/')
     global miv_array
