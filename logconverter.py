@@ -229,7 +229,7 @@ class Converter:
         position = event['position'] 
         line = position['line'] 
         column = position['column'] 
-
+        
         #We don't have information about the code when converting this event. Needs to be calculated with Charles' code. 
         offset = 0
         document_name = event['path']
@@ -288,13 +288,28 @@ class Converter:
                 return sum
                 
     def convert_change_selection_event(self, event):
+        jsonprettyprint(event)
+        #exit()
         """When the user highlights code"""
         new_event = self.new_event(event)
         document_name = event['path']
         new_events = self.check_doc_opened(event,document_name)
         new_event['action'] = 'Text selection'
         new_event['target'] = document_name
-        new_event['referrer'] = 'Cryolog does not capture what text is selected, only lines and columns of start and end positions' #figure out what text is selected
+
+        lines=[]
+	f = open(rootdir+ "/"+event['path'], 'r')#Open the file the user is in
+        #Read the log of the event to get the start and end line then read the file the user is in through the relevant range 
+        if(event['selection'] == []):
+            pass
+        else: 
+            for x in range((event['selection'][0]['start']['line']), (event['selection'][0]['end']['line'])):
+                lines.append(f.readline())
+        
+        f.close()
+        new_event['referrer'] = lines
+        
+        #new_event['referrer'] = 'Cryolog does not capture what text is selected, only lines and columns of start and end positions' #figure out what text is selected
         if(new_events == None):
             new_events = new_event
         else:
@@ -532,23 +547,37 @@ class Converter:
                         '''
                 elif event_type == 'close-tab':
                     new_events = self.check_keys(self.convert_tab_event(event, 'Part closed'),new_events)
+                    #print new_events ###################################################
+                    #exit()
                 elif event_type == 'create-tab':
-                    new_events = self.check_keys(self.convert_tab_event(event, 'Part opened'),new_events)
+                   new_events = self.check_keys(self.convert_tab_event(event, 'Part opened'),new_events)
+                    #print new_events ###################################################
+                    #exit()
                 elif event_type == 'deactivate-tab':
                     new_events = self.check_keys(self.convert_tab_event(event, 'Part deactivated'),new_events)
+                    #print new_events
+                    #exit()
                 elif event_type == 'expand-workspace-tree-node':
                     # commenting out package explorer stuff
                     #new_events = self.check_keys(self.convert_expand_workspace_tree_node_event(event),new_events)
                     pass
                 elif event_type == 'change-cursor':
                     new_events = self.check_keys(self.convert_change_cursor_event(event),new_events)
-                elif event_type == 'change-selection':
+                    #print new_events
+                    #exit()
+                elif event_type == 'change-selection':#still need to work on line 310
                     new_events = self.check_keys(self.convert_change_selection_event(event),new_events)
+                    #print new_events
+                    #exit()
                 elif event_type == 'select-workspace-tree-nodes':
                     new_events = self.check_keys(self.convert_select_workspace_tree_nodes_event(event),new_events)
+                    #print new_events
+                    #exit()
                 #pass
                 elif event_type == 'start-logging':
                     new_events = self.check_keys(self.convert_start_logging_event(event),new_events)
+                    #print new_events
+                    #exit()
                 elif event_type == 'update-workspace-tree':
                     # commenting out package explorer stuff
                     #new_events = self.check_keys(self.convert_update_workspace_tree_event(event),new_events)
@@ -664,7 +693,7 @@ def array_gen(fn):
     
     i=0
     if(os.path.isfile("fullAST.txt")==False):   
-
+        
         while(i<len(src_list)-4):
             print str(i) + src_list[i]
             p=multiprocessing.Process(target=get_array, args=(src_list[i], fn+'1.txt',))
