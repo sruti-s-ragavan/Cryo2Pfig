@@ -8,6 +8,7 @@ import httplib,urllib
 import multiprocessing
 import simplejson, json
 import shutil
+import sqlite3
 from jsonmerge import Merger
 from Naked.toolshed.shell import execute_js, muterun_js
 
@@ -783,12 +784,28 @@ def array_gen(fn):
     doc_line_list = doc_line_list["lengths"]
     miv_array = miv_array[0] #collapse the array
 
-
+def create_db(pfislog_name):
+    f = open(pfislog_name, 'r')
+    db_name = pfislog_name[:-4] + '_db'
+    if(os.path.exists(db_name)):
+        os.remove(db_name)
+    conn = sqlite3.connect(db_name)
+    c = conn.cursor()
+    c.execute('create table logger_log("index" int(10), user varchar(50), timestamp varchar(50), action varchar(50), target varchar(50), referrer varchar(50), agent varchar(50));')
+    conn.commit()
+    for line in f:
+        c.execute(line)
+        conn.commit()
+    c.close()
+    
+    
 
 if __name__ == '__main__':
     cryolog = Cryolog(sys.argv[2])
     pfislog = Pfislog('pfis.log') # here as an example. The new_pfislog is what gets exported.
     converter = Converter()
+    
     array_gen(sys.argv[1])
     new_pfislog = converter.convert_cryolog_to_pfislog(cryolog)
     new_pfislog.export_to_file(sys.argv[3])
+    create_db(sys.argv[3])
