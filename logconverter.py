@@ -9,6 +9,7 @@ import multiprocessing
 import simplejson, json
 import shutil
 import sqlite3
+import datetime
 from jsonmerge import Merger
 from Naked.toolshed.shell import execute_js, muterun_js
 
@@ -254,10 +255,14 @@ class Converter:
         position = event['position'] 
         line = position['line'] 
         column = position['column'] 
-
         offset = 0
         document_name = event['path']
+        doc_prev_len = len(opened_doc_list)
         new_events = self.check_doc_opened(event,document_name)
+        doc_curr_len = len(opened_doc_list)
+        #subtract one millisecond from time if this is the first time a document has been opened.
+        if(doc_curr_len > doc_prev_len):
+            new_event['timestamp'] = str(datetime.datetime.strptime(new_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(milliseconds = -1))+'000'
         new_event['referrer'] = offset
         new_event['action'] = 'Text selection offset'
         new_event['target'] = document_name
@@ -561,7 +566,6 @@ class Converter:
                         new_events = self.check_keys(self.convert_change_document_event(event),new_events)
                         update_file(document_name, action, text, line, column)
                         array_gen_single_folder(event['path'])
-                        event['logged-timestamp'] = sub_one_ms(event['logged-timestamp'])
                         new_events = self.check_keys(self.convert_open_document_event(event,document_name),new_events)
                 elif event_type == 'copy-workspace-directory':
                     copy_dir(event['paths'][0], event['paths'][1])
@@ -804,7 +808,7 @@ if __name__ == '__main__':
     cryolog = Cryolog(sys.argv[2])
     pfislog = Pfislog('pfis.log') # here as an example. The new_pfislog is what gets exported.
     converter = Converter()
-    #array_gen(sys.argv[1])
-    #new_pfislog = converter.convert_cryolog_to_pfislog(cryolog)
-    #new_pfislog.export_to_file(sys.argv[3])
+    array_gen(sys.argv[1])
+    new_pfislog = converter.convert_cryolog_to_pfislog(cryolog)
+    new_pfislog.export_to_file(sys.argv[3])
     create_db(sys.argv[3])
