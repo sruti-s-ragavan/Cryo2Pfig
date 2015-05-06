@@ -10,21 +10,12 @@ import simplejson, json
 import shutil
 from jsonmerge import Merger
 from Naked.toolshed.shell import execute_js, muterun_js
-# imports for JSON and for communication with PHP site that Charles made
-
-# import methods for communication with JS script
-
 
 # sql utilities for parsing pfislog, pfislog's output is insert statements which are SQL
 import sqlparse
 from sqlparse.sql import Parenthesis
 from sqlparse.sql import IdentifierList # instead of parsing by hand
 
-# What I was using BEFORE Charles' code existed
-# JavaScript code utilities for parsing ASTs out of Cryolog's code snippets
-# https://pypi.python.org/pypi/slimit 
-#from slimit import ast
-#from slimit.parser import Parser
 
 # CREATE TABLE logger_log ( id INTEGER IDENTITY, user VARCHAR(50), timestamp DATETIME, action VARCHAR(50), target VARCHAR, referrer VARCHAR, agent VARCHAR(50));
 # what each insert statement in pfig is made up of
@@ -35,10 +26,17 @@ PFIS_ACTION = 'Variable declaration'
 PFIS_TARGET = 'com.blah.blah' # varies depending on the event
 PFIS_REFERRER = 'com.blah.blah.blah' # varies depending on the event
 PFIS_AGENT = '8ea5d9be-d1b5-4319-9def-495bdccb7f51'
+
+#Global Variables
+rootdir = './jsparser/src'
+src_list = [name for name in os.listdir("./jsparser/src/hexcom") if os.path.isdir(os.path.join(
+"./jsparser/src/hexcom", name))]
 DEBUG = True
 miv_array = []
 opened_doc_list = []
 doc_line_list = []
+
+
 def print_list(to_print):
     """Sorts a list and prints it out with an asterisk in front of each one
     """
@@ -83,7 +81,34 @@ class Cryolog:
             event_types.add(event['event-type'])
 
         return event_types
-
+'''there is a one-ms offset applied to all text-selection offset events to make sure that
+pfis records the first text selection after a newly opened document before the document opens,
+so that we aren't giving pfis more information than the participant sees. This function is to 
+offset the time of method invocations, declarations and their associated entries by the same amount,
+to be used if and only if this isn't the first time the file was opened. Hacky, I know.'''
+'''time format: 2015-04-21T18:43:29.684Z'''
+def sub_one_ms(timestamp):
+    time = timestamp
+    time2 = time
+    time2 = time2[0:20] + str(int(time2[20:23])-1).zfill(3) + time2[23:]
+    if(time2[20:23] =='-01'):
+        time2 = time2[0:20] + str(999) + time2[23:]
+        if(time[17:19] == '00'):
+            #replace 00 w/ 59
+            time2 = time2[0:17] + str(59) + time2[19:]
+            #propogate changes to minutes
+            if(time[14:16] == '00'):
+                #replace 00 w/ 59
+                time2 = time2[0:14] + str(59) + time2[16:]
+                #progogate changes to hours
+                time2 = time2[0:11] + str(int(time2[11:13])-1).zfill(2) + time2[13:]
+            #else we just need to sub 1 from m
+            else:
+                time2 = time2[0:14] + str(int(time2[14:16])-1).zfill(2) + time2[16:]
+        #else we just need to sub 1 from s
+        else:
+            time2 = time2[0:17] + str(int(time2[17:19])-1).zfill(2) + time2[19:]
+    return time2
 
 class Pfislog:
     """Represents a pfis log file. 
@@ -284,6 +309,13 @@ class Converter:
                 return sum
                 
     def convert_change_selection_event(self, event):
+        def normalizer(s):
+            s = s.replace('\r\n', '\u00a')
+            s = s.replace("\n", "\u00a")
+            s = s.replace("\r", "\u00a")
+            s = s.replace("'", "''")
+            s = s.replace(",", "\",\"")
+            return s
         """When the user highlights code"""
         new_event = self.new_event(event)
         document_name = event['path']
@@ -298,10 +330,12 @@ class Converter:
             pass
         else: 
             for x in range((event['selection'][0]['start']['line']), (event['selection'][0]['end']['line'])):
-                lines.append(f.readline())
-        
+                lines.append(normalizer(f.readline()))
+        referrer = ''
+        for line in lines:
+            referrer += line
         f.close()
-        new_event['referrer'] = lines
+        new_event['referrer'] = referrer
         
         #new_event['referrer'] = 'Cryolog does not capture what text is selected, only lines and columns of start and end positions' #figure out what text is selected
         if(new_events == None):
@@ -486,7 +520,7 @@ class Converter:
         else:
             new_events.extend(new)
         return new_events
-        
+
     def convert_cryolog_to_pfislog(self, cryolog):
         """Iterates through cryolog events and calls the approprate converter
         functions for each type of event. 
@@ -497,7 +531,7 @@ class Converter:
         unconverted_events = dict()
         k = 'title'
         for event in cryolog.events:
-            print str(event['sequence-id']) + " " + event['event-type']
+            print str(event['sequence-id']) + " " + event['event-type'] + " " + event['logged-timestamp']
             if((k in event) and ((event['title'] in ["Immediate","Terminal","Preferences"]) or "[P]" in event['title'])):
                 pass
             if(('path' in event) and event['path'][-2:] != 'js'):
@@ -526,6 +560,8 @@ class Converter:
                         new_events = self.check_keys(self.convert_change_document_event(event),new_events)
                         update_file(document_name, action, text, line, column)
                         array_gen_single_folder(event['path'])
+                        event['logged-timestamp'] = sub_one_ms(event['logged-timestamp'])
+                        new_events = self.check_keys(self.convert_open_document_event(event,document_name),new_events)
                 elif event_type == 'copy-workspace-directory':
                     copy_dir(event['paths'][0], event['paths'][1])
                     add_dir_to_miv(event['paths'][1])
@@ -747,13 +783,12 @@ def array_gen(fn):
     doc_line_list = doc_line_list["lengths"]
     miv_array = miv_array[0] #collapse the array
 
-rootdir = './jsparser/src'
-src_list = [name for name in os.listdir("./jsparser/src/hexcom") if os.path.isdir(os.path.join(
-"./jsparser/src/hexcom", name))]
-array_gen(sys.argv[1])
-cryolog = Cryolog(sys.argv[2])
-pfislog = Pfislog('pfis.log') # here as an example. The new_pfislog is what gets exported.
-converter = Converter()
-new_pfislog = converter.convert_cryolog_to_pfislog(cryolog)
+
+
 if __name__ == '__main__':
+    cryolog = Cryolog(sys.argv[2])
+    pfislog = Pfislog('pfis.log') # here as an example. The new_pfislog is what gets exported.
+    converter = Converter()
+    array_gen(sys.argv[1])
+    new_pfislog = converter.convert_cryolog_to_pfislog(cryolog)
     new_pfislog.export_to_file(sys.argv[3])
