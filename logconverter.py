@@ -795,7 +795,7 @@ def create_db(pfislog_name):
     conn.commit()
     for line in f:
         c.execute(line)
-        conn.commit()
+    conn.commit()
     c.close()
     
     
@@ -804,8 +804,7 @@ if __name__ == '__main__':
     cryolog = Cryolog(sys.argv[2])
     pfislog = Pfislog('pfis.log') # here as an example. The new_pfislog is what gets exported.
     converter = Converter()
-    
-    array_gen(sys.argv[1])
-    new_pfislog = converter.convert_cryolog_to_pfislog(cryolog)
-    new_pfislog.export_to_file(sys.argv[3])
+    #array_gen(sys.argv[1])
+    #new_pfislog = converter.convert_cryolog_to_pfislog(cryolog)
+    #new_pfislog.export_to_file(sys.argv[3])
     create_db(sys.argv[3])
