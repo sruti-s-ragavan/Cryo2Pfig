@@ -221,9 +221,10 @@ class Converter:
         # crylog time example format = '2014-04-01T20:43:06.803Z'
         # pfis time example format = '2014-03-14 09:34:15.406000000'
 
-
-        cryolog_time = event['logged-timestamp']
-
+        if('action-timestamp' in event):
+            cryolog_time = event['action-timestamp']
+        elif('logged-timestamp' in event):
+            cryolog_time = event['logged-timestamp']
         # remove the 'Z' from the cryolog timestamp
         cryolog_time = cryolog_time.split('Z')[0]
 
@@ -260,9 +261,10 @@ class Converter:
         doc_prev_len = len(opened_doc_list)
         new_events = self.check_doc_opened(event,document_name)
         doc_curr_len = len(opened_doc_list)
-        #subtract one millisecond from time if this is the first time a document has been opened.
+        #add one millisecond from time if this is the first time a document has been opened.
+        #This is because there is no initial text selection event upon opening a file, so this navigation occurs AFTER the particpant sees the methods, etc.
         if(doc_curr_len > doc_prev_len):
-            new_event['timestamp'] = str(datetime.datetime.strptime(new_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(milliseconds = -1))+'000'
+            new_event['timestamp'] = str(datetime.datetime.strptime(new_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(milliseconds = +1))+'000'
         new_event['referrer'] = offset
         new_event['action'] = 'Text selection offset'
         new_event['target'] = document_name
@@ -325,7 +327,13 @@ class Converter:
         """When the user highlights code"""
         new_event = self.new_event(event)
         document_name = event['path']
+        doc_prev_len = len(opened_doc_list)
         new_events = self.check_doc_opened(event,document_name)
+        doc_curr_len = len(opened_doc_list)
+        #add one millisecond from time if this is the first time a document has been opened.
+        #This is because there is no initial text selection event upon opening a file, so this navigation occurs AFTER the particpant sees the methods, etc.
+        if(doc_curr_len > doc_prev_len):
+            new_event['timestamp'] = str(datetime.datetime.strptime(new_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(milliseconds = +1))+'000'
         new_event['action'] = 'Text selection'
         new_event['target'] = document_name
 
@@ -566,6 +574,8 @@ class Converter:
                         new_events = self.check_keys(self.convert_change_document_event(event),new_events)
                         update_file(document_name, action, text, line, column)
                         array_gen_single_folder(event['path'])
+                        #slightly increase the timestamp of the event to make sure that it's AFTER change and BEFORE text selection/offset
+                        event['action-timestamp'] = event['action-timestamp'][:-1]+'3'+event['action-timestamp'][-1:]
                         new_events = self.check_keys(self.convert_open_document_event(event,document_name),new_events)
                 elif event_type == 'copy-workspace-directory':
                     copy_dir(event['paths'][0], event['paths'][1])
@@ -580,9 +590,15 @@ class Converter:
                     # commenting out package explorer stuff
                     #new_events = self.check_keys(self.convert_expand_workspace_tree_node_event(event),new_events)
                     pass
-                elif event_type == 'change-cursor':
+                elif event_type == 'change-cursor': 
+                    #slightly increase the timestamp of the event to make sure that it's AFTER change and AFTER Method/Invocation stuff and AFTER Text selection
+                    #print event['action-timestamp']
+                    event['action-timestamp'] = event['action-timestamp'][:-1]+'2'+event['action-timestamp'][-1:]
+                    print event['action-timestamp']
                     new_events = self.check_keys(self.convert_change_cursor_event(event),new_events)
                 elif event_type == 'change-selection':
+                    #slightly increase the timestamp of the event to make sure that it's AFTER change and AFTER Method/Invocation stuff and BEFORE Text selection offset
+                    event['action-timestamp'] = event['action-timestamp'][:-1]+'1'+event['action-timestamp'][-1:]
                     new_events = self.check_keys(self.convert_change_selection_event(event),new_events)
                 elif event_type == 'select-workspace-tree-nodes':
                     new_events = self.check_keys(self.convert_select_workspace_tree_nodes_event(event),new_events)
@@ -716,7 +732,7 @@ def array_gen_single_folder(fn):
         i=0
         for doc in miv_array:
             if((doc['functions'] != [] and item['functions'] != []) and (item['functions'][0]['src'] == doc['functions'][0]['src'])):
-                miv_array[i] = doc
+                miv_array[i] = item
             i=i+1
 def array_gen(fn):
     
