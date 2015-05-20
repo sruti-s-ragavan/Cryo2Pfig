@@ -173,7 +173,7 @@ class Pfislog:
             if(isinstance(event, str)):
                 pass
             else:
-                print event
+                #print event
                 line = self.PFIS_LOG_FORMAT.format( 
                     id=event['id'],
                     user=event['user'],
@@ -554,6 +554,11 @@ class Converter:
                 event_type = event['event-type']
                 if event_type == 'activate-tab':
                     new_events = self.check_keys(self.convert_tab_event(event, 'Part activated'),new_events)
+                    if('path' in event.keys() and "[B]" not in event['path']):
+                        print event
+                        n = self.check_doc_opened(event,event['path'])
+                        if n:
+                            new_events = self.check_keys(n, new_events)
                 elif event_type == 'change-document':
                     if(event['syntax'] in ['text','css', 'html']):
                         pass
@@ -594,7 +599,7 @@ class Converter:
                     #slightly increase the timestamp of the event to make sure that it's AFTER change and AFTER Method/Invocation stuff and AFTER Text selection
                     #print event['action-timestamp']
                     #event['action-timestamp'] = event['action-timestamp'][:-1]+'2'+event['action-timestamp'][-1:]
-                    print event['action-timestamp']
+                    #print event['action-timestamp']
                     new_events = self.check_keys(self.convert_change_cursor_event(event),new_events)
                 elif event_type == 'change-selection':
                     #slightly increase the timestamp of the event to make sure that it's AFTER change and AFTER Method/Invocation stuff and BEFORE Text selection offset
@@ -738,7 +743,6 @@ def array_gen_single_folder(fn):
                 miv_array[i] = item
             i=i+1
 def array_gen(fn):
-    
     i=0
     if(os.path.isfile("fullAST.txt")==False):   
         
