@@ -578,7 +578,6 @@ class Converter:
                 if event_type == 'activate-tab':
                     new_events = self.check_keys(self.convert_tab_event(event, 'Part activated'),new_events)
                     if('path' in event.keys() and "[B]" not in event['path']):
-                        print event
                         n = self.check_doc_opened(event,event['path'])
                         if n:
                             new_events = self.check_keys(n, new_events)
