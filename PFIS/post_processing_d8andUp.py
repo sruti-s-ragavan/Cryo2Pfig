@@ -39,13 +39,13 @@ def add_navs_without_tso(source):
     c = conn.cursor()
 
     result = c.execute("select * from logger_log order by timestamp").fetchall();
-
+	# |index | user | timestamp | action | target | referrer | agent
     i = 0
     act_list = []
     temp_list = []
     full_list = []
     for row in result:
-        if row[3] == "Part activated" and row[4][-2:]=='js' and '[B]' not in row[5]:
+        if row[3] == "Part activated" and row[4][-2:]=='js' and '[B]' not in row[5]: #what is [B]?
             act_list.append(i)
         i+=1
     i=0
@@ -101,14 +101,14 @@ def db_splitter(source, dest):
             #row[3] is action type
             if(row[3] =='Text selection offset'):
                  nav_list.append(row[2])
-                 print row[2]
+                 #print row[2]
                  
         print "Making new DB " + str(i)
     def multi_proc(source, dest):
         i=0
         global nav_list
         while(i<len(nav_list)):
-            print "multiprocessing "  + str(i)
+            print "multiprocessing "  + str(i);
             p=multiprocessing.Process(target=insert_into_new, args=(nav_list[i], dest + '/nav' + str(i), source,'',))
             p.start()
             if i+1<len(nav_list):
@@ -218,14 +218,15 @@ def log_cat(splitDir,source):
         t_line = line
         t_line = t_line.split(',')
         p_line = prev_line.split(',')
-        print line
-        print t_line
+#        print line
+#       print t_line
         if(len(t_line)>0 and len(p_line)>1 and (t_line[1] == p_line[1])):
             continue
         else:
             all_lines = all_lines + line
         prev_line = line
     cat_file = open(source+"_pfis_predictions_corr.csv", 'a')
+#    print(all_lines[1])
     cat_file.write(all_lines)
 sourceFile = sys.argv[1]
 splitDir = sys.argv[2]

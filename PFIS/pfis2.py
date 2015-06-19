@@ -1165,6 +1165,7 @@ def main():
 	if(outputDir[-1] != '/'):
 		outputDir += '/'
 	#print "Using database:", sourcefile
+        #print "Using outputDir:", outputDir
 	if len(stop) == 0:
 		stopwords()
 		
