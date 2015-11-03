@@ -394,7 +394,7 @@ def loadPaths():
 		nav[agent].append({'timestamp': timestamp,
 							'referrer': referrer,
 							'loc': loc})
-		if(verbose2): print "\tAdding", loc, "with offset of", referrer, "at time", str(timestamp)
+		if(verbose2): print "\nNav : ", loc, " | ", referrer, " | ", str(timestamp)
 		if(verbose): print "\tnav now contains:", nav
 
 	def add_offset(agent, timestamp, loc, target, referrer):
@@ -440,7 +440,7 @@ def loadPaths():
 		sorted_insert(offsets[agent][loc2],
 					  {'referrer': referrer, 'target': target})
 		#topolen += 1
-		if(verbose2): print "\tIn add_offset_JavaScript, Adding ", loc2, "with method", target, "and offset of", referrer, "at time", str(timestamp)
+		if(verbose2): print "\n Offset: ", loc2, " | ", target, " | ", referrer, " | ", str(timestamp)
 
 	def get_out(agent, timestamp):
 		'''Match text selection navigation data to the method declaration

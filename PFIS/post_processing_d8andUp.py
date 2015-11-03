@@ -189,8 +189,9 @@ def generate_predictions(splitDir):
                 s.join()
             i=i+4
 
+    print "Calling PFIS"
     predict_all_navs()
-    #call_pfis(1) -- use this to run PFIS for a particular folder
+    #call_pfis(1) #use this to run PFIS for a particular folder
 
 
 def log_cat(splitDir,source):
