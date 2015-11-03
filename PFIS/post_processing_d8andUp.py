@@ -7,7 +7,6 @@ import multiprocessing
 
 conn = ''
 c = ''
-nav_number = 0
 nav_list = []
 id = 0
 id_tso = 600000
@@ -20,7 +19,6 @@ def resetGlobals():
     conn = ''
     c = ''
     id = 0
-    nav_number = 0
     nav_list = []
     user = 'c4f2437e-6d7b-4392-b68c-0fa7348facbd'
     agent = '8ea5d9be-d1b5-4319-9def-495bdccb7f51'
@@ -85,26 +83,23 @@ def db_splitter(source, dest):
         c2 = conn2.cursor()
         rows_up_to_timestamp = c.execute('select * from logger_log where timestamp<=? order by timestamp', [timestamp])
         for row in rows_up_to_timestamp:
-             c2.execute('insert into logger_log values (?,?,?,?,?,?,?)',[row[0],row[1],row[2],row[3],row[4],row[5],row[6]])
+            c2.execute('insert into logger_log values (?,?,?,?,?,?,?)',[row[0],row[1],row[2],row[3],row[4],row[5],row[6]])
         conn2.commit()
         c2.close()
 
 
-    def make_new_db(source, dest):
-        global conn, c, id, nav_number, nav_list
-        conn = sqlite3.connect(source)
+    def fetch_all_text_selections_or_navs(source_db):
+        global conn, c, id, nav_list
+        conn = sqlite3.connect(source_db)
         c = conn.cursor()
-        all_rows = c.execute('select * from logger_log order by timestamp;')
+        all_rows = c.execute("select * from logger_log where action = 'Text selection offset' order by timestamp;")
         i=0
         for row in all_rows:
             i +=1
-            #row[3] is action type
-            if(row[3] =='Text selection offset'):
-                 nav_list.append(row[2])
-                 #print row[2]
-                 
-        print "Making new DB " + str(i)
-    def multi_proc(source, dest):
+            nav_list.append(row[2])
+            print "Making new DB " + str(i)
+
+    def create_db_until_each_nav(source, dest):
         i=0
         global nav_list
         while(i<len(nav_list)):
@@ -153,14 +148,14 @@ def db_splitter(source, dest):
     shutil.copyfile(source, source + 'temp1')
     shutil.copyfile(source, source + 'temp2')
     shutil.copyfile(source, source + 'temp3')
-    make_new_db(source,dest)
-    multi_proc(source,dest)
+    fetch_all_text_selections_or_navs(source)
+    create_db_until_each_nav(source,dest)
     os.remove(source + 'temp')
     os.remove(source + 'temp1')
     os.remove(source + 'temp2')
     os.remove(source + 'temp3')
 
-def pfis_runner(splitDir):
+def generate_predictions(splitDir):
     global nav_list
     for i in range (0, len(nav_list)):
         if not os.path.exists(splitDir+'/nav'+str(i)+'/output'):
@@ -169,30 +164,34 @@ def pfis_runner(splitDir):
     def call_pfis(i):
         subprocess.call(["python","pfis2.py","-d", splitDir+"/nav"+str(i)+"/db", "-o", splitDir+"/nav"+str(i)+"/output", "-i", "1", "-s", "je.txt", "-h"])
 
-    i=0
+    def predict_all_navs():
+        i=0
+        while (i< len(nav_list)):
+            print "Running PFIS on dir " + str(i)
+            p=multiprocessing.Process(target=call_pfis, args=(i,))
+            p.start()
+            if i+1<len(nav_list):
+                q=multiprocessing.Process(target=call_pfis, args=(i+1,))
+                q.start()
+            if i+2<len(nav_list):
+                r=multiprocessing.Process(target=call_pfis, args=(i+2,))
+                r.start()
+            if i+3<len(nav_list):
+                s=multiprocessing.Process(target=call_pfis, args=(i+3,))
+                s.start()
+            if p:
+                p.join()
+            if q:
+                q.join()
+            if r:
+                r.join()
+            if s:
+                s.join()
+            i=i+4
 
-    while (i< len(nav_list)):
-        print "Running PFIS on dir " + str(i)
-        p=multiprocessing.Process(target=call_pfis, args=(i,))
-        p.start()
-        if i+1<len(nav_list):
-            q=multiprocessing.Process(target=call_pfis, args=(i+1,))
-            q.start()
-        if i+2<len(nav_list):
-            r=multiprocessing.Process(target=call_pfis, args=(i+2,))
-            r.start()
-        if i+3<len(nav_list):
-            s=multiprocessing.Process(target=call_pfis, args=(i+3,))
-            s.start()
-        if p:
-            p.join()
-        if q:
-            q.join()
-        if r:
-            r.join()
-        if s:
-            s.join()
-        i=i+4
+    predict_all_navs()
+    #call_pfis(1) -- use this to run PFIS for a particular folder
+
 
 def log_cat(splitDir,source):
     global nav_list
@@ -234,7 +233,7 @@ print "Inserting manual TSO"
 add_navs_without_tso(sourceFile)
 print "Splitting Databases"
 db_splitter(sourceFile, splitDir)
-print "Running PFIS"
-pfis_runner(splitDir)
+print "Generating Predictions ; Running PFIS"
+generate_predictions(splitDir)
 print "Concatenating logs"
 log_cat(splitDir, sourceFile)
