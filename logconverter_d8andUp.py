@@ -174,6 +174,8 @@ class Pfislog:
             
             if(isinstance(event, str)):
                 pass
+            elif event == None:
+                pass
             else:
                 #print event
                 line = self.PFIS_LOG_FORMAT.format( 
@@ -362,10 +364,9 @@ class Converter:
 
     def convert_expand_workspace_tree_node_event(self, event):
         def check_for_js(path,event,new_events):
-            
             files = [ f for f in listdir('./jsparser/src' + path) if isfile(join('./jsparser/src' + path,f)) ]
             for file in files:
-                if(file[-2:] == 'js'):
+                if(file[-3:] == '.js'):
                     f_path = path+'/'+file
                     fakeHeader = f_path + ';.PFIGFileHeader()V'
                     new_event = self.new_event(event)
@@ -552,7 +553,9 @@ class Converter:
         return new_events
         
     def check_keys(self,new, new_events):
-        if 'target' in new:
+        if new == None:
+            return None
+        elif 'target' in new:
             new_events.append(new)
         else:
             new_events.extend(new)
@@ -571,9 +574,10 @@ class Converter:
             print str(event['sequence-id']) + " " + event['event-type'] + " " + event['logged-timestamp']
             if((k in event) and ((event['title'] in ["Immediate","Terminal","Preferences"]) or "[P]" in event['title'])):
                 pass
-            if(('path' in event) and event['path'][-2:] != 'js'):
+            if((event['event-type'] != "expand-workspace-tree-node") and ('path' in event) and (event['path'][-2:] != 'js')):
+                #print "Not js", event['path'], " | " , event['sequence-id'], " | ", event['event-type']
                 pass
-            else:    
+            else:
                 event_type = event['event-type']
                 if event_type == 'activate-tab':
                     new_events = self.check_keys(self.convert_tab_event(event, 'Part activated'),new_events)
@@ -768,7 +772,7 @@ def array_gen(fn):
     if(os.path.isfile("fullAST.txt")==False):   
         
         while(i<len(src_list)-4):
-            print str(i) + src_list[i]
+            #print str(i) + src_list[i]
             p=multiprocessing.Process(target=get_array, args=(src_list[i], fn+'1.txt',))
             p.start()
             q=multiprocessing.Process(target=get_array, args=(src_list[i+1],fn+'2.txt',))
