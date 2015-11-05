@@ -65,6 +65,45 @@ def add_navs_without_tso(source):
             add_tso(source, set_of_rows[0][2], set_of_rows[0][5])
         elif(has_tso):
             continue
+def manualNavs(sourceFile, outputFile, navFile):
+    def copyAndOpenDb(source, dest):
+        global conn,c, id
+        shutil.copyfile(source, dest)
+        conn = sqlite3.connect(dest)
+        c = conn.cursor()
+        c.execute('select "index" from logger_log order by "index" desc;')
+        id = c.next()[0] + 1
+
+
+    def readNewNavsFileIntoDb(path):
+        global id
+        navData = open(path)
+        for line in navData:
+            cols = line.rstrip('\r\n').split('\t')
+            if cols[1] == 'New java file':
+                newJavaFile(cols[0], cols[2], cols[3])
+            id+=1
+        navData.close()
+
+    def newJavaFile(timestamp, path, fileName):
+        global conn,c,agent, id
+        path = path+ '/' + fileName +  '.js'
+        fakeHeader = path + ';.PFIGFileHeader()V'
+        c.execute('insert into logger_log values (?, ?, ?, ?, ?, ?, ?);',
+            (id, user, timestamp, "Method declaration", path, fakeHeader, agent))
+        id += 1
+        c.execute('insert into logger_log values (?, ?, ?, ?, ?, ?, ?);',
+            (id, user, timestamp, "Method declaration offset", fakeHeader, 0, agent))
+        id += 1
+        c.execute('insert into logger_log values (?, ?, ?, ?, ?, ?, ?);',
+            (id, user, timestamp, "Method declaration length", fakeHeader, len(fileName), agent))
+        id += 1
+        c.execute('insert into logger_log values (?, ?, ?, ?, ?, ?, ?);',
+            (id, user, timestamp, "Method declaration scent", fakeHeader, fileName, agent))
+        conn.commit()
+
+    copyAndOpenDb(sourceFile, outputFile)
+    readNewNavsFileIntoDb(navFile)
 
 def db_splitter(source, dest):
     def create_db(dest):
@@ -191,7 +230,7 @@ def generate_predictions(splitDir):
 
     print "Calling PFIS"
     predict_all_navs()
-    #call_pfis(1) #use this to run PFIS for a particular folder
+    #call_pfis(0) #use this to run PFIS for a particular folder
 
 
 def log_cat(splitDir,source):
@@ -228,8 +267,19 @@ def log_cat(splitDir,source):
     cat_file = open(source+"_pfis_predictions_corr.csv", 'a')
 #    print(all_lines[1])
     cat_file.write(all_lines)
+
 sourceFile = sys.argv[1]
 splitDir = sys.argv[2]
+navFile = None
+newDbFile = None
+
+if (len(sys.argv) > 3): #manual navs for expand tree folders
+    navFile = sys.argv[3];
+    newDbFile = sourceFile + "_new_"
+    print "Inserting Manual Navigations"
+    manualNavs(sourceFile,newDbFile, navFile)
+    sourceFile = newDbFile
+
 print "Inserting manual TSO"
 add_navs_without_tso(sourceFile)
 print "Splitting Databases"
