@@ -61,6 +61,43 @@ def print_dict(to_print):
 def jsonprettyprint(event):
     
     print json.dumps(event,sort_keys=True, indent=4, separators=(',',':'))
+
+
+class TimeFormatConverter:
+
+    PFIS_FORMAT = '%Y-%m-%d %X.'
+    CRYOLOG_FORMAT = '%Y-%m-%dT%X' # NOTE: there is a 'T' hardcoded in the cryolog strings
+
+    def __init__(self, start_time):
+        self.start_time = start_time
+
+    def get_time_obj_from_pfis_fmt(self, pfis_fmt_timestamp):
+        print "pfis time format", pfis_fmt_timestamp
+        return datetime.datetime.strptime(pfis_fmt_timestamp, "%Y-%m-%d %H:%M:%S.%fZ00000")
+
+    @staticmethod
+    def get_time_obj_from_cryo_fmt(cryo_fmt_timestamp):
+        # crylog time example format = '2014-04-01T20:43:06.803Z'
+        # remove the 'Z' from the cryolog timestamp
+        cryolog_time = cryo_fmt_timestamp.split('Z')[0]
+        generic_time = datetime.datetime.strptime(cryolog_time.split('.')[0], TimeFormatConverter.CRYOLOG_FORMAT)
+        return generic_time
+
+    def convert_cryolog_to_pfis_time_fmt(self, cryolog_time):
+
+        # pfis time example format = '2014-03-14 09:34:15.406000000'
+        # see https://docs.python.org/2.7/library/datetime.html#strftime-strptime-behavior
+        generic_time = TimeFormatConverter.get_time_obj_from_cryo_fmt(cryolog_time)
+        pfis_time = generic_time.strftime(TimeFormatConverter.PFIS_FORMAT)
+
+        # milliseconds must be handled manually. just use the numbers from cryolog and add zeros at the end up to nine digits
+        generic_milliseconds = cryolog_time.split('.')[1]
+        pfis_time += generic_milliseconds.ljust(9, '0')
+
+        elapsed_time = generic_time - self.start_time
+        return [pfis_time, elapsed_time]
+
+
 class Cryolog:
     """Represents a cryolite log file. 
     Each json node in the log file is an event in the events variable.
@@ -77,6 +114,7 @@ class Cryolog:
             # add it to the list
             self.events.append(node)
         f.close()
+        self.start_time = TimeFormatConverter.get_time_obj_from_cryo_fmt(self.events[0]['logged-timestamp']);
 
     def get_event_types(self):
         # create a set which will keep event_types unique
@@ -119,7 +157,7 @@ class Pfislog:
     Each insert statement is converted to a dictionary of values and added to the events variable.
     """
 
-    PFIS_LOG_FORMAT = "INSERT INTO LOGGER_LOG VALUES({id}, '{user}','{timestamp}', '{action}', '{target}', '{referrer}', '{agent}');\r\n"
+    PFIS_LOG_FORMAT = "INSERT INTO LOGGER_LOG VALUES({id}, '{user}','{timestamp}', '{action}', '{target}', '{referrer}', '{agent}', '{elapsed_time}');\r\n"
 
     def __init__(self, filename=None, events=None):
         """Open the Pfislog and create a list of insert statements, or take a list of events."""
@@ -153,6 +191,7 @@ class Pfislog:
                 event['target'] = values[4]
                 event['referrer'] = values[5]
                 event['agent'] = '8ea5d9be-d1b5-4319-9def-495bdccb7f51'
+                event['elapsed_time'] = values[6]
                 self.events.append(event)
 
     def export_to_file(self, filename):
@@ -167,7 +206,8 @@ class Pfislog:
             action="Language",
             target="JavaScript",
             referrer="-1",
-            agent="-1"
+            agent="-1",
+            elapsed_time="-1"
             )
         f.write(line)    
         for event in self.events:
@@ -185,7 +225,8 @@ class Pfislog:
                     action=event['action'],
                     target=event['target'],
                     referrer=event['referrer'],
-                    agent=event['agent']
+                    agent=event['agent'],
+                    elapsed_time=event['elapsed_time']
                 )
                 f.write(line)
      
@@ -206,8 +247,9 @@ class Converter:
             opened_doc_list.append(document_name)
             new_events = self.convert_open_document_event(event,document_name)
             return new_events
-    def __init__(self):
+    def __init__(self, timeConverter):
         self.current_id = 1
+        self.time_converter = timeConverter
 
         # these variables are necessary for some 'slightly stateful' evaluation of the cryolog events
         # if the ast count has changed between events and the document name is the same, we know that
@@ -222,34 +264,17 @@ class Converter:
         new_event['id'] = self.current_id
         new_event['user'] = PFIS_USER
 
-        # crylog time example format = '2014-04-01T20:43:06.803Z'
-        # pfis time example format = '2014-03-14 09:34:15.406000000'
-
         if('action-timestamp' in event):
             cryolog_time = event['action-timestamp']
         elif('logged-timestamp' in event):
             cryolog_time = event['logged-timestamp']
-        # remove the 'Z' from the cryolog timestamp
-        cryolog_time = cryolog_time.split('Z')[0]
 
-        # see https://docs.python.org/2.7/library/datetime.html#strftime-strptime-behavior
-        # for info on these formats
-        cryolog_format = '%Y-%m-%dT%X' # NOTE: there is a 'T' hardcoded in the cryolog strings
-        generic_time = time.strptime(cryolog_time.split('.')[0], cryolog_format)
-        generic_milliseconds = cryolog_time.split('.')[1]
-
-        pfis_format = '%Y-%m-%d %X.'
-        pfis_time = time.strftime(pfis_format, generic_time)
-
-        # milliseconds must be handled manually
-        # just use the numbers from cryolog and add zeros at the end up to nine digits
-        pfis_time += generic_milliseconds.ljust(9, '0')
-
-        new_event['timestamp'] = pfis_time
+        pfis_time = self.time_converter.convert_cryolog_to_pfis_time_fmt(cryolog_time)
+        new_event['timestamp'] = pfis_time[0]
+        new_event['elapsed_time'] = pfis_time[1]
         new_event['agent'] = PFIS_AGENT
 
         self.current_id += 1
-
         return new_event
 
     """Cryolog Event Converters (1:1 mapping to Cryolog event-types, for the most part)"""
@@ -661,7 +686,7 @@ class Converter:
         print 'There were {0} unique unconverted event types:'.format(len(unconverted_events))
         print_dict(unconverted_events)
 
-        new_pfislog = Pfislog(events=new_events)
+        new_pfislog = Pfislog(events=new_events);
         return new_pfislog
 def copy_dir(old, new):
     old = rootdir+old
@@ -843,7 +868,7 @@ def create_db(pfislog_name):
         os.remove(db_name)
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    c.execute('create table logger_log("index" int(10), user varchar(50), timestamp varchar(50), action varchar(50), target varchar(50), referrer varchar(50), agent varchar(50));')
+    c.execute('create table logger_log("index" int(10), user varchar(50), timestamp varchar(50), action varchar(50), target varchar(50), referrer varchar(50), agent varchar(50), elapsed_time varchar(50));')
     conn.commit()
     for line in f:
         c.execute(line)
@@ -853,9 +878,9 @@ def create_db(pfislog_name):
 
 if __name__ == '__main__':
     cryolog = Cryolog(sys.argv[2])
-    pfislog = Pfislog('pfis.log') # here as an example. The new_pfislog is what gets exported.
-    converter = Converter()
+    timeConverter = TimeFormatConverter(cryolog.start_time)
+    converter = Converter(timeConverter)
     array_gen(sys.argv[1])
-    new_pfislog = converter.convert_cryolog_to_pfislog(cryolog)
-    new_pfislog.export_to_file(sys.argv[3])
+    pfislog = converter.convert_cryolog_to_pfislog(cryolog)
+    pfislog.export_to_file(sys.argv[3])
     create_db(sys.argv[3])
