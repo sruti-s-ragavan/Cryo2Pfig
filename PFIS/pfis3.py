@@ -9,6 +9,7 @@ import copy
 import shutil
 import os
 import datetime
+import getopt
 
 # VOCAB:
 # prevNavEntry = The navigation that we are predicting from
@@ -222,30 +223,77 @@ def loadLanguageSpecifics(language):
     processor = JavaProcessor()
     return processor
 
+def print_usage():
+    print("python pfis3.py -d <dbPath> -s <stopwordsfile> -l <language> -p <project src folder path>")
+
+def parseArgs():
+
+    arguments = {
+        "outputLogPath" : None,
+        "stopWordsPath" : True,
+        "tempDbPath" : None,
+        "dbPath" : None,
+        "projectSrcFolderPath": None,
+        "language": None
+    }
+
+    def assign_argument_value(argsMap, option, value):
+        optionKeyMap = {
+            "-s" : "stopWordsPath",
+            "-d" : "dbPath",
+            "-l" : "language",
+            "-p" : "projectSrcFolderPath"
+        }
+
+        key = optionKeyMap[option]
+        arguments[key] = value
+
+    def setConventionBasedArguments(argsMap):
+        argsMap["tempDbPath"] = argsMap["dbPath"] + "_temp"
+        argsMap["outputLogPath"] = argsMap["dbPath"] + "_log"
+
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "d:s:l:p")
+    except getopt.GetoptError as err:
+        print str(err)
+        print("Invalid args passed to PFIS")
+        print_usage()
+        sys.exit(2)
+    for option, value in opts:
+        assign_argument_value(arguments, option, value)
+
+    #todo: currently, these are conventions, to avoid too many configurations. needs review.
+    setConventionBasedArguments(arguments)
+
+    return arguments
+
 
 def main():
-    #todo: These will all eventually be passed in as parameters
-    dbPath = '/Users/Dave/Desktop/code/pfis3/data/p8l_debug.db'
-    tempDbPath = '/Users/Dave/Desktop/p8l_debug_temp.db'
-    stopWordsPath = '/Users/Dave/Desktop/code/pfis3/data/je.txt'
-    ouputLogPath = '/Users/Dave/Desktop/pfis3_test.txt'
-    projectSrcFolderPath = '/Users/Dave/Desktop/p8l-vanillaMusic/src'
 
-    language = "JAVA"
-    processor = loadLanguageSpecifics(language)
+    args = parseArgs()
+
+    # dbPath = '/Users/Dave/Desktop/code/pfis3/data/p8l_debug.db'
+    # tempDbPath = '/Users/Dave/Desktop/p8l_debug_temp.db'
+    # stopWordsPath = '/Users/Dave/Desktop/code/pfis3/data/je.txt'
+    # ouputLogPath = '/Users/Dave/Desktop/pfis3_test.txt'
+    # projectSrcFolderPath = '/Users/Dave/Desktop/p8l-vanillaMusic/src'
+    # language = "JAVA"
+
+    #Initialize the processor with the appropriate language specific processor
+    processor = loadLanguageSpecifics(args["language"])
 
     # Start by making a working copy of the database
-    copyDatabase(dbPath, tempDbPath)
+    copyDatabase(args["dbPath"], args["tempDbPath"])
     
     
     # The set of predictive algorithms to run
     predAlgs = [pfisWithHistory]
     
     
-    paths = buildPath(tempDbPath, processor.between_method, processor);
-    stopWords = loadStopWords(stopWordsPath)
-    log = Log(ouputLogPath)
-    predictAllNavigations(processor, paths, stopWords, log, tempDbPath, projectSrcFolderPath, predAlgs)
+    paths = buildPath(args["tempDbPath"], processor.between_method, processor);
+    stopWords = loadStopWords(args["stopWordsPath"])
+    log = Log(args["outputLogPath"])
+    predictAllNavigations(processor, paths, stopWords, log, args["tempDbPath"], args["projectSrcFolderPath"], predAlgs)
 
     sys.exit(0)
 
