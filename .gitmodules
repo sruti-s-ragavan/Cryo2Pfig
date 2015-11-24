@@ -1,0 +1,3 @@
+[submodule "PFIS/pfis3"]
+	path = PFIS/pfis3
+	url = https://github.com/IFT-SE/pfis3.git
