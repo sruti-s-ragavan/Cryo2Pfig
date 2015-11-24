@@ -36,8 +36,8 @@ PATH_QUERY_3 = "SELECT timestamp, action, target, referrer FROM logger_log WHERE
 
 REGEX_FIX_SLASHES = re.compile(r'[\\/]+')
 REGEX_SPLIT_CAMEL_CASE = re.compile(r'_|\W+|\s+|(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|(?<=[a-zA-Z])(?=[0-9]+)|(?<=[0-9])(?=[a-zA-Z]+)')
-REGEX_NORM_ECLIPSE = re.compile(r"L([^;]+);.*")
-REGEX_NORM_PATH = re.compile(r".*src\/(.*)\.java")
+REGEX_NORM_ECLIPSE = re.compile(r"L([^;]+);.*") #todo: why is this called eclipse?
+REGEX_NORM_JAVA_PATH = re.compile(r".*src\/(.*)\.java")
 REGEX_PROJECT = re.compile(r"\/(.*)\/src/.*")
 REGEX_PACKAGE = re.compile(r"(.*)/[a-zA-Z0-9]+")
 
@@ -172,7 +172,7 @@ class JavaProcessor:
         m = REGEX_NORM_ECLIPSE.match(s)
         if m:
             return m.group(1)
-        n = REGEX_NORM_PATH.match(fixSlashes(s))
+        n = REGEX_NORM_JAVA_PATH.match(fixSlashes(s))
         if n:
             return n.group(1)
         return ''
