@@ -65,6 +65,7 @@ def add_navs_without_tso(source):
             add_tso(source, set_of_rows[0][2], set_of_rows[0][5])
         elif(has_tso):
             continue
+
 def manualNavs(sourceFile, outputFile, navFile):
     def copyAndOpenDb(source, dest):
         global conn,c, id
@@ -194,14 +195,14 @@ def db_splitter(source, dest):
     os.remove(source + 'temp2')
     os.remove(source + 'temp3')
 
-def generate_predictions(splitDir):
+def generate_predictions(dbFile):
     global nav_list
-    for i in range (0, len(nav_list)):
-        if not os.path.exists(splitDir+'/nav'+str(i)+'/output'):
-            os.makedirs(splitDir+'/nav'+str(i)+'/output')
+    # for i in range (0, len(nav_list)):
+    #     if not os.path.exists(splitDir+'/nav'+str(i)+'/output'):
+    #         os.makedirs(splitDir+'/nav'+str(i)+'/output')
 
-    def call_pfis(i):
-        subprocess.call(["python","pfis2.py","-d", splitDir+"/nav"+str(i)+"/db", "-o", splitDir+"/nav"+str(i)+"/output", "-i", "1", "-s", "je.txt", "-h"])
+    def call_pfis(dbFile):
+        subprocess.call(["python","pfis3/src/python/pfis3.py", "-l", "JS", "-s", "je.txt", "-d", dbFile, "-p", "Cryo2Pfig/jsparser/src/hexcom"])
 
     def predict_all_navs():
         i=0
@@ -229,8 +230,9 @@ def generate_predictions(splitDir):
             i=i+4
 
     print "Calling PFIS"
-    predict_all_navs()
-    #call_pfis(0) #use this to run PFIS for a particular folder
+    #predict_all_navs()
+
+    call_pfis(dbFile) #use this to run PFIS for a particular folder
 
 
 def log_cat(splitDir,source):
@@ -282,9 +284,9 @@ if (len(sys.argv) > 3): #manual navs for expand tree folders
 
 print "Inserting manual TSO"
 add_navs_without_tso(sourceFile)
-print "Splitting Databases"
-db_splitter(sourceFile, splitDir)
+# print "Splitting Databases"
+# db_splitter(sourceFile, splitDir)
 print "Generating Predictions ; Running PFIS"
-generate_predictions(splitDir)
+generate_predictions(sourceFile)
 print "Concatenating logs"
 log_cat(splitDir, sourceFile)
