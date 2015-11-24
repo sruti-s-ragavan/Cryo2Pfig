@@ -6,12 +6,24 @@ from nltk.stem import PorterStemmer
 import iso8601
 import bisect
 import copy
+import shutil
+import os
+import datetime
+
+# VOCAB:
+# prevNavEntry = The navigation that we are predicting from
+# currNavEntry = The navigation that the programmer actually went to
+# In the context of prediction we use all the data that we have up to the
+# timestamp of prevNavEntry to make a prediction. We compare that prediction
+# against currNavEntry to get a rank
 
 
 VERBOSE_BUILD = 0
 VERBOSE_PATH = 0
 VERBOSE_PREDICT = 1
 
+HEADER_QUERY_1 = "SELECT timestamp, action, target, referrer FROM logger_log WHERE action = 'Method declaration offset' and timestamp < ? ORDER BY timestamp DESC"
+HEADER_QUERY_2 = "INSERT INTO logger_log (user, timestamp, action, target, referrer, agent) VALUES (?, ?, ?, ?, ?, ?)"
 SCENT_QUERY = "SELECT action, target, referrer FROM logger_log WHERE action IN ('Package', 'Imports', 'Extends', 'Implements', 'Method declaration', 'Constructor invocation', 'Method invocation', 'Variable declaration', 'Variable type', 'Constructor invocation scent', 'Method declaration scent', 'Method invocation scent', 'New package', 'New file header') AND timestamp <= ?"
 TOPOLOGY_QUERY = "SELECT action, target, referrer FROM logger_log WHERE action IN ('Package', 'Imports', 'Extends', 'Implements', 'Method declaration', 'Constructor invocation', 'Method invocation', 'Variable declaration', 'Variable type', 'New package', 'Open call hierarchy') AND timestamp <= ?"
 ADJACENCY_QUERY = "SELECT timestamp, action, target, referrer FROM logger_log WHERE action = 'Method declaration offset' AND timestamp <= ? ORDER BY timestamp"
@@ -36,8 +48,6 @@ DECAY_FACTOR = 0.85
 PATH_DECAY_FACTOR = 0.9
 INITIAL_ACTIVATION = 1
 
-
-activation_root = ''
 
 class NavPath:
     def __init__(self):
@@ -214,38 +224,62 @@ def loadLanguageSpecifics(language):
 
 
 def main():
+    #todo: These will all eventually be passed in as parameters
+    dbPath = '/Users/Dave/Desktop/code/pfis3/data/p8l_debug.db'
+    tempDbPath = '/Users/Dave/Desktop/p8l_debug_temp.db'
+    stopWordsPath = '/Users/Dave/Desktop/code/pfis3/data/je.txt'
+    ouputLogPath = '/Users/Dave/Desktop/pfis3_test.txt'
+    projectSrcFolderPath = '/Users/Dave/Desktop/p8l-vanillaMusic/src'
 
-    #todo: externalize all these constants / paths, etc.
     language = "JAVA"
     processor = loadLanguageSpecifics(language)
 
+    # Start by making a working copy of the database
+    copyDatabase(dbPath, tempDbPath)
+    
+    
+    # The set of predictive algorithms to run
     predAlgs = [pfisWithHistory]
-    activation_root = open("/Users/Dave/Desktop/pfis3_activation.txt", 'w')
-    path = buildPath('/Users/Dave/Desktop/code/pfis3/data/p8l_debug.db', processor.between_method, processor);
-    stopWords = loadStopWords('/Users/Dave/Desktop/code/pfis3/data/je.txt')
-    log = Log('/Users/Dave/Desktop/pfis3_test.txt');
-    predictAllNavigations(processor, path, stopWords, log, \
-                          '/Users/Dave/Desktop/code/pfis3/data/p8l_debug.db', \
-                          predAlgs)
+    
+    
+    paths = buildPath(tempDbPath, processor.between_method, processor);
+    stopWords = loadStopWords(stopWordsPath)
+    log = Log(ouputLogPath)
+    predictAllNavigations(processor, paths, stopWords, log, tempDbPath, projectSrcFolderPath, predAlgs)
 
-    activation_root.close()
-
-    sys.exit(0);
+    sys.exit(0)
 
 def predictAllNavigations(processor, navPathObj, stopWords, logObj, dbFile, \
-                          listPredictionAlgorithms):
+                          projectSrcFolderPath, listPredictionAlgorithms):
     navNum = 0
     for entry in navPathObj:
         if entry.prevEntry:
             print "=================================================="
             if VERBOSE_PREDICT:
-                print "\tPredicting navigation", str(navNum), "from", \
-                entry.prevEntry.method, "to", entry.method
-
+                print "Predicting navigation #"+ str(navNum)
+                print "\tfrom:", entry.prevEntry.method
+                print "\tto:", entry.method
+            if entry.prevEntry.unknownMethod:
+                headerFqn = addPFIGJavaFileHeader(processor, dbFile, entry,
+                                                  projectSrcFolderPath, 
+                                                  navPathObj)
+                # Now the graph has the PFIG header nodes in it, but the navPath
+                # has to be changed to reflect the new nodes that we added. We
+                # have to check if headerFqn is not none, since it will return
+                # None on navigations between two unknown methods
+                if headerFqn:
+                    entry.prevEntry.method = headerFqn
+                    entry.prevEntry.unknownMethod = False
+                
+            # TODO: The graph does not need to be regenerated each time, it
+            # would be sufficient to just add the new database row data from the
+            # previous navigation's time stamp to the current navigation's time
+            # stamp
             graph = buildGraph(processor, dbFile, stopWords, entry.timestamp)
-
+            
             for predictAlg in listPredictionAlgorithms:
-                    makePredictions(processor, navPathObj, navNum, graph, predictAlg, processor.between_method, logObj)
+                    makePredictions(processor, navPathObj, navNum, graph, predictAlg,
+                                    resultsLog = logObj)
                     #logObj.saveLog()
             print "=================================================="
 
@@ -257,12 +291,81 @@ def loadStopWords(path):
     # word per line. Stop words are ignored and not loaded into the PFIS graph.
     words = []
     f = open(path)
-
     for word in f:
         words.append(word.lower())
-
     return words
 
+def addPFIGJavaFileHeader(processor, dbFile, navEntry, projectFolderPath, navPathObj):
+    class PFIGFileHeader:
+        def __init__(self, fqn, length, dt):
+            self.fqn = fqn
+            self.fqnClass = fqn[0:fqn.find(';') + 1]
+            self.length = length
+            ms = dt.microsecond / 1000
+            self.timestamp = dt.strftime("%Y-%m-%d %H:%M:%S." + str(ms))
+                
+    def insertHeaderIntoDb(pfigHeader, classFilePath):
+        print "Adding PFIG Header...", pfigHeader.fqn
+        print "Reading file contents..."
+        f = open(classFilePath, 'r')
+        # TODO: Verify that contents is being handled by the predictive
+        # algorithms correctly. They currently contain newlines, which the graph
+        # producing code may be sensitive to.
+        contents = f.read(pfigHeader.length)
+        print "Done reading file contents."
+        print "Adding header to database..."
+        
+        dummy = "auto-generated"
+        timestamp = pfigHeader.timestamp
+        
+        c = conn.cursor()
+        c.execute(HEADER_QUERY_2, [dummy, timestamp, 'Method declaration', pfigHeader.fqnClass, pfigHeader.fqn, dummy])
+        c.execute(HEADER_QUERY_2, [dummy, timestamp, 'Method declaration offset', pfigHeader.fqn, str(0), dummy])
+        c.execute(HEADER_QUERY_2, [dummy, timestamp, 'Method declaration length', pfigHeader.fqn, str(pfigHeader.length), dummy])
+        c.execute(HEADER_QUERY_2, [dummy, timestamp, 'Method declaration scent', pfigHeader.fqn, contents, dummy])
+        conn.commit()
+        c.close()
+        print "Done adding header to database."
+        print "Done adding PFIG Header."
+        
+    
+    _, className, _ = navEntry.prevEntry.method.split(",")
+    ts = navEntry.timestamp
+    classFilePath = os.path.join(projectFolderPath, className + ".java")
+    
+    conn = sqlite3.connect(dbFile)
+    conn.row_factory = sqlite3.Row
+    
+    c = conn.cursor()
+    c.execute(HEADER_QUERY_1, [ts])
+    lowestOffset = -1
+    fqn = None
+    out = None
+    
+    for row in c:
+        methodFqn, offset = row['target'], int(row['referrer'])
+        
+        # Get the class of the method    
+        if className == processor.normalize(methodFqn):
+            if lowestOffset == -1 or offset < lowestOffset:
+                lowestOffset = offset
+                fqn = methodFqn[0:methodFqn.rfind('.')]
+                
+    c.close()
+    
+    if lowestOffset > -1:
+        fqn = fqn + '.pfigheader()V'
+        dt = iso8601.parse_date(navEntry.prevEntry.timestamp)
+        dt += datetime.timedelta(milliseconds=1)
+        
+        pfigHeader = PFIGFileHeader(fqn, lowestOffset, dt)
+        insertHeaderIntoDb(pfigHeader, classFilePath)
+        out = pfigHeader.fqn
+    
+    conn.close()
+    return out
+    
+    
 #==============================================================================#
 # Methods to build the topology                                                #
 #==============================================================================#
@@ -343,7 +446,7 @@ def loadScentRelatedNodes(graph, dbFile, stopWords, timestamp):
                 graph.add_edge(target, word)
                 if VERBOSE_BUILD: print "\tAdding edge from", target, "to", word[1]
     c.close()
-
+    conn.close()
     print "Done processing scent."
 
 def loadTopologyRelatedNodes(processor, graph, dbFile, stopWords, timestamp):
@@ -463,6 +566,7 @@ def loadTopologyRelatedNodes(processor, graph, dbFile, stopWords, timestamp):
                 if VERBOSE_BUILD:
                     print "\tAdding edge from", ntarget, "to", nreferrer
     c.close
+    conn.close
 
     global NUM_METHODS_KNOWN_ABOUT
 
@@ -471,11 +575,6 @@ def loadTopologyRelatedNodes(processor, graph, dbFile, stopWords, timestamp):
                       not wordNode(item) and \
                       '#' not in item and ';.' in item:
             NUM_METHODS_KNOWN_ABOUT += 1
-            if item == 'Lch/blinkenlights/android/vanilla/FullPlaybackActivity;.showOverlayMessage(I)V':
-                print "NODE FOUND", item
-            if item == "Lch/blinkenlights/android/vanilla/FullPlaybackActivity;.onCreate(Landroid/os/Bundle;)V":
-                print "NODE FOUND", item
-
     print "Done processing topology."
 
 def loadAdjacentMethods(processor, graph, dbFile, timestamp):
@@ -552,7 +651,7 @@ def loadAdjacentMethods(processor, graph, dbFile, timestamp):
         if loc:
             add_offset(timestamp, loc, target, referrer)
     c.close()
-
+    conn.close()
     print "Done processing adjacency."
 
 #==============================================================================#
@@ -894,7 +993,7 @@ def buildPath(dbFile, granularityFunc, processor):
 
         #out.append({'target': find_method_match(navLoc, offset),
         #    'timestamp': currentTime})
-
+    conn.close()
     print "Cleaning up path according to specified granularity..."
     clean_up_path()
 
@@ -911,7 +1010,7 @@ def makePredictions(processor, navPath, navNum, graph, algorithmFunc, granularit
     # the algorithmFunc for each navigation to a new location (navigations are
     # specified by the granularityFunc). Results are stored in the resultsLog
     # data structure.
-    print "make Predictions called"
+    #print "make Predictions called"
     entry = navPath.getEntryAt(navNum)
     if granularityFunc(entry.prevEntry.method, entry.method):
         algorithmFunc(processor, resultsLog, navPath, graph, entry.prevEntry, entry, \
@@ -957,9 +1056,9 @@ def pfisWithHistory(processor, resultsLog, navPath, graph, prevNavEntry, currNav
 
     # There are two possibiliites when making a prediction
     # Possibility 1: Both the prevNavEntry (the one that we are predicting from)
-    # and the currNavEntry (the location the programmer acually went) exits in the
-    # graph. If this is the case, then we weigh the nodes according to the path,
-    # spread activation, and then get a ranked list of predictions.
+    # and the currNavEntry (the location the programmer acually went) exits in 
+    # the graph. If this is the case, then we weigh the nodes according to the 
+    # path,  spread activation, and then get a ranked list of predictions.
     if prevMethod in graph and currMethod in graph:
         # Initially seed some of the weights
         dictOfInitialWeights = getInitialPathWeights()
@@ -993,6 +1092,7 @@ def pfisWithHistory(processor, resultsLog, navPath, graph, prevNavEntry, currNav
                      currNavEntry.timestamp)
         resultsLog.addEntry(e);
 
+## CODE BELOW STILL NEEDS TO BE REFACTORED
 
 def getResultRank(graph, currNav, activation, navNum=0):
     # sorts list of activations desc
@@ -1034,24 +1134,21 @@ def mapRankToTieCount(ranks):
 # o: { rank --> number ties }
 
     o = {}
-
     for rank in ranks:
         if rank not in o:
             o[rank] = 1
         else:
             o[rank] = o[rank] + 1
-
     return o
 
-def writeScores(navnum, methods, ranks, scores):
+
+#def writeScores(navnum, methods, ranks, scores):
 # Writes the contents of methods to the specified file
 
-    for i in range(len(methods)):
-        activation_root.write("%d,%s,%s,%s\n" % (navnum, methods[i], (len(ranks) - ranks[i]), scores[i]))
+#    for i in range(len(methods)):
+#        activation_root.write("%d,%s,%s,%s\n" % (navnum, methods[i], (len(ranks) - ranks[i]), scores[i]))
 
 #The following were pulled from the stats.py package
-
-
 def rankTransform(scoresForMethods):
     #We need to add all the zero entries here
     extendedList = [0] * NUM_METHODS_KNOWN_ABOUT;
@@ -1100,6 +1197,15 @@ def sorter (x,y):
 
 def wordNode (n):
     return n[0] == 'word'
+
+#==============================================================================#
+# Build header file code
+#==============================================================================#
+
+def copyDatabase(dbpath, newdbpath):
+    print "Making a working copy of the database..."
+    shutil.copyfile(dbpath, newdbpath)
+    print "Done."
 
 if __name__ == "__main__":
     main()
