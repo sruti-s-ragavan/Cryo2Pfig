@@ -91,7 +91,9 @@ couldnt
 cry
 d
 de
+debugger
 default
+delete
 describe
 detail
 do
@@ -143,6 +145,7 @@ four
 from
 front
 full
+function
 further
 g
 get
@@ -353,6 +356,7 @@ try
 twelve
 twenty
 two
+typeof
 u
 un
 und
@@ -363,6 +367,7 @@ upon
 us
 very
 v
+var
 via
 void
 volatile
