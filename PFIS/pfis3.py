@@ -1,6 +1,5 @@
 import sys
 import sqlite3
-import re
 import networkx as nx
 from nltk.stem import PorterStemmer
 import iso8601
@@ -10,6 +9,12 @@ import shutil
 import os
 import datetime
 import getopt
+
+#imports for PFIS related classes
+from navpath import *
+from log import *
+from java_processor import JavaProcessor
+from regex import *
 
 # VOCAB:
 # prevNavEntry = The navigation that we are predicting from
@@ -34,102 +39,12 @@ PATH_QUERY_3 = "SELECT timestamp, action, target, referrer FROM logger_log WHERE
 
 
 
-REGEX_FIX_SLASHES = re.compile(r'[\\/]+')
-REGEX_SPLIT_CAMEL_CASE = re.compile(r'_|\W+|\s+|(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|(?<=[a-zA-Z])(?=[0-9]+)|(?<=[0-9])(?=[a-zA-Z]+)')
-REGEX_NORM_ECLIPSE = re.compile(r"L([^;]+);.*") #todo: why is this called eclipse?
-REGEX_NORM_JAVA_PATH = re.compile(r".*src\/(.*)\.java")
-REGEX_PROJECT = re.compile(r"\/(.*)\/src/.*")
-REGEX_PACKAGE = re.compile(r"(.*)/[a-zA-Z0-9]+")
-
-
 NUM_METHODS_KNOWN_ABOUT = 0
 #remember that you have to multiply the number of iterations you want by 2
 NUM_ITERATIONS = 2
 DECAY_FACTOR = 0.85
 PATH_DECAY_FACTOR = 0.9
 INITIAL_ACTIVATION = 1
-
-
-class NavPath:
-    def __init__(self):
-        self.navPath = []
-
-    def addEntry(self, entry):
-        self.navPath.append(entry)
-        l = len(self.navPath)
-        if l > 1:
-            entry.prevEntry = self.navPath[l - 2]
-
-    def __iter__(self):
-        return self.navPath.__iter__()
-
-    def isUnknownMethodAt(self, index):
-        return self.navPath[index].unknownMethod
-
-    def getLength(self):
-        return len(self.navPath)
-
-    def getEntryAt(self, index):
-        return self.navPath[index]
-
-    def getMethodAt(self, index):
-        return self.navPath[index].method
-
-    def getTimestampAt(self, index):
-        return self.navPath[index].timestamp
-
-    def getPrevEntryAt(self, index):
-        return self.navPath[index].prevEntry
-
-    def removeAt(self, index):
-        del self.navPath[index]
-
-    def toStr(self):
-        out = 'NavPath:\n'
-        for entry in self.navPath:
-            out += '\t' + entry.method + ' at ' + entry.timestamp +'\n'
-        return out
-
-class NavPathEntry:
-    def __init__(self, timestamp, method):
-        self.timestamp = str(timestamp)
-        self.method = method
-        self.prevEntry = None
-        self.unknownMethod = False
-
-        if method.startswith("UNKNOWN"):
-            self.unknownMethod = True;
-
-class LogEntry:
-    def __init__(self, navNum, timestamp, rank, numTies, length,
-                 fromLoc, toLoc, classLoc, packageLoc):
-        self.navNum = str(navNum)
-        self.timestamp = str(timestamp)
-        self.rank = str(rank)
-        self.numTimes = str(numTies)
-        self.length = str(length)
-        self.fromLoc = fromLoc
-        self.classLoc = str(classLoc)
-        self.packageLoc = str(packageLoc)
-
-    def getString(self):
-        return self.navNum + '\t' + self.timestamp + '\t' + self.rank + '\t' \
-            + self.numTimes + '\t' + self.length + '\t' + self.fromLoc + '\t' \
-            + self.classLoc + '\t' + self.packageLoc
-
-class Log:
-    def __init__(self, filePath):
-        self.filePath = filePath;
-        self.entries = []
-
-    def addEntry(self, logEntry):
-        self.entries.append(logEntry);
-
-    def saveLog(self):
-        logFile = open(self.filePath, 'w');
-        for entry in self.entries:
-            logFile.write(entry.getString() + '\n');
-        logFile.close();
 
 class Activation:
     def __init__(self, mapMethodsToScores):
@@ -158,65 +73,6 @@ class Activation:
                     if (x % 2 == 0 and wordNode(j)) or (x % 2 != 0 and not wordNode(j)):
                         self.mapMethodsToScores[j] = self.mapMethodsToScores[j] + (self.mapMethodsToScores[i] * w * DECAY_FACTOR)
         return sorted(self.mapMethodsToScores.items(), sorter) # Returns a list of only nodes with weights
-
-
-# todo: subclass this from a generic processor class, and move the Java & JS common code up there.
-class JavaProcessor:
-
-    def normalize(self, s):
-        # Return the class indicated in the string. Empty string returned on fail.
-        # File-name example:
-        # Raw file name: jEdit/src/org/gjt/sp/jedit/gui/StatusBar.java
-        # Normalized file name: org/gjt/sp/jedit/gui/StatusBar
-
-        m = REGEX_NORM_ECLIPSE.match(s)
-        if m:
-            return m.group(1)
-        n = REGEX_NORM_JAVA_PATH.match(fixSlashes(s))
-        if n:
-            return n.group(1)
-        return ''
-
-    def package(self, s):
-        # Return the package. Empty string returned on fail.
-        # Ex: Lorg/gjt/sp/jedit/gui/statusbar/LineSepWidgetFactory$LineSepWidget -->
-        #     org/gjt/sp/jedit/gui/statusbar
-        m = REGEX_PACKAGE.match(self.normalize(s))
-        if m:
-            return m.group(1)
-        return ''
-
-    def project(self, s):
-        # Return the root folder in the given path. Empty string returned on fail.
-        # In Eclipse, the root folder would be the project folder.
-        # Ex: /jEdit/src/org/gjt/sp/jedit/search --> jEdit
-        m = REGEX_PROJECT.match(fixSlashes(s))
-        if m:
-            return m.group(1)
-        return ''
-
-    #==============================================================================#
-    # Helper methods for initial weights on the graph                              #
-    #==============================================================================#
-    # Each of these mehtods define a different level of granularity for navigations
-    # PFIS3 supports betwee-method, between-class and between-package navigations.
-    # These functions are passed in as parameters and rely on the list of methods
-    # generated by buildPaths
-
-    def between_method(a, b):
-        # A navigation between methods occurs when two consecutive FQNs do not match
-        return a != b
-
-    def between_class(self, a, b):
-        # A navigation between classes occurs when two consecutive normalized class
-        # paths do not match
-        return self.normalize(a) != self.normalize(b)
-
-    def between_package(self, a, b):
-        # A navigation between packages occurs when two conscutive pacakes do not
-        # match
-        return self.package(a) != self.package(b)
-
 
 def loadLanguageSpecifics(language):
     #TODO: add a processor for JS
@@ -705,10 +561,6 @@ def loadAdjacentMethods(processor, graph, dbFile, timestamp):
 #==============================================================================#
 # Helper methods for building the graph                                        #
 #==============================================================================#
-
-def fixSlashes(s):
-    # Replaces '\' with '/'
-    return REGEX_FIX_SLASHES.sub('/', s)
 
 def getWordNodes_splitNoStem(s, stopWords):
     # Returns a list of word nodes from the given string after stripping all
