@@ -12,6 +12,8 @@ import simplejson, json
 import shutil
 import sqlite3
 import datetime
+import iso8601
+
 from jsonmerge import Merger
 from Naked.toolshed.shell import execute_js, muterun_js
 
@@ -65,37 +67,34 @@ def jsonprettyprint(event):
 
 class TimeFormatConverter:
 
-    PFIS_FORMAT = '%Y-%m-%d %X.'
-    CRYOLOG_FORMAT = '%Y-%m-%dT%X' # NOTE: there is a 'T' hardcoded in the cryolog strings
+    PFIS3_FORMAT = '%Y-%m-%d %H:%M:%S.%f'
+    CRYOLOG_FORMAT = '%Y-%m-%dT%H:%M:%S.%f' # NOTE: there is a 'T' hardcoded in the cryolog strings
 
     def __init__(self, start_time):
         self.start_time = start_time
 
+    def convert_cryolog_to_pfis_time_fmt(self, cryolog_fmt_time_string):
+        # crylog time example format = '2014-04-01T20:43:06.803Z'
+        generic_time = TimeFormatConverter.get_time_obj_from_cryo_fmt(cryolog_fmt_time_string)
+
+        #PFIS3 format : 2010-01-25 00:00:00.000
+        pfis3_time = generic_time.strftime(TimeFormatConverter.PFIS3_FORMAT)
+        elapsed_time = generic_time - self.start_time
+
+        return [pfis3_time, elapsed_time]
+
     def get_time_obj_from_pfis_fmt(self, pfis_fmt_timestamp):
         print "pfis time format", pfis_fmt_timestamp
-        return datetime.datetime.strptime(pfis_fmt_timestamp, "%Y-%m-%d %H:%M:%S.%fZ00000")
+        return datetime.datetime.strptime(pfis_fmt_timestamp, "%Y-%m-%d %H:%M:%S.%f")
 
     @staticmethod
     def get_time_obj_from_cryo_fmt(cryo_fmt_timestamp):
         # crylog time example format = '2014-04-01T20:43:06.803Z'
         # remove the 'Z' from the cryolog timestamp
-        cryolog_time = cryo_fmt_timestamp.split('Z')[0]
-        generic_time = datetime.datetime.strptime(cryolog_time.split('.')[0], TimeFormatConverter.CRYOLOG_FORMAT)
+        time_str = cryo_fmt_timestamp.split('Z')[0]
+        generic_time = datetime.datetime.strptime(time_str, TimeFormatConverter.CRYOLOG_FORMAT)
+
         return generic_time
-
-    def convert_cryolog_to_pfis_time_fmt(self, cryolog_time):
-
-        # pfis time example format = '2014-03-14 09:34:15.406000000'
-        # see https://docs.python.org/2.7/library/datetime.html#strftime-strptime-behavior
-        generic_time = TimeFormatConverter.get_time_obj_from_cryo_fmt(cryolog_time)
-        pfis_time = generic_time.strftime(TimeFormatConverter.PFIS_FORMAT)
-
-        # milliseconds must be handled manually. just use the numbers from cryolog and add zeros at the end up to nine digits
-        generic_milliseconds = cryolog_time.split('.')[1]
-        pfis_time += generic_milliseconds.ljust(9, '0')
-
-        elapsed_time = generic_time - self.start_time
-        return [pfis_time, elapsed_time]
 
 
 class Cryolog:
@@ -884,3 +883,6 @@ if __name__ == '__main__':
     pfislog = converter.convert_cryolog_to_pfislog(cryolog)
     pfislog.export_to_file(sys.argv[3])
     create_db(sys.argv[3])
+
+
+
