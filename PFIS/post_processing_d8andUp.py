@@ -30,7 +30,6 @@ def add_navs_without_tso(source):
         global id_tso
         conn = sqlite3.connect(source)
         c = conn.cursor()
-        '2015-04-21 23:40:21.118000000'
 
         c.execute(INSERT_QUERY, (id, user, timestamp, tso_string, doc_path, 0, agent, time_elapsed))
         id_tso +=1
@@ -204,7 +203,12 @@ def generate_predictions(dbFile):
     #         os.makedirs(splitDir+'/nav'+str(i)+'/output')
 
     def call_pfis(dbFile):
-        subprocess.call(["python","pfis3/src/python/pfis3.py", "-l", "JS", "-s", "je.txt", "-d", dbFile, "-p", "/Users/srutis90/Projects/VFT/Cryo2Pfig/jsparser/src"])
+        subprocess.call(["python","pfis3/src/python/pfis3.py",
+                         "-l", "JS",
+                         "-s", "je.txt",
+                         "-d", dbFile,
+                         "-p", "../jsparser/src",
+                         "-o", dbFile+"_predictions.csv"])
 
     def predict_all_navs():
         i=0
