@@ -30,18 +30,19 @@ class NavigationClassifier:
         fileHandle.write(self.headerRow)
 
         for nav in self.navs:
-            row = str(nav["string"]) + "\t" \
+            row = nav["prediction_row"] + "\t" \
                              + str(nav["is_destination_variant"]) + "\t" \
                              + str(nav["is_between_variant"]) + "\n"
             fileHandle.write(row)
 
-
-
-
     def unpackNavs(self, fileHandle):
+
+        def arrayToTabSeparatedString(array):
+            return '\t'.join([str(x) for x in array])
+
         reader = csv.reader(fileHandle, delimiter='\t')
-        headerRow = reader.next() #skips header row
-        self.headerRow = str(headerRow) + "\t" + \
+        headerRowArray = reader.next() #skips header row
+        self.headerRow = arrayToTabSeparatedString(headerRowArray) + "\t" + \
                          "Dest Variant?" + "\t" + "Bet variant?" + "\n"
 
         navs = []
@@ -51,7 +52,7 @@ class NavigationClassifier:
             isDestinationVariant = variantName == self.DESTINATION_VARIANT_NAME
 
             nav={
-                "string" : row,
+                "prediction_row" : arrayToTabSeparatedString(row),
                 "target" : navToLocation,
                 "variant_name" : variantName,
                 "is_destination_variant": isDestinationVariant
