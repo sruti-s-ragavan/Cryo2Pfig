@@ -4,6 +4,7 @@ import shutil
 import sqlite3
 import subprocess
 import multiprocessing
+from navigationClassifier import *
 
 conn = ''
 c = ''
@@ -196,103 +197,37 @@ def db_splitter(source, dest):
     os.remove(source + 'temp2')
     os.remove(source + 'temp3')
 
-def generate_predictions(dbFile):
-    global nav_list
-    # for i in range (0, len(nav_list)):
-    #     if not os.path.exists(splitDir+'/nav'+str(i)+'/output'):
-    #         os.makedirs(splitDir+'/nav'+str(i)+'/output')
-
-    def call_pfis(dbFile):
-        subprocess.call(["python","pfis3/src/python/pfis3.py",
+def generate_predictions(inputDbFile, outputCsvFileName):
+    print "Calling PFIS"
+    subprocess.call(["python","pfis3/src/python/pfis3.py",
                          "-l", "JS",
                          "-s", "je.txt",
-                         "-d", dbFile,
+                         "-d", inputDbFile,
                          "-p", "../jsparser/src",
-                         "-o", dbFile+"_predictions.csv"])
+                         "-o", outputCsvFileName])
 
-    def predict_all_navs():
-        i=0
-        while (i< len(nav_list)):
-            print "Running PFIS on dir " + str(i)
-            p=multiprocessing.Process(target=call_pfis, args=(i,))
-            p.start()
-            if i+1<len(nav_list):
-                q=multiprocessing.Process(target=call_pfis, args=(i+1,))
-                q.start()
-            if i+2<len(nav_list):
-                r=multiprocessing.Process(target=call_pfis, args=(i+2,))
-                r.start()
-            if i+3<len(nav_list):
-                s=multiprocessing.Process(target=call_pfis, args=(i+3,))
-                s.start()
-            if p:
-                p.join()
-            if q:
-                q.join()
-            if r:
-                r.join()
-            if s:
-                s.join()
-            i=i+4
+def main():
+    sourceFile = sys.argv[1]
+    outputCsvFileName = sourceFile + "_predictions.csv"
 
-    print "Calling PFIS"
-    #predict_all_navs()
+    if (len(sys.argv) > 3): #manual navs for expand tree folders
+        navFile = sys.argv[3];
+        newDbFile = sourceFile + "_new_"
+        print "Inserting Manual Navigations"
+        manualNavs(sourceFile,newDbFile, navFile)
+        sourceFile = newDbFile
 
-    call_pfis(dbFile) #use this to run PFIS for a particular folder
+    print "Inserting manual TSO"
+    add_navs_without_tso(sourceFile)
+    # print "Splitting Databases"
+    # db_splitter(sourceFile, splitDir)
 
+    print "Generating Predictions ; Running PFIS"
+    generate_predictions(sourceFile, outputCsvFileName)
 
-def log_cat(splitDir,source):
-    global nav_list
-    line = ''
-    cat_file = open(source+"_pfis_predictions.csv", 'a')
-    for i in range(0, len(nav_list)):
-        if os.path.exists(splitDir+'/nav'+str(i)+'/output/-PfisOutput-WithHistNoGoal.csv'):
-            prediction_file = open(splitDir+'/nav'+str(i)+'/output/-PfisOutput-WithHistNoGoal.csv', 'r')
-        else:
-            continue
-        cur_line = prediction_file.readline()
-        prediction_file.close()
-        if(cur_line == line):
-            continue
-        elif(cur_line != line):
-            line = cur_line
-            cat_file.write(cur_line)
-    cat_file.close()
-    cat_file = open(source+"_pfis_predictions.csv", 'r')
-    prev_line = ''
-    all_lines = ''
-    for line in cat_file:
-        t_line = line
-        t_line = t_line.split(',')
-        p_line = prev_line.split(',')
-#        print line
-#       print t_line
-        if(len(t_line)>0 and len(p_line)>1 and (t_line[1] == p_line[1])):
-            continue
-        else:
-            all_lines = all_lines + line
-        prev_line = line
-    cat_file = open(source+"_pfis_predictions_corr.csv", 'a')
-#    print(all_lines[1])
-    cat_file.write(all_lines)
+    print "Updating navigation types for analysis..."
+    navClassifier = NavigationClassifier(outputCsvFileName)
+    navClassifier.updateNavTypes()
 
-sourceFile = sys.argv[1]
-splitDir = sys.argv[2]
-navFile = None
-newDbFile = None
-
-if (len(sys.argv) > 3): #manual navs for expand tree folders
-    navFile = sys.argv[3];
-    newDbFile = sourceFile + "_new_"
-    print "Inserting Manual Navigations"
-    manualNavs(sourceFile,newDbFile, navFile)
-    sourceFile = newDbFile
-
-print "Inserting manual TSO"
-add_navs_without_tso(sourceFile)
-# print "Splitting Databases"
-# db_splitter(sourceFile, splitDir)
-print "Generating Predictions ; Running PFIS"
-generate_predictions(sourceFile)
-print "Concatenating logs"
-log_cat(splitDir, sourceFile)
+if __name__ == "__main__":
+    main()
