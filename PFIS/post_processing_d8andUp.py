@@ -210,8 +210,9 @@ def main():
     sourceFile = sys.argv[1]
     outputCsvFileName = sourceFile + "_predictions.csv"
 
-    if (len(sys.argv) > 3): #manual navs for expand tree folders
-        navFile = sys.argv[3];
+    #optional nav file argument for manual navigations
+    if (len(sys.argv) > 2): #manual navs for expand tree folders
+        navFile = sys.argv[2];
         newDbFile = sourceFile + "_new_"
         print "Inserting Manual Navigations"
         manualNavs(sourceFile,newDbFile, navFile)
