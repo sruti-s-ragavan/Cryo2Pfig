@@ -69,7 +69,7 @@ class NavigationClassifier:
         if prevNav == None:
             nav["is_between_variant"] = ''
         else:
-            nav["is_between_variant"] = (prevNav["variant_name"] == nav["variant_name"])
+            nav["is_between_variant"] = (prevNav["variant_name"] <> nav["variant_name"])
 
 
 

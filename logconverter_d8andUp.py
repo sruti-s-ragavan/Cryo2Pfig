@@ -392,7 +392,7 @@ class Converter:
             for file in files:
                 if(file[-3:] == '.js'):
                     f_path = path+'/'+file
-                    fakeHeader = f_path + ';.PFIGFileHeader()V'
+                    fakeHeader = f_path + ';.pfigheader()V'
                     new_event = self.new_event(event)
                     new_event['action'] = "Method declaration"
                     new_event['target'] = f_path

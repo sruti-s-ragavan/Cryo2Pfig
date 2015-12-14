@@ -199,11 +199,13 @@ def db_splitter(source, dest):
 
 def generate_predictions(inputDbFile, outputCsvFileName):
     print "Calling PFIS"
+    projectRootDirectory = os.path.dirname(os.getcwd())
+    sourceDirectory = os.path.join(projectRootDirectory, "jsparser/src")
     subprocess.call(["python","pfis3/src/python/pfis3.py",
                          "-l", "JS",
                          "-s", "je.txt",
                          "-d", inputDbFile,
-                         "-p", "../jsparser/src",
+                         "-p", sourceDirectory,
                          "-o", outputCsvFileName])
 
 def main():
