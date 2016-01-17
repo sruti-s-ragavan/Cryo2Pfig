@@ -9,9 +9,6 @@ import shutil
 import sqlite3
 import datetime
 
-from jsonmerge import Merger
-from Naked.toolshed.shell import execute_js, muterun_js
-
 # sql utilities for parsing pfislog, pfislog's output is insert statements which are SQL
 import sqlparse
 from sqlparse.sql import Parenthesis
