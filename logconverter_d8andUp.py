@@ -2,17 +2,12 @@ import os
 from os import listdir
 from os.path import isfile, join
 import sys
-import ast
-import time
-import pprint
 import subprocess
-import httplib,urllib
 import multiprocessing
-import simplejson, json
+import json
 import shutil
 import sqlite3
 import datetime
-import iso8601
 
 from jsonmerge import Merger
 from Naked.toolshed.shell import execute_js, muterun_js
@@ -22,6 +17,7 @@ import sqlparse
 from sqlparse.sql import Parenthesis
 from sqlparse.sql import IdentifierList # instead of parsing by hand
 
+JS_STD_PREFIX = "JS_Std_lib/"
 
 # CREATE TABLE logger_log ( id INTEGER IDENTITY, user VARCHAR(50), timestamp DATETIME, action VARCHAR(50), target VARCHAR, referrer VARCHAR, agent VARCHAR(50));
 # what each insert statement in pfig is made up of
@@ -459,49 +455,62 @@ class Converter:
             s = s.replace("'", "''")
             s = s.replace(",", "\",\"")
             return s
-            
-        def event_tuple_generate(new_events,self,item,event,declaration_type,document_name):
+
+        def getPFISFormatEvent(declaration_type, item):
+
+            def addStdJsPrefixToTarget(decl_type, target):
+                if decl_type.startswith("Method invocation"):
+                    return JS_STD_PREFIX + target
+                else:
+                    return target
+
             header = normalizer(item["header"])
             filepath = normalizer(item["src"])
             if("invsrc" in item.keys()):
                 invsrc = normalizer(item["invsrc"])
             contents = normalizer(item["contents"])
+
+            if declaration_type == "Method declaration" or declaration_type == "Variable declaration":
+                target, referrer = (filepath, filepath + ";." + header)
+            elif declaration_type == "Method invocation":
+                target, referrer = (filepath + ';.'+ header, invsrc)
+            elif declaration_type.endswith("offset"):
+                target, referrer = (filepath + ';.' +header, item["start"])
+            elif declaration_type.endswith("length"):
+                target, referrer = (filepath + ';.' +header, item["length"])
+            elif declaration_type.endswith("scent"):
+                target, referrer = (filepath + ';.' +header, contents)
+            else:
+                raise ValueError("Unknown declaration type Value ", declaration_type)
+
+            new_event = self.new_event(event)
+            new_event['action'] = declaration_type
+            stdJSCorrectedTarget = addStdJsPrefixToTarget(declaration_type, target)
+            new_event['target'] = stdJSCorrectedTarget
+            new_event['referrer'] = referrer
+            return new_event
+
+        def event_tuple_generate(new_events,self,item,event,declaration_type,document_name):
+
             if(declaration_type == "Method declaration" or declaration_type == "Variable declaration"):
-                #declaration
-                new_event = self.new_event(event)
-                new_event['action'] = declaration_type
-                new_event['target'] = filepath
-                new_event['referrer'] = filepath + ';.' +header
+                new_event = getPFISFormatEvent(declaration_type, item)
                 new_events.append(new_event)
                 
             if(declaration_type == "Method invocation"):
-                #invocation
-                new_event = self.new_event(event)
-                new_event['action'] = declaration_type
-                
-                new_event['target'] = filepath + ';.'+ header
-                new_event['referrer'] = invsrc; 
+                new_event = getPFISFormatEvent(declaration_type, item)
                 new_events.append(new_event)
                 
-            # create the offset event
-            new_event = self.new_event(event)
-            new_event['action'] = declaration_type + ' offset'
-            new_event['target'] = filepath + ';.' +header
-            new_event['referrer'] = item["start"] 
+            offset_event_type = declaration_type + ' offset'
+            new_event = getPFISFormatEvent(offset_event_type, item)
             new_events.append(new_event)
 
-            #create the length event
-            new_event = self.new_event(event)
-            new_event['action'] = declaration_type + ' length'
-            new_event['target'] = filepath + ';.' +header
-            new_event['referrer'] = item["length"]
+            length_event_type = declaration_type + ' length'
+            new_event = getPFISFormatEvent(length_event_type, item)
             new_events.append(new_event)
             
             if(declaration_type == "Method declaration" or declaration_type == "Method invocation"):
-                new_event = self.new_event(event)
-                new_event['action'] = declaration_type + ' scent'
-                new_event['target'] =  filepath + ';.' +header
-                new_event['referrer'] = contents
+                scent_event_type = declaration_type + ' scent'
+                new_event = getPFISFormatEvent(scent_event_type, item)
                 new_events.append(new_event)
                 
             return new_events
@@ -510,7 +519,6 @@ class Converter:
         function_list = []
         call_list = []
         var_dec_list = []
-        x = 0
         for item in miv_array:
              
             if(item['functions'] ==None):
