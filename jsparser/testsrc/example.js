@@ -6,7 +6,7 @@ function add(a, b) {
 function arrayUsages(){
 	var arr = []
 	arr.push(1)
-	function something(){
+	var something = function(){
 		console.log("something")
 	}
 	something();

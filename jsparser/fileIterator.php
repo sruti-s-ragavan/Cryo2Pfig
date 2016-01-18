@@ -284,17 +284,60 @@ function function_identifier($sourcefile, $folderPath){
 	return $function_stats;
 }
 
+function extract_function_body($func_contents){
+	// look for position of first { and last } and rip out what's in between and call it the function body.
+	$start_pos = strpos($func_contents, "{");
+	$end_pos = strrpos($func_contents, "}");
+	$length = strlen($func_contents);
+
+	$func_body = substr($func_contents, $start_pos, $length-$start_pos);
+
+	// echo $func_contents."\n";
+	// echo "\n".$start_pos." ".$end_pos." ".strlen($func_contents)."\n";
+	// echo $func_body."\n";
+	return $func_body;
+}
+
+function gather_functions_if_class($func_header, $func_contents){
+	//Look through functions inside classes and collect them as well.
+	//Assumption: if function name starts with an upper case character, it is a class. 
+	//This is not a language rule, but rather a JS convention.
+	//Otherwise, we can get into the nested function rabit hole very easily.
+
+	$start_char = $func_header[0];
+	if($start_char>='A' && $start_char<='Z'){
+		//function contents includes function header as well, and this leads to an infinite loop.
+		$func_body = extract_function_body($func_contents);
+		identify_functions($func_body);
+	}
+}
+
+function extract_header($header_line){
+	//header format : 
+	//var func = function(a)
+	//this.multiply=function(a,b)
+	
+	$LHS_REGEX_PATTERN = "/(.*)\s*=\s*function(.*)/";
+	preg_match($LHS_REGEX_PATTERN, $header_line, $matches);
+	$lhs = $matches[1];
+
+	$FUNCTION_IDENTIFIER_REGEX = "/.*(\.|\s)([a-z|A-Z]+)/";
+	preg_match($FUNCTION_IDENTIFIER_REGEX, $lhs, $matches);
+	$function_name = $matches[2];	
+	return $function_name."()";
+}
+
 function identify_functions($code){
     $tokens = get_tokens($code);
-    //echo "passed tokens";
+	    //echo "passed tokens";
     $function_stats = array();
     //list functions of type var fName = function(){}, and in a separate array, all variable declarations.
     for($i=0;$i<count($tokens);$i++){
         $j = $i+1;
-        if($tokens[$i][0] == J_VAR){
+        if($tokens[$i][0] == J_VAR || $tokens[$i][0] == J_THIS){ 
             while(1){
-                //if the token type is not a comment, whitespace, or line terminator, then
-                if(!token_is_whitespace($tokens[$j])){
+            	//if the token type is not a comment, whitespace, or line terminator, then
+                if(!token_is_whitespace($tokens[$j]) && $tokens[$j][0] != '.'){
                     //it needs to be an identifier
                     if($tokens[$j][0] !== J_IDENTIFIER){
                         //if it's not, we need to continue on our token list
@@ -302,7 +345,7 @@ function identify_functions($code){
                     }
                     //otherwise, check if it's a function.
                     else{
-                        $num_equals = 0;
+                    	$num_equals = 0;
                         //move on to next token
                         $k = $j+1;
                         while(1){
@@ -317,23 +360,26 @@ function identify_functions($code){
                                     $k++;
                                     continue;
                                 }
+                                // match var funcName = function
                                 if($tokens[$k][0] !== J_FUNCTION){
                                     break 2;
                                 }else{
-                                    $sum = sum_to_token($tokens,$i);
+                                	$sum = sum_to_token($tokens,$i);
                                     $length = function_length($i,$tokens);
                                     $function_start = sum_to_token($tokens,$j);
 
                                     $length +=1;
                                     $end = $sum + $length;
-                                    $substring = substr($code, $sum, $length +1);
+                                    $function_contents = substr($code, $sum, $length +1);
                                     $function_call_length = invocation_length($i, $tokens);
                                     $function_call_length +=1;
-                                    $function_header = substr($code, sum_to_token($tokens,$i), $function_call_length);
+                                    $function_header_line = substr($code, sum_to_token($tokens,$i), $function_call_length);
+                                    $function_header = extract_header($function_header_line);
                                     //generate function entry for function array.
                                     global $src_arg;
-                                    $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $function_header, "filepath" => ''. $sourcefile);
-                                    //echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br>End: $end <br>Contents: $substring <br>Function Header: $function_header<br>Source File: $source<br><br>";
+                                    $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $function_contents, "header" => $function_header, "filepath" => ''. $sourcefile);
+                                    //echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br>End: $end <br>Contents: $function_contents <br>Function Header: $function_header<br>Source File: $source<br><br>";
+                                    gather_functions_if_class($function_header, $function_contents);
                                     break 2;
                                 }
                             }else{
@@ -364,14 +410,15 @@ function identify_functions($code){
                         $function_call_length = invocation_length($j, $tokens) + 1;
                         $function_header = substr($code, sum_to_token($tokens,$j), $function_call_length);
                         $function_start = sum_to_token($tokens,$j);
-                        $substring = substr($code, $sum, $length);
+                        $function_contents = substr($code, $sum, $length);
                         $function_nests[] = array(sum_to_token($tokens,$i), $end, $function_header);
                         $nested_within = array();
                         //generate function entry in function array
                         global $src_arg;
-                        $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $function_header, "filepath" => ''.$source);
+                        $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $function_contents, "header" => $function_header, "filepath" => ''.$source);
                         //echo "function header = $function_header <br>";
-                        //echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br> End: $end <br>Contents: $substring <br>Function header:$function_header!<br>Source File: $source<br><br>";
+                        //echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br> End: $end <br>Contents: $function_contents <br>Function header:$function_header!<br>Source File: $source<br><br>";
+                        gather_functions_if_class($function_header, $function_contents);
                         break;
                     }else{
                         break;
@@ -397,6 +444,7 @@ function array_filter_recursive($input){
 function get_invocation_full_path($invocation_name, $file_array, $invocation_file_path){
 	//echo "<h1> fp = $invocation_file_path, name = $invocation_name</h1>";
 	$func_called = "JavaScript_standard;.";
+	
 	foreach($file_array as $f){
 		$func_list = $f["functions"];
 		for($i=0;$i<count($func_list);$i++){
@@ -612,5 +660,4 @@ $array_merged[] = get_line_lengths($file_name_array, $file);
 
 //pretty_print_file_array($array_merged);
 echo json_encode($array_merged);
-
 ?> 
