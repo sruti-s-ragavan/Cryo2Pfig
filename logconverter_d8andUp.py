@@ -15,6 +15,7 @@ from sqlparse.sql import Parenthesis
 from sqlparse.sql import IdentifierList # instead of parsing by hand
 
 JS_STD_PREFIX = "JS_Std_lib/"
+JS_STD_REFERRER_STRING = 'JavaScript_standard;.'
 
 # CREATE TABLE logger_log ( id INTEGER IDENTITY, user VARCHAR(50), timestamp DATETIME, action VARCHAR(50), target VARCHAR, referrer VARCHAR, agent VARCHAR(50));
 # what each insert statement in pfig is made up of
@@ -453,13 +454,16 @@ class Converter:
             s = s.replace(",", "\",\"")
             return s
 
-        def getPFISFormatEvent(declaration_type, item):
+        def getPFISFormatEvent(declaration_type, item, parentEventReferrer):
 
-            def addStdJsPrefixToTarget(decl_type, target):
-                if decl_type.startswith("Method invocation"):
-                    return JS_STD_PREFIX + target
-                else:
-                    return target
+            # When JS std method is invoked, invsrc and hence referrer for method invocation is JS_STD_REFERRER_STRING.
+            # We use it to prefix the target with JS_STD_PREFIX for all four Method Invocation (event, offset, length, scent) event-tuple.
+
+            def correctJSStandardInvocationTargets(event, parentEventReferrer):
+                if event['action'].startswith("Method invocation"):
+                    if event['referrer'] == JS_STD_REFERRER_STRING or parentEventReferrer == JS_STD_REFERRER_STRING:
+                        event['target'] = JS_STD_PREFIX + event['target']
+
 
             header = normalizer(item["header"])
             filepath = normalizer(item["src"])
@@ -482,32 +486,37 @@ class Converter:
 
             new_event = self.new_event(event)
             new_event['action'] = declaration_type
-            stdJSCorrectedTarget = addStdJsPrefixToTarget(declaration_type, target)
-            new_event['target'] = stdJSCorrectedTarget
             new_event['referrer'] = referrer
+            new_event['target'] = target
+
+            correctJSStandardInvocationTargets(new_event, parentEventReferrer)
+
             return new_event
 
         def event_tuple_generate(new_events,self,item,event,declaration_type,document_name):
 
+            parentEventReferrer = None
+
             if(declaration_type == "Method declaration" or declaration_type == "Variable declaration"):
-                new_event = getPFISFormatEvent(declaration_type, item)
+                new_event = getPFISFormatEvent(declaration_type, item, parentEventReferrer)
                 new_events.append(new_event)
                 
             if(declaration_type == "Method invocation"):
-                new_event = getPFISFormatEvent(declaration_type, item)
+                new_event = getPFISFormatEvent(declaration_type, item, parentEventReferrer)
                 new_events.append(new_event)
+                parentEventReferrer = new_event['referrer']
                 
             offset_event_type = declaration_type + ' offset'
-            new_event = getPFISFormatEvent(offset_event_type, item)
+            new_event = getPFISFormatEvent(offset_event_type, item, parentEventReferrer)
             new_events.append(new_event)
 
             length_event_type = declaration_type + ' length'
-            new_event = getPFISFormatEvent(length_event_type, item)
+            new_event = getPFISFormatEvent(length_event_type, item, parentEventReferrer)
             new_events.append(new_event)
             
             if(declaration_type == "Method declaration" or declaration_type == "Method invocation"):
                 scent_event_type = declaration_type + ' scent'
-                new_event = getPFISFormatEvent(scent_event_type, item)
+                new_event = getPFISFormatEvent(scent_event_type, item, parentEventReferrer)
                 new_events.append(new_event)
                 
             return new_events
