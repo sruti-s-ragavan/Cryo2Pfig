@@ -277,112 +277,113 @@ function invocation_identifier($source,$file_array, $fstring){
 	return $invocation_stats;
 }
 
-function function_identifier($source, $fstring){
-	
-	$code = file_get_contents($source);
-	//echo $code;
-	$tokens = get_tokens($code);
-	//echo "passed tokens";
-	$function_stats = array();
-	$source = ''.$source;
-	$source = substr($source, strlen($fstring));
-	//list functions of type var fName = function(){}, and in a separate array, all variable declarations.
-	for($i=0;$i<count($tokens);$i++){
-		$j = $i+1;
-		if($tokens[$i][0] == 3){
-			while(1){
-				//if the token type is not a comment, whitespace, or line terminator, then
-				if(!token_is_whitespace($tokens[$j])){
-					//it needs to be an identifier
-					if($tokens[$j][0] !== J_IDENTIFIER){
-						//if it's not, we need to continue on our token list
-						break;
-					}
-					//otherwise, check if it's a function.
-					// $token[$j][1] = name_of variable
-					else{
-						$num_equals = 0;
-						//move on to next token
-						$k = $j+1;	
-						while(1){
-							//perform the comment, whitespace, or line terminator check again
-							if(!token_is_whitespace($tokens[$k])){
-								// check for equals var funcName =
-								if($tokens[$k][0] == '=' && $num_equals>=1){
-									break 2;
-								}else if($tokens[$k][0] == '=' && $num_equals<1){
-									$num_equals++;
-									//to next token
-									$k++;
-									continue;
-								}
-								if($tokens[$k][0] !== J_FUNCTION){
-									break 2;
-								}else{ 
-									$sum = sum_to_token($tokens,$i);
-									$length = function_length($i,$tokens);
-									$function_start = sum_to_token($tokens,$j);
-									
-									$length +=1;
-									$end = $sum + $length;
-									$substring = substr($code, $sum, $length +1); 
-									$function_call_length = invocation_length($i, $tokens);
-									$function_call_length +=1;
-									$function_header = substr($code, sum_to_token($tokens,$i), $function_call_length);
-									//generate function entry for function array.
-									global $src_arg;
-									$function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $function_header, "filepath" => ''. $source);
-									//echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br>End: $end <br>Contents: $substring <br>Function Header: $function_header<br>Source File: $source<br><br>";
-									break 2;
-								}
-							}else{
-								$k++;
-							}
-						}	
-					}
-				} else{
-					$j++;
-				}
-			}
-		}
-	}
-	//get function of type function functionName(){}
-	for($i=0;$i<count($tokens);$i++){
-		$j = $i+1;
-		//if token is a function
-		if($tokens[$i][0] == 1){
-			while(1){
-				//if the token type is not a comment, whitespace, or line terminator, then
-				if(!token_is_whitespace($tokens[$j])){
-					if($tokens[$j][0] != '('){
-						//if the token is an open paren, we can assume that this is a function declaration.
-						$sum = sum_to_token($tokens,$i);
-						$length = function_length($i,$tokens);
-						$length +=1;
-						$end = $sum + $length;
-						$function_call_length = invocation_length($j, $tokens) + 1;
-						$function_header = substr($code, sum_to_token($tokens,$j), $function_call_length);
-						$function_start = sum_to_token($tokens,$j);
-						$substring = substr($code, $sum, $length); 
-						$function_nests[] = array(sum_to_token($tokens,$i), $end, $function_header);
-						$nested_within = array();
-						//generate function entry in function array
-						global $src_arg;
-						$function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $function_header, "filepath" => ''.$source);
-						//echo "function header = $function_header <br>";
-						//echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br> End: $end <br>Contents: $substring <br>Function header:$function_header!<br>Source File: $source<br><br>";
-						break;
-					}else{		
-						break;
-					}
-				}
-				else{
-					$j++;
-				}
-			}
-		}
-	}
+function function_identifier($sourcefile, $folderPath){
+	$source = substr($source, strlen($folderPath));
+	$code = file_get_contents($sourcefile);
+	$function_stats = identify_functions($code);
 	return $function_stats;
+}
+
+function identify_functions($code){
+    $tokens = get_tokens($code);
+    //echo "passed tokens";
+    $function_stats = array();
+    //list functions of type var fName = function(){}, and in a separate array, all variable declarations.
+    for($i=0;$i<count($tokens);$i++){
+        $j = $i+1;
+        if($tokens[$i][0] == J_VAR){
+            while(1){
+                //if the token type is not a comment, whitespace, or line terminator, then
+                if(!token_is_whitespace($tokens[$j])){
+                    //it needs to be an identifier
+                    if($tokens[$j][0] !== J_IDENTIFIER){
+                        //if it's not, we need to continue on our token list
+                        break;
+                    }
+                    //otherwise, check if it's a function.
+                    else{
+                        $num_equals = 0;
+                        //move on to next token
+                        $k = $j+1;
+                        while(1){
+                            //perform the comment, whitespace, or line terminator check again
+                            if(!token_is_whitespace($tokens[$k])){
+                                // check for equals var funcName =
+                                if($tokens[$k][0] == '=' && $num_equals>=1){
+                                    break 2;
+                                }else if($tokens[$k][0] == '=' && $num_equals<1){
+                                    $num_equals++;
+                                    //to next token
+                                    $k++;
+                                    continue;
+                                }
+                                if($tokens[$k][0] !== J_FUNCTION){
+                                    break 2;
+                                }else{
+                                    $sum = sum_to_token($tokens,$i);
+                                    $length = function_length($i,$tokens);
+                                    $function_start = sum_to_token($tokens,$j);
+
+                                    $length +=1;
+                                    $end = $sum + $length;
+                                    $substring = substr($code, $sum, $length +1);
+                                    $function_call_length = invocation_length($i, $tokens);
+                                    $function_call_length +=1;
+                                    $function_header = substr($code, sum_to_token($tokens,$i), $function_call_length);
+                                    //generate function entry for function array.
+                                    global $src_arg;
+                                    $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $function_header, "filepath" => ''. $sourcefile);
+                                    //echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br>End: $end <br>Contents: $substring <br>Function Header: $function_header<br>Source File: $source<br><br>";
+                                    break 2;
+                                }
+                            }else{
+                                $k++;
+                            }
+                        }
+                    }
+                } else{
+                    $j++;
+                }
+            }
+        }
+    }
+    //get function of type function functionName(){}
+    for($i=0;$i<count($tokens);$i++){
+        $j = $i+1;
+        //if token is a function
+        if($tokens[$i][0] == J_FUNCTION){
+            while(1){
+                //if the token type is not a comment, whitespace, or line terminator, then
+                if(!token_is_whitespace($tokens[$j])){
+                    if($tokens[$j][0] != '('){
+                        //if the token is an open paren, we can assume that this is a function declaration.
+                        $sum = sum_to_token($tokens,$i);
+                        $length = function_length($i,$tokens);
+                        $length +=1;
+                        $end = $sum + $length;
+                        $function_call_length = invocation_length($j, $tokens) + 1;
+                        $function_header = substr($code, sum_to_token($tokens,$j), $function_call_length);
+                        $function_start = sum_to_token($tokens,$j);
+                        $substring = substr($code, $sum, $length);
+                        $function_nests[] = array(sum_to_token($tokens,$i), $end, $function_header);
+                        $nested_within = array();
+                        //generate function entry in function array
+                        global $src_arg;
+                        $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" => $function_header, "filepath" => ''.$source);
+                        //echo "function header = $function_header <br>";
+                        //echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br> End: $end <br>Contents: $substring <br>Function header:$function_header!<br>Source File: $source<br><br>";
+                        break;
+                    }else{
+                        break;
+                    }
+                }
+                else{
+                    $j++;
+                }
+            }
+        }
+    }
+    return $function_stats;
 }
 
 function array_filter_recursive($input){ 
