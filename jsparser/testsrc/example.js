@@ -16,4 +16,8 @@ function main() {
     console.log("called 'add(...)'");
 
     arrayUsages();
+
+    var klas = new Class();
+klas.anotherMethod();
 	}
+

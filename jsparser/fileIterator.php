@@ -150,7 +150,7 @@ function variable_identifier($source, $fstring){
 									$var_header = $var_header = $tokens[$j][1];
 									//generate variable entry for variable array.
 									global $src_arg;
-									$variable_stats[] = array("src" =>$src_arg. $source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" =>$var_header, "filepath" => ''. $source);
+									$variable_stats[] = array("src" =>$src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $substring, "header" =>$var_header, "filepath" => ''. $source);
 									//echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br>End: $end <br>Contents: $substring <br>Var Header: $var_header<br><br>";
 									break 2;
 								}
@@ -278,9 +278,10 @@ function invocation_identifier($source,$file_array, $fstring){
 }
 
 function function_identifier($sourcefile, $folderPath){
+	$source = ''.$sourcefile;
 	$source = substr($source, strlen($folderPath));
 	$code = file_get_contents($sourcefile);
-	$function_stats = identify_functions($code);
+	$function_stats = identify_functions($code, $source);
 	return $function_stats;
 }
 
@@ -298,7 +299,7 @@ function extract_function_body($func_contents){
 	return $func_body;
 }
 
-function gather_functions_if_class($func_header, $func_contents){
+function gather_functions_if_class($func_header, $func_contents, $source){
 	//Look through functions inside classes and collect them as well.
 	//Assumption: if function name starts with an upper case character, it is a class. 
 	//This is not a language rule, but rather a JS convention.
@@ -308,7 +309,7 @@ function gather_functions_if_class($func_header, $func_contents){
 	if($start_char>='A' && $start_char<='Z'){
 		//function contents includes function header as well, and this leads to an infinite loop.
 		$func_body = extract_function_body($func_contents);
-		identify_functions($func_body);
+		identify_functions($func_body, $source);
 	}
 }
 
@@ -327,7 +328,7 @@ function extract_header($header_line){
 	return $function_name."()";
 }
 
-function identify_functions($code){
+function identify_functions($code, $source){
     $tokens = get_tokens($code);
 	    //echo "passed tokens";
     $function_stats = array();
@@ -377,7 +378,7 @@ function identify_functions($code){
                                     $function_header = extract_header($function_header_line);
                                     //generate function entry for function array.
                                     global $src_arg;
-                                    $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $function_contents, "header" => $function_header, "filepath" => ''. $sourcefile);
+                                    $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $function_contents, "header" => $function_header, "filepath" => ''. $source);
                                     //echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br>End: $end <br>Contents: $function_contents <br>Function Header: $function_header<br>Source File: $source<br><br>";
                                     gather_functions_if_class($function_header, $function_contents);
                                     break 2;

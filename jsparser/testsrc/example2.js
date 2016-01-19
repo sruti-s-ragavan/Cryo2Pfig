@@ -10,7 +10,9 @@ function Class(){
 	this.method = function(){
 		sayHi();
 	};
+	this.anotherMethod = function(){
+		for(var i=0; i<10; i++){
+			this.method();
+		}
+	}
 };
-
-var klas = new Class();
-klas.method();
