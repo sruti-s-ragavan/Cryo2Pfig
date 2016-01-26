@@ -18,6 +18,5 @@ function main() {
     arrayUsages();
 
     var klas = new Class();
-klas.anotherMethod();
-	}
-
+	klas.process();
+}

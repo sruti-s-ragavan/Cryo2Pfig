@@ -1,18 +1,33 @@
+function Printer(name){
+	this.name = name;
+
+	this.printHi = function(){
+		console.log("Hi, ", this.name);
+	}
+
+	this.printBye = function(){
+		console.log("Bye, ", this.name);
+	}
+}
+
 function sayHi() {
-    console.log("Hello, World!");
+    new Printer("James").printHi();
 }
 
 function sayBye() {
-    console.log("Bye, World!");
+    new Printer("James").printBye();
 }
 
+
 function Class(){
-	this.method = function(){
+	this.perItem = function(){
 		sayHi();
 	};
-	this.anotherMethod = function(){
+	this.process = function(){
 		for(var i=0; i<10; i++){
-			this.method();
+			this.perItem();
 		}
 	}
+	new Printer().printHi();
 };
+
