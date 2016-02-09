@@ -4,14 +4,44 @@ error_reporting(0);
 set_time_limit (0);
 ini_set('memory_limit','128M');
 ini_set("auto_detect_line_endings", true);
+
+function token_is_non_processed($token){
+	 return( $token[0] == J_COMMENT || token_is_white_space($token));
+}
+
+function token_is_white_space($token){
+	 return($token[0] == J_WHITESPACE || $token[0] == J_LINE_TERMINATOR );
+}
+
+function find_tokens_on_line($tokens, $line_number){
+	$x = 0;
+	$token_count = 0;
+	while($tokens[$x][2] < $line_number)
+		$x++;
+	while($tokens[$x][2] == $line_number){
+		if (!token_is_white_space($tokens[$x])){
+			$token_count++;
+		}
+		$x++;
+	}
+
+	return $token_count;
+}	
+
 function fix_comment_line_error($tokens, $j){
-	$comment_count = 0;
+	$comment_only_lines_count = 0;
+
+	// in a token; [0]: token type, [1]: content string, [2]: line [3]: column / char in line.
 	for($x = 0;$x<$j;$x++){
 		if($tokens[$x][0] == J_COMMENT && substr($tokens[$x][1], 0,2) == "//"){
-			$comment_count++;
+			$num_tokens_on_line = find_tokens_on_line($tokens, $tokens[$x][2]);
+			if($num_tokens_on_line == 1){
+				$comment_only_lines_count++;
+			}
 		}
 	}
-	return $comment_count;
+	
+	return $comment_only_lines_count;
 }
 //TODO: make this return inclusively
 //REMINDER: there is an incrementation later in the code that makes this inclusive. delete it.
@@ -76,10 +106,6 @@ function sum_to_token($tokens,$index){
 	return $sum;
 }
 
-//TODO: rename. not really checking only for whitespace.
-function token_is_whitespace($token){
-	 return( $token[0] == J_COMMENT || $token[0] == J_WHITESPACE || $token[0] == J_LINE_TERMINATOR );
-}
 function file_array($directory){
 
 	$file_array = array();
@@ -113,7 +139,7 @@ function variable_identifier($source, $fstring){
 		if($tokens[$i][0] == 3){
 			while(1){
 				//if the token type is not a comment, whitespace, or line terminator, then
-				if(!token_is_whitespace($tokens[$j])){
+				if(!token_is_non_processed($tokens[$j])){
 					//it needs to be an identifier
 					if($tokens[$j][0] !== J_IDENTIFIER){
 						//if it's not, we need to continue on our token list
@@ -126,7 +152,7 @@ function variable_identifier($source, $fstring){
 						$k = $j+1;	
 						while(1){
 							//perform the comment, whitespace, or line terminator check again
-							if(!token_is_whitespace($tokens[$k])){
+							if(!token_is_non_processed($tokens[$k])){
 								// check for equals var funcName =
 								if($tokens[$k][0] == '=' && $num_equals>=1){
 									break 2;
@@ -171,7 +197,7 @@ function variable_identifier($source, $fstring){
 										if($tokens[$l][1] == ';'){
 											break;
 										}
-										else if(!token_is_whitespace($tokens[$l])){
+										else if(!token_is_non_processed($tokens[$l])){
 											$substring = $substring . $tokens[$l][1];
 											$l++;
 										}else{
@@ -215,11 +241,10 @@ function invocation_identifier($source,$file_array, $fstring){
 	
 	for($i=0;$i<count($tokens);$i++){
 		$j = $i+1;
-		//if token is an identifier
 		if($tokens[$i][0] == J_IDENTIFIER){
 			while(1){
 				//if the token type is not a comment, whitespace, or line terminator, then
-				if(!token_is_whitespace($tokens[$j])){
+				if(!token_is_non_processed($tokens[$j])){
 					if($tokens[$j][0] == '('){
 						//check if this is the start of a function.
 						if($tID !== -1){
@@ -231,6 +256,7 @@ function invocation_identifier($source,$file_array, $fstring){
 						}
 						//if it's an open paren, we can tell that this is a call.
 						$sum = sum_to_token($tokens, $i);
+
 						$length = invocation_length($i,$tokens);
 						$length +=1;
 						$end = $sum + $length;
@@ -240,13 +266,12 @@ function invocation_identifier($source,$file_array, $fstring){
 						//print_r($line_by_line);
 						$comment_adjustment = fix_comment_line_error($tokens, $j);
 						
+						// var_dump($line_by_line);
+						// echo "Line number".$tokens[$i][2];
+						// echo "Comment lines".$comment_adjustment;
+						
 						//the -1 is for 0-indexing to fix an off-by-one error
-						$substring = $line_by_line[$tokens[$i][2] - $comment_adjustment - 1];
-						//echo $comment_count;
-						//echo $substring . ", token = ";
-						//print_r($tokens[$i]); 
-						//echo "<br>"; 
-						//$substring = substr($code, $sum, $length+1);
+						$substring = $line_by_line[$tokens[$i][2]-1];
 						
 						//get the name of the function call
 						$pos = strpos($call_header, "(");
@@ -269,7 +294,7 @@ function invocation_identifier($source,$file_array, $fstring){
 				}
 			}
 		}
-	if(!token_is_whitespace($tokens[$i])){
+	if(!token_is_non_processed($tokens[$i])){
 			$tID = $i;
 		}
 	}
@@ -338,7 +363,7 @@ function identify_functions($code, $source){
         if($tokens[$i][0] == J_VAR || $tokens[$i][0] == J_THIS){ 
             while(1){
             	//if the token type is not a comment, whitespace, or line terminator, then
-                if(!token_is_whitespace($tokens[$j]) && $tokens[$j][0] != '.'){
+                if(!token_is_non_processed($tokens[$j]) && $tokens[$j][0] != '.'){
                     //it needs to be an identifier
                     if($tokens[$j][0] !== J_IDENTIFIER){
                         //if it's not, we need to continue on our token list
@@ -351,7 +376,7 @@ function identify_functions($code, $source){
                         $k = $j+1;
                         while(1){
                             //perform the comment, whitespace, or line terminator check again
-                            if(!token_is_whitespace($tokens[$k])){
+                            if(!token_is_non_processed($tokens[$k])){
                                 // check for equals var funcName =
                                 if($tokens[$k][0] == '=' && $num_equals>=1){
                                     break 2;
@@ -401,7 +426,7 @@ function identify_functions($code, $source){
         if($tokens[$i][0] == J_FUNCTION){
             while(1){
                 //if the token type is not a comment, whitespace, or line terminator, then
-                if(!token_is_whitespace($tokens[$j])){
+                if(!token_is_non_processed($tokens[$j])){
                     if($tokens[$j][0] != '('){
                         //if the token is an open paren, we can assume that this is a function declaration.
                         $sum = sum_to_token($tokens,$i);
