@@ -809,7 +809,7 @@ def array_gen(fn):
     i=0
     if(os.path.isfile("fullAST.txt")==False):   
         
-        while(i<len(src_list)-4):
+        while(i<=len(src_list)-4):
             #print str(i) + src_list[i]
             p=multiprocessing.Process(target=get_array, args=(src_list[i], fn+'1.txt',))
             p.start()
@@ -820,9 +820,12 @@ def array_gen(fn):
             s=multiprocessing.Process(target=get_array, args=(src_list[i+3],fn+'4.txt',))
             s.start()
             p.join()
-            q.join()
-            r.join()
-            s.join()
+            if(i+1 < src_list):
+                q.join()
+            if(i+2 < src_list):
+                r.join()
+            if(i+3 < src_list):
+                s.join()
             i=i+4
         results = []
         f = open(fn+'1.txt', 'r')
