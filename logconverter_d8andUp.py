@@ -291,8 +291,10 @@ class Converter:
         new_event['action'] = 'Text selection offset'
         new_event['target'] = document_name
         sum = self.get_offset_position(document_name, line, column)
+
         if(sum == -1 or sum == None):
             print("document not found. setting offset to 0")
+            print document_name
             exit()
             new_event['referrer'] = 0
         else:
@@ -535,6 +537,7 @@ class Converter:
                 pass
             else:
                 call_list += item['invocations']
+
             #if(item['variables'] ==None):
                 #pass
             #else:
@@ -760,12 +763,14 @@ def get_array(dir, out_file):
             f = open(out_file,'a')
         dir_to_run = "./jsparser/src/hexcom/" + dir
         out = subprocess.check_output(["php", "./jsparser/fileIterator.php", dir_to_run])
+
         if(out_file):
             f.write(out)
             f.close()
         else:
             return out
-        #call(["php", "fileIterator.php", dir_to_run]);	
+
+        #call(["php", "fileIterator.php", dir_to_run]);
 def add_dir_to_miv(fn):
     #print "adding " + fn + " to miv"
     k = fn.rfind('/')
@@ -781,7 +786,7 @@ def add_dir_to_miv(fn):
     	doc_line_list.append(item)
     for item in new_data:
         miv_array.append(item)
-    #print "added " + fn + " to miv"
+
 def array_gen_single_folder(fn):
     k = fn.rfind('/')
     global miv_array
@@ -795,7 +800,7 @@ def array_gen_single_folder(fn):
             if(doc['file']  == item['file']):
                 doc_line_list[i] = item
                 break
-            i=i+1    
+            i=i+1
     for item in new_data:
         i=0
         for doc in miv_array:
@@ -804,7 +809,9 @@ def array_gen_single_folder(fn):
                     item['functions'][j]['start'] +=1
                     item['functions'][j]['end'] +=1
                 miv_array[i] = item
+
             i=i+1
+
 def array_gen(fn):
     i=0
     if(os.path.isfile("fullAST.txt")==False):   
@@ -820,11 +827,11 @@ def array_gen(fn):
             s=multiprocessing.Process(target=get_array, args=(src_list[i+3],fn+'4.txt',))
             s.start()
             p.join()
-            if(i+1 < src_list):
+            if(i+1 < len(src_list)):
                 q.join()
-            if(i+2 < src_list):
+            if(i+2 < len(src_list)):
                 r.join()
-            if(i+3 < src_list):
+            if(i+3 < len(src_list)):
                 s.join()
             i=i+4
         results = []
