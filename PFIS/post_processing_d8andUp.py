@@ -25,7 +25,7 @@ def resetGlobals():
     nav_list = []
     user = 'c4f2437e-6d7b-4392-b68c-0fa7348facbd'
     agent = '8ea5d9be-d1b5-4319-9def-495bdccb7f51'
-#Following code doesn't actually work...
+
 def add_navs_without_tso(source):
     def add_tso(source, timestamp,doc_path, time_elapsed):
         global id_tso
@@ -35,6 +35,8 @@ def add_navs_without_tso(source):
         c.execute(INSERT_QUERY, (id, user, timestamp, tso_string, doc_path, 0, agent, time_elapsed))
         id_tso +=1
         conn.commit()
+
+    print "Adding manual TSO..."
     conn = sqlite3.connect(source)
     c = conn.cursor()
 
@@ -90,7 +92,10 @@ def manualNavs(sourceFile, outputFile, navFile):
 
     def newJavaFile(timestamp, path, fileName, elapsed_time):
         global conn,c,agent, id
-        path = path+ '/' + fileName +  '.js'
+        path = path+ '/' + fileName + '.js'
+
+        print "Adding Header: ", path
+
         fakeHeader = path + ';.PFIGFileHeader()V'
         c.execute(INSERT_QUERY,
             (id, user, timestamp, "Method declaration", path, fakeHeader, agent, elapsed_time))
@@ -108,109 +113,21 @@ def manualNavs(sourceFile, outputFile, navFile):
     copyAndOpenDb(sourceFile, outputFile)
     readNewNavsFileIntoDb(navFile)
 
-def db_splitter(source, dest):
-    def create_db(dest):
-        if(not(os.path.exists(dest))):
-            os.makedirs(dest)
-        conn2 = sqlite3.connect(dest + '/db')
-        c2 = conn2.cursor()
-        c2.execute('create table logger_log("index" int(10), user varchar(50), timestamp varchar(50), action varchar(50), target varchar(50), referrer varchar(50), agent varchar(50));')
-        c2.close()
-
-    def insert_into_new(timestamp, dest, source, num):
-        create_db(dest)
-        conn = sqlite3.connect(source+'temp'+ num)
-        c = conn.cursor()
-        conn2 = sqlite3.connect(dest + '/db')
-        c2 = conn2.cursor()
-        rows_up_to_timestamp = c.execute('select * from logger_log where timestamp<=? order by timestamp', [timestamp])
-        for row in rows_up_to_timestamp:
-            c2.execute(INSERT_QUERY,[row[0],row[1],row[2],row[3],row[4],row[5],row[6], row[7]])
-        conn2.commit()
-        c2.close()
-
-
-    def fetch_all_text_selections_or_navs(source_db):
-        global conn, c, id, nav_list
-        conn = sqlite3.connect(source_db)
-        c = conn.cursor()
-        all_rows = c.execute("select * from logger_log where action = 'Text selection offset' order by timestamp;")
-        i=0
-        for row in all_rows:
-            i +=1
-            nav_list.append(row[2])
-            print "Making new DB " + str(i)
-
-    def create_db_until_each_nav(source, dest):
-        i=0
-        global nav_list
-        while(i<len(nav_list)):
-            print "multiprocessing "  + str(i);
-            p=multiprocessing.Process(target=insert_into_new, args=(nav_list[i], dest + '/nav' + str(i), source,'',))
-            p.start()
-            if i+1<len(nav_list):
-                q=multiprocessing.Process(target=insert_into_new, args=(nav_list[i+1], dest + '/nav' + str(i+1), source,'1',))
-                q.start()
-            if i+2<len(nav_list):
-                r=multiprocessing.Process(target=insert_into_new, args=(nav_list[i+2], dest + '/nav' + str(i+2), source,'2',))
-                r.start()
-            if i+3<len(nav_list):
-                s=multiprocessing.Process(target=insert_into_new, args=(nav_list[i+3], dest + '/nav' + str(i+3), source,'3',))
-                s.start()
-            if p:
-                p.join()
-                while (not(p.exitcode == 0)):
-                    os.remove(dest + '/nav' + str(i) + '/db')
-                    p=multiprocessing.Process(target=insert_into_new, args=(nav_list[i], dest + '/nav' + str(i), source,'',))
-                    p.start()
-                    p.join()
-            if q:
-                q.join()
-                while (not(q.exitcode == 0)):
-                    os.remove(dest + '/nav' + str(i+1) + '/db')
-                    q=multiprocessing.Process(target=insert_into_new, args=(nav_list[i+1], dest + '/nav' + str(i+1), source,'1',))
-                    q.start()
-                    q.join()
-            if r:
-                r.join()
-                while (not(r.exitcode == 0)):
-                    os.remove(dest + '/nav' + str(i+2) + '/db')
-                    r=multiprocessing.Process(target=insert_into_new, args=(nav_list[i+2], dest + '/nav' + str(i+2), source,'2',))
-                    r.start()
-                    r.join()
-            if s:
-                s.join()
-                while (not(s.exitcode == 0)):
-                    os.remove(dest + '/nav' + str(i+3) + '/db')
-                    s=multiprocessing.Process(target=insert_into_new, args=(nav_list[i+3], dest + '/nav' + str(i+3), source,'3',))
-                    s.start()
-                    s.join()
-            i=i+4
-    shutil.copyfile(source, source + 'temp')
-    shutil.copyfile(source, source + 'temp1')
-    shutil.copyfile(source, source + 'temp2')
-    shutil.copyfile(source, source + 'temp3')
-    fetch_all_text_selections_or_navs(source)
-    create_db_until_each_nav(source,dest)
-    os.remove(source + 'temp')
-    os.remove(source + 'temp1')
-    os.remove(source + 'temp2')
-    os.remove(source + 'temp3')
-
-def generate_predictions(inputDbFile, outputCsvFileName):
-    print "Calling PFIS"
+def generate_predictions(inputDbFile, outputFolder):
     projectRootDirectory = os.path.dirname(os.getcwd())
     sourceDirectory = os.path.join(projectRootDirectory, "jsparser/src")
+
+    print "Calling PFIS.. "
     subprocess.call(["python","pfis3/src/python/pfis3.py",
                          "-l", "JS",
                          "-s", "je.txt",
                          "-d", inputDbFile,
                          "-p", sourceDirectory,
-                         "-o", outputCsvFileName])
+                         "-o", outputFolder])
 
 def main():
     sourceFile = sys.argv[1]
-    outputCsvFileName = sourceFile + "_predictions.csv"
+    outputFolder = "results"
 
     #optional nav file argument for manual navigations
     if (len(sys.argv) > 2): #manual navs for expand tree folders
@@ -222,15 +139,14 @@ def main():
 
     print "Inserting manual TSO"
     add_navs_without_tso(sourceFile)
-    # print "Splitting Databases"
-    # db_splitter(sourceFile, splitDir)
 
     print "Generating Predictions ; Running PFIS"
-    generate_predictions(sourceFile, outputCsvFileName)
+    generate_predictions(sourceFile, outputFolder)
 
     print "Updating navigation types for analysis..."
-    navClassifier = NavigationClassifier(outputCsvFileName)
-    navClassifier.updateNavTypes()
+    pfisHistoryPath = os.path.join(outputFolder, "pfis_history.txt")
+    #navClassifier = NavigationClassifier(pfisHistoryPath)
+    # navClassifier.updateNavTypes()
 
 if __name__ == "__main__":
     main()
