@@ -658,9 +658,9 @@ class Converter:
                     new_events = self.check_keys(self.convert_tab_event(event, 'Part opened'),new_events)
                 elif event_type == 'deactivate-tab':
                     new_events = self.check_keys(self.convert_tab_event(event, 'Part deactivated'),new_events)
-                elif event_type == 'expand-workspace-tree-node':
-                    new_events = self.check_keys(self.convert_expand_workspace_tree_node_event(event),new_events)
-                    pass
+                # elif event_type == 'expand-workspace-tree-node':
+                #     new_events = self.check_keys(self.convert_expand_workspace_tree_node_event(event),new_events)
+                #     pass
                 elif event_type == 'change-cursor': 
                     #slightly increase the timestamp of the event to make sure that it's AFTER change and AFTER Method/Invocation stuff and AFTER Text selection
                     #print event['action-timestamp']
