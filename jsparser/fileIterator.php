@@ -276,19 +276,16 @@ function invocation_identifier($source,$file_array, $fstring){
 						//get the name of the function call
 						$pos = strpos($call_header, "(");
 						$invocation_name = substr($call_header, 0, $pos);
-						//echo $invocation_name;
+
 						global $src_arg;
 						$inv_path = get_invocation_full_path($invocation_name,$file_array,$source);
 						//add to call array
 						
-						$invocation_stats[] = array("src" => $src_arg.$source, 
-							"start" =>$sum, 
-							"length" => $length, 
-							"end" => $end, 
-							"contents" => $substring, 
-							"header" => $call_header, 
-							"filepath" => "".$source , 
-							"invsrc" => $inv_path);
+						global $src_arg;
+						$invocation_stats[] = array("src" => $src_arg.$source, "start" =>$sum, 
+							"length" => $length, "end" => $end, "contents" => $substring, 
+							"header" => $call_header, "filepath" => "".$source , 
+							"invsrc" => $src_arg.$inv_path);
 						//echo "<b>" . $tokens[$i][1]."</b> <br>Start: $sum<br>Length: $length<br> End: $end <br>Contents: $substring <br>Invocation header = $inv_path<br>";
 						
 						break;
@@ -477,23 +474,26 @@ function array_filter_recursive($input){
 } 
 function get_invocation_full_path($invocation_name, $file_array, $invocation_file_path){
 	//echo "<h1> fp = $invocation_file_path, name = $invocation_name</h1>";
-	$func_called = "JavaScript_standard;.";
-	
+	$func_called = ";.JavaScript_standard";
 	foreach($file_array as $f){
 		$func_list = $f["functions"];
 		for($i=0;$i<count($func_list);$i++){
+
+			$pos = strpos($func_list[$i]["header"], "(");
+			$func_name = substr($func_list[$i]["header"], 0, $pos);
+
 			$function_header = $func_list[$i]["header"];
 
-			$pos = strpos($function_header, "(");
-			$func_name = substr($function_header, 0, $pos);
-			if(strcmp($func_name, $invocation_name) === 0){
+			if(strcmp($func_name, $invocation_name) == 0){
+				
 				$fPath = $func_list[$i]["filepath"];
-				
 				$p = strpos($fPath, "".$invocation_file_path);
-				
+
 				if( $p!==FALSE){
-					global $src_arg;
-					return $src_arg. $fPath . ";.". $function_header;
+					return $func_list[$i]["filepath"] . ";.". $func_list[$i]["header"];				
+				}
+				else{
+					$func_called = $func_list[$i]["filepath"] . ";.". $func_list[$i]["header"];
 				}
 			}
 		}

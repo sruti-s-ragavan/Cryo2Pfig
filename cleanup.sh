@@ -1,7 +1,5 @@
-rm script
-git checkout file*
+rm file*
 git checkout jsparser/
 rm output*
-rm fullAST*
+#rm fullAST*
 
-rm -rf PFIS/temp_db
