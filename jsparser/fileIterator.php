@@ -5,6 +5,8 @@ set_time_limit (0);
 ini_set('memory_limit','128M');
 ini_set("auto_detect_line_endings", true);
 
+$JAVASCRIPT_STD = "JavaScript_standard;.";
+
 function token_is_non_processed($token){
 	 return( $token[0] == J_COMMENT || token_is_white_space($token));
 }
@@ -278,14 +280,20 @@ function invocation_identifier($source,$file_array, $fstring){
 						$invocation_name = substr($call_header, 0, $pos);
 
 						global $src_arg;
+						global $JAVASCRIPT_STD;
+
 						$inv_path = get_invocation_full_path($invocation_name,$file_array,$source);
+
+						if(strpos($inv_path, $JAVASCRIPT_STD) === false){
+							$inv_path = $src_arg.$inv_path;
+						}
 						//add to call array
 						
 						global $src_arg;
 						$invocation_stats[] = array("src" => $src_arg.$source, "start" =>$sum, 
 							"length" => $length, "end" => $end, "contents" => $substring, 
 							"header" => $call_header, "filepath" => "".$source , 
-							"invsrc" => $src_arg.$inv_path);
+							"invsrc" => $inv_path);
 						//echo "<b>" . $tokens[$i][1]."</b> <br>Start: $sum<br>Length: $length<br> End: $end <br>Contents: $substring <br>Invocation header = $inv_path<br>";
 						
 						break;
@@ -333,7 +341,7 @@ function gather_functions_if_class($func_header, $func_contents, $source){
 	//Look through functions inside classes and collect them as well.
 	//Assumption: if function name starts with an upper case character, it is a class. 
 	//This is not a language rule, but rather a JS convention.
-	//Otherwise, we can get into the nested function rabit hole very easily.
+	//Otherwise, we can get into the nested function rabbit hole very easily.
 
 	$start_char = $func_header[0];
 	if($start_char>='A' && $start_char<='Z'){
@@ -395,6 +403,7 @@ function identify_functions($code, $source){
                                 if($tokens[$k][0] !== J_FUNCTION){
                                     break 2;
                                 }else{
+                                	
                                 	$sum = sum_to_token($tokens,$i);
                                     $length = function_length($i,$tokens);
                                     $function_start = sum_to_token($tokens,$j);
@@ -408,7 +417,7 @@ function identify_functions($code, $source){
                                     $function_header = extract_header($function_header_line);
                                     //generate function entry for function array.
                                     global $src_arg;
-                                    $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $function_contents, "header" => $function_header, "filepath" => ''. $source);
+                                    $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $function_contents, "header" => $function_header, "filepath" => ''. $sourcefile);
                                     //echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br>End: $end <br>Contents: $function_contents <br>Function Header: $function_header<br>Source File: $source<br><br>";
                                     gather_functions_if_class($function_header, $function_contents);
                                     break 2;
@@ -436,13 +445,15 @@ function identify_functions($code, $source){
                         //if the token is an open paren, we can assume that this is a function declaration.
                         $sum = sum_to_token($tokens,$i);
                         $length = function_length($i,$tokens);
+                        $function_start = sum_to_token($tokens,$j);
+
                         $length +=1;
                         $end = $sum + $length;
                         $function_call_length = invocation_length($j, $tokens) + 1;
                         $function_header = substr($code, sum_to_token($tokens,$j), $function_call_length);
-                        $function_start = sum_to_token($tokens,$j);
                         $function_contents = substr($code, $sum, $length);
                         $function_nests[] = array(sum_to_token($tokens,$i), $end, $function_header);
+
                         $nested_within = array();
                         //generate function entry in function array
                         global $src_arg;
@@ -474,7 +485,8 @@ function array_filter_recursive($input){
 } 
 function get_invocation_full_path($invocation_name, $file_array, $invocation_file_path){
 	//echo "<h1> fp = $invocation_file_path, name = $invocation_name</h1>";
-	$func_called = ";.JavaScript_standard";
+	global $JAVASCRIPT_STD;
+
 	foreach($file_array as $f){
 		$func_list = $f["functions"];
 		for($i=0;$i<count($func_list);$i++){
@@ -486,19 +498,25 @@ function get_invocation_full_path($invocation_name, $file_array, $invocation_fil
 
 			if(strcmp($func_name, $invocation_name) == 0){
 				
-				$fPath = $func_list[$i]["filepath"];
-				$p = strpos($fPath, "".$invocation_file_path);
+				$declaration_file = $func_list[$i]["src"];
+				$declaration_nesting_path = $func_list[$i]["filepath"]; #yeah, the fields are not what they say
+				$function_header = $func_list[$i]["header"];
+				$fully_qualified_path = "";
 
-				if( $p!==FALSE){
-					return $func_list[$i]["filepath"] . ";.". $func_list[$i]["header"];				
+
+				if(strcmp($declaration_nesting_path, $declaration_file) == 0){
+					$fully_qualified_path = $declaration_file;
 				}
 				else{
-					$func_called = $func_list[$i]["filepath"] . ";.". $func_list[$i]["header"];
+					$fully_qualified_path = $declaration_file.$declaration_nesting_path;
 				}
+				return $fully_qualified_path.";.".$function_header;
 			}
 		}
 	}
-	return $func_called;
+
+	return $JAVASCRIPT_STD.$invocation_name."()";
+
 }
 function get_file_functions_array($file_name_array, $fstring){
 	
