@@ -1,6 +1,4 @@
 import os
-from os import listdir
-from os.path import isfile, join
 import sys
 import subprocess
 import multiprocessing
@@ -14,8 +12,8 @@ import sqlparse
 from sqlparse.sql import Parenthesis
 from sqlparse.sql import IdentifierList # instead of parsing by hand
 
-JS_STD_PREFIX = "JS_Std_lib/"
-JS_STD_REFERRER_STRING = 'JavaScript_standard;.'
+#other classes
+from fQNUtils import FQNUtils
 
 # CREATE TABLE logger_log ( id INTEGER IDENTITY, user VARCHAR(50), timestamp DATETIME, action VARCHAR(50), target VARCHAR, referrer VARCHAR, agent VARCHAR(50));
 # what each insert statement in pfig is made up of
@@ -57,7 +55,6 @@ def print_dict(to_print):
 def jsonprettyprint(event):
     
     print json.dumps(event,sort_keys=True, indent=4, separators=(',',':'))
-
 
 class TimeFormatConverter:
 
@@ -299,7 +296,7 @@ class Converter:
             new_event['referrer'] = 0
         else:
             new_event['referrer'] = sum
-        
+
         if(new_events == None):
             new_events = new_event
         else:
@@ -328,6 +325,7 @@ class Converter:
         new_event['referrer'] = os.path.basename(document_name)
 
         return new_event
+
     def get_offset_position(self, document_name, line, column):
         sum = 0    
  
@@ -374,46 +372,12 @@ class Converter:
             referrer += line
         f.close()
         new_event['referrer'] = referrer
-        
+
         #new_event['referrer'] = 'Cryolog does not capture what text is selected, only lines and columns of start and end positions' #figure out what text is selected
         if(new_events == None):
             new_events = new_event
         else:
             new_events.append(new_event)
-        return new_events
-
-    def convert_expand_workspace_tree_node_event(self, event):
-        def check_for_js(path,event,new_events):
-            files = [ f for f in listdir('./jsparser/src' + path) if isfile(join('./jsparser/src' + path,f)) ]
-            for file in files:
-                if(file[-3:] == '.js'):
-                    f_path = path+'/'+file
-                    fakeHeader = f_path + ';.pfigheader()V'
-                    new_event = self.new_event(event)
-                    new_event['action'] = "Method declaration"
-                    new_event['target'] = f_path
-                    new_event['referrer'] = fakeHeader
-                    new_events.append(new_event)
-                    new_event = self.new_event(event)
-                    new_event['action'] = "Method declaration offset"
-                    new_event['target'] = fakeHeader
-                    new_event['referrer'] = 0
-                    new_events.append(new_event)
-                    new_event = self.new_event(event)
-                    new_event['action'] = "Method declaration length"
-                    new_event['target'] = fakeHeader
-                    new_event['referrer'] = 0
-                    new_events.append(new_event)
-                    new_event = self.new_event(event)
-                    new_event['action'] = "Method declaration"
-                    new_event['target'] = fakeHeader
-                    #just the file.js part of the path
-                    new_event['referrer'] = path.rsplit('/')[-1]
-                    new_events.append(new_event)
-            return new_events
-        new_events = []
-        path = event['path']
-        new_events = check_for_js(path,event,new_events)
         return new_events
 
     def convert_start_logging_event(self, event):
@@ -456,33 +420,28 @@ class Converter:
             s = s.replace(",", "\",\"")
             return s
 
-        def getPFISFormatEvent(declaration_type, item, parentEventReferrer):
+        def getPFISFormatEvent(declaration_type, item, parentEventReferrer=None):
 
             # When JS std method is invoked, invsrc and hence referrer for method invocation is JS_STD_REFERRER_STRING.
             # We use it to prefix the target with JS_STD_PREFIX for all four Method Invocation (event, offset, length, scent) event-tuple.
 
-            def correctJSStandardInvocationTargets(event, parentEventReferrer):
-                if event['action'].startswith("Method invocation"):
-                    if event['referrer'] == JS_STD_REFERRER_STRING or parentEventReferrer == JS_STD_REFERRER_STRING:
-                        event['target'] = JS_STD_PREFIX + event['target']
-
-
             header = normalizer(item["header"])
             filepath = normalizer(item["src"])
-            if("invsrc" in item.keys()):
+            if "invsrc" in item.keys():
                 invsrc = normalizer(item["invsrc"])
             contents = normalizer(item["contents"])
 
+            methodFQN = FQNUtils.getFullMethodPath(filepath, header)
             if declaration_type == "Method declaration" or declaration_type == "Variable declaration":
-                target, referrer = (filepath, filepath + ";." + header)
+                target, referrer = (FQNUtils.getFullClassPath(filepath), methodFQN)
             elif declaration_type == "Method invocation":
-                target, referrer = (filepath + ';.'+ header, invsrc)
+                target, referrer = (methodFQN, invsrc)
             elif declaration_type.endswith("offset"):
-                target, referrer = (filepath + ';.' +header, item["start"])
+                target, referrer = (methodFQN, item["start"])
             elif declaration_type.endswith("length"):
-                target, referrer = (filepath + ';.' +header, item["length"])
+                target, referrer = (methodFQN, item["length"])
             elif declaration_type.endswith("scent"):
-                target, referrer = (filepath + ';.' +header, contents)
+                target, referrer = (methodFQN, contents)
             else:
                 raise ValueError("Unknown declaration type Value ", declaration_type)
 
@@ -491,7 +450,8 @@ class Converter:
             new_event['referrer'] = referrer
             new_event['target'] = target
 
-            correctJSStandardInvocationTargets(new_event, parentEventReferrer)
+            FQNUtils.correctJSStandardInvocationTargets(new_event, parentEventReferrer)
+            FQNUtils.addFQNPrefixForEvent(new_event)
 
             return new_event
 
@@ -500,11 +460,12 @@ class Converter:
             parentEventReferrer = None
 
             if(declaration_type == "Method declaration" or declaration_type == "Variable declaration"):
-                new_event = getPFISFormatEvent(declaration_type, item, parentEventReferrer)
+                new_event = getPFISFormatEvent(declaration_type, item)
                 new_events.append(new_event)
+                parentEventReferrer = new_event['referrer']
                 
             if(declaration_type == "Method invocation"):
-                new_event = getPFISFormatEvent(declaration_type, item, parentEventReferrer)
+                new_event = getPFISFormatEvent(declaration_type, item)
                 new_events.append(new_event)
                 parentEventReferrer = new_event['referrer']
                 

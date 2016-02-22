@@ -279,16 +279,8 @@ function invocation_identifier($source,$file_array, $fstring){
 						$pos = strpos($call_header, "(");
 						$invocation_name = substr($call_header, 0, $pos);
 
-						global $src_arg;
-						global $JAVASCRIPT_STD;
-
 						$inv_path = get_invocation_full_path($invocation_name,$file_array,$source);
 
-						if(strpos($inv_path, $JAVASCRIPT_STD) === false){
-							$inv_path = $src_arg.$inv_path;
-						}
-						//add to call array
-						
 						global $src_arg;
 						$invocation_stats[] = array("src" => $src_arg.$source, "start" =>$sum, 
 							"length" => $length, "end" => $end, "contents" => $substring, 
@@ -497,18 +489,20 @@ function get_invocation_full_path($invocation_name, $file_array, $invocation_fil
 			$function_header = $func_list[$i]["header"];
 
 			if(strcmp($func_name, $invocation_name) == 0){
-				
-				$declaration_file = $func_list[$i]["src"];
-				$declaration_nesting_path = $func_list[$i]["filepath"]; #yeah, the fields are not what they say
-				$function_header = $func_list[$i]["header"];
+				// full path of where function is declared, starting with \/hexcom
+				$src = $func_list[$i]["src"];
+				// if nested, the nesting path relative to $declaration_file, else relative path of file (js_v9\/main.js)
+				$filepath = $func_list[$i]["filepath"]; 
+				//function_name()
+				$header = $func_list[$i]["header"];
+
 				$fully_qualified_path = "";
 
-
-				if(strcmp($declaration_nesting_path, $declaration_file) == 0){
-					$fully_qualified_path = $declaration_file;
+				if(strpos($src, $filepath) === false){
+					$fully_qualified_path = $src.$filepath;
 				}
 				else{
-					$fully_qualified_path = $declaration_file.$declaration_nesting_path;
+					$fully_qualified_path = $src;
 				}
 				return $fully_qualified_path.";.".$function_header;
 			}
