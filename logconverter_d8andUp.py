@@ -420,10 +420,12 @@ class Converter:
             s = s.replace(",", "\",\"")
             return s
 
-        def getPFISFormatEvent(declaration_type, item, parentEventReferrer=None):
+        def getPFISFormatEvent(declaration_type, item, parentEvent=None):
 
             # When JS std method is invoked, invsrc and hence referrer for method invocation is JS_STD_REFERRER_STRING.
             # We use it to prefix the target with JS_STD_PREFIX for all four Method Invocation (event, offset, length, scent) event-tuple.
+
+            parentEventReferrer = parentEvent['referrer']
 
             header = normalizer(item["header"])
             filepath = normalizer(item["src"])
@@ -455,34 +457,75 @@ class Converter:
 
             return new_event
 
+        def get_event(event_type, target, referrer):
+            new_event = self.new_event(event)
+            new_event['action'] = event_type
+            new_event['referrer'] = referrer
+            new_event['target'] = target
+            return new_event
+
         def event_tuple_generate(new_events,self,item,event,declaration_type,document_name):
 
-            parentEventReferrer = None
-
+            new_event = None
             if(declaration_type == "Method declaration" or declaration_type == "Variable declaration"):
-                new_event = getPFISFormatEvent(declaration_type, item)
-                new_events.append(new_event)
-                parentEventReferrer = new_event['referrer']
-                
-            if(declaration_type == "Method invocation"):
-                new_event = getPFISFormatEvent(declaration_type, item)
-                new_events.append(new_event)
-                parentEventReferrer = new_event['referrer']
-                
-            offset_event_type = declaration_type + ' offset'
-            new_event = getPFISFormatEvent(offset_event_type, item, parentEventReferrer)
-            new_events.append(new_event)
 
-            length_event_type = declaration_type + ' length'
-            new_event = getPFISFormatEvent(length_event_type, item, parentEventReferrer)
-            new_events.append(new_event)
-            
-            if(declaration_type == "Method declaration" or declaration_type == "Method invocation"):
-                scent_event_type = declaration_type + ' scent'
-                new_event = getPFISFormatEvent(scent_event_type, item, parentEventReferrer)
+                header = normalizer(item["header"])
+                declaration_file = normalizer(item["src"])
+                methodFQN = FQNUtils.getFullMethodPath(declaration_file, header)
+                contents = normalizer(item["contents"])
+
+                new_event = get_event(declaration_type, FQNUtils.getFullClassPath(declaration_file), methodFQN)
+                FQNUtils.addFQNPrefixForEvent(new_event)
                 new_events.append(new_event)
-                
-            return new_events
+
+                offset_event_type = declaration_type + ' offset'
+                new_event = get_event(offset_event_type, methodFQN, item["start"])
+                FQNUtils.addFQNPrefixForEvent(new_event)
+                new_events.append(new_event)
+
+                length_event_type = declaration_type + ' length'
+                new_event = get_event(length_event_type, methodFQN, item["length"])
+                FQNUtils.addFQNPrefixForEvent(new_event)
+                new_events.append(new_event)
+
+                scent_event_type = declaration_type + ' scent'
+                new_event = get_event(scent_event_type, methodFQN, contents)
+                FQNUtils.addFQNPrefixForEvent(new_event)
+                new_events.append(new_event)
+
+                return new_events
+
+            if(declaration_type == "Method invocation"):
+
+                invocation_path_within_file = normalizer(item["filepath"])[1:]
+                invoking_file = normalizer(item["src"])
+                contents = normalizer(item["contents"])
+                invoked_method_fqn = normalizer(item["invsrc"])
+
+                #TODO: includes called method header too, needs to be removed
+                invoking_method_fqn = FQNUtils.getFullMethodPath(invoking_file, invocation_path_within_file)
+
+                new_event = get_event(declaration_type, invoking_method_fqn, invoked_method_fqn)
+                FQNUtils.addFQNPrefixForEvent(new_event)
+                new_events.append(new_event)
+
+                offset_event_type = declaration_type + ' offset'
+                new_event = get_event(offset_event_type, invoked_method_fqn, item["start"])
+                FQNUtils.addFQNPrefixForEvent(new_event)
+                new_events.append(new_event)
+
+                length_event_type = declaration_type + ' length'
+                new_event = get_event(length_event_type, invoked_method_fqn, item["length"])
+                FQNUtils.addFQNPrefixForEvent(new_event)
+                new_events.append(new_event)
+
+                scent_event_type = declaration_type + ' scent'
+                new_event = get_event(scent_event_type, invoked_method_fqn, contents)
+                FQNUtils.addFQNPrefixForEvent(new_event)
+                new_events.append(new_event)
+
+                return new_events
+
         
         new_events = []
         function_list = []
@@ -778,7 +821,7 @@ def array_gen(fn):
     if(os.path.isfile("fullAST.txt")==False):   
         
         while(i<=len(src_list)-4):
-            #print str(i) + src_list[i]
+            print str(i) + src_list[i]
             p=multiprocessing.Process(target=get_array, args=(src_list[i], fn+'1.txt',))
             p.start()
             q=multiprocessing.Process(target=get_array, args=(src_list[i+1],fn+'2.txt',))
