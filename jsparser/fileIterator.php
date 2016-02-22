@@ -5,7 +5,7 @@ set_time_limit (0);
 ini_set('memory_limit','128M');
 ini_set("auto_detect_line_endings", true);
 
-$JAVASCRIPT_STD = "JavaScript_standard;.";
+$JAVASCRIPT_STD = "JS_Std_lib";
 
 function token_is_non_processed($token){
 	 return( $token[0] == J_COMMENT || token_is_white_space($token));
@@ -262,8 +262,8 @@ function invocation_identifier($source,$file_array, $fstring){
 						$length = invocation_length($i,$tokens);
 						$length +=1;
 						$end = $sum + $length;
-						$call_header = substr($code, sum_to_token($tokens,$i), $length+1);
-						
+						$call_header = substr($code, sum_to_token($tokens,$i), $length);
+
 						$line_by_line = explode("\n", $code);
 						//print_r($line_by_line);
 						$comment_adjustment = fix_comment_line_error($tokens, $j);
@@ -286,6 +286,7 @@ function invocation_identifier($source,$file_array, $fstring){
 							"length" => $length, "end" => $end, "contents" => $substring, 
 							"header" => $call_header, "filepath" => "".$source , 
 							"invsrc" => $inv_path);
+
 						//echo "<b>" . $tokens[$i][1]."</b> <br>Start: $sum<br>Length: $length<br> End: $end <br>Contents: $substring <br>Invocation header = $inv_path<br>";
 						
 						break;
@@ -409,7 +410,9 @@ function identify_functions($code, $source){
                                     $function_header = extract_header($function_header_line);
                                     //generate function entry for function array.
                                     global $src_arg;
-                                    $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $function_contents, "header" => $function_header, "filepath" => ''. $sourcefile);
+                                    $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, 
+                                    	"length" => $length, "end" => $end, "contents" => $function_contents, 
+                                    	"header" => $function_header, "filepath" => "");
                                     //echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br>End: $end <br>Contents: $function_contents <br>Function Header: $function_header<br>Source File: $source<br><br>";
                                     gather_functions_if_class($function_header, $function_contents);
                                     break 2;
@@ -449,7 +452,13 @@ function identify_functions($code, $source){
                         $nested_within = array();
                         //generate function entry in function array
                         global $src_arg;
-                        $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, "length" => $length, "end" => $end, "contents" => $function_contents, "header" => $function_header, "filepath" => ''.$source);
+
+                        if (strcmp($source, "") === false){
+                        	echo "Empty sourcce : ".$src_arg.$source." ".$function_header;
+                        }
+                        $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, 
+                        	"length" => $length, "end" => $end, "contents" => $function_contents, 
+                        	"header" => $function_header, "filepath" => "");
                         //echo "function header = $function_header <br>";
                         //echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br> End: $end <br>Contents: $function_contents <br>Function header:$function_header!<br>Source File: $source<br><br>";
                         gather_functions_if_class($function_header, $function_contents);
@@ -486,8 +495,6 @@ function get_invocation_full_path($invocation_name, $file_array, $invocation_fil
 			$pos = strpos($func_list[$i]["header"], "(");
 			$func_name = substr($func_list[$i]["header"], 0, $pos);
 
-			$function_header = $func_list[$i]["header"];
-
 			if(strcmp($func_name, $invocation_name) == 0){
 				// full path of where function is declared, starting with \/hexcom
 				$src = $func_list[$i]["src"];
@@ -504,12 +511,12 @@ function get_invocation_full_path($invocation_name, $file_array, $invocation_fil
 				else{
 					$fully_qualified_path = $src;
 				}
-				return $fully_qualified_path.";.".$function_header;
+				return $fully_qualified_path.";.".$header;
 			}
 		}
 	}
 
-	return $JAVASCRIPT_STD.$invocation_name."()";
+	return $JAVASCRIPT_STD.";.".$invocation_name."()";
 
 }
 function get_file_functions_array($file_name_array, $fstring){
@@ -589,6 +596,13 @@ function nested_variables($file_array){
 	return $file_array;
 }
 
+function compare_by_key($a, $b, $key){
+	if($a[$key] == $b[$key]){
+		return 0;
+	}
+	return $a[$key] > $b[$key] ? 1 : -1;
+}
+
 function nested_invocations($file_array){
 	foreach($file_array as &$f){
 		$func_list = $f["functions"];
@@ -597,15 +611,22 @@ function nested_invocations($file_array){
 		// $fc = count($func_list);
 		// echo "var count = $c, func count = $fc";
 		for($i=0;$i<count($invoc_list);$i++){
+			$nesting_list = [];
 			for($j=0;$j<count($func_list);$j++){
 				//compare the function at $j with the invocation at $i
 				//echo "invocation start, end = " . $invoc_list[$i]["start"]. "," .$invoc_list[$i]["end"] . ", Function start, end = " . $func_list[$j]["start"] . ",". $func_list[$j]["end"] .  "<br>";
-				if($invoc_list[$i]["start"]>$func_list[$j]["start"]&&$invoc_list[$i]["end"]<$func_list[$j]["end"] ){
-					
-					$invoc_list[$i]["header"] =  $func_list[$j]["header"] . "/" . $invoc_list[$i]["header"];
-					$f["invocations"] =$invoc_list;
+				if($invoc_list[$i]["start"]>$func_list[$j]["start"]&&
+					$invoc_list[$i]["end"]<$func_list[$j]["end"] ){
+					array_push($nesting_list, $func_list[$j]);
 				}
 			}
+			usort($nesting_list, compare_by_key);
+			$header = "";
+			for($k=0; $k<count($nesting_list); $k++){
+				$header = "/".$nesting_list[$k]["header"];
+			}
+			$invoc_list[$i]["filepath"] = $header;
+			$f["invocations"] =$invoc_list;
 		}
 	}
 	return $file_array;
@@ -615,17 +636,19 @@ function nested_functions($file_array){
 	foreach($file_array as &$f){
 		$func_list = $f["functions"];
 		for($i=1;$i<count($func_list);$i++){
+			$nesting_path = "";
 			for($j=0;$j<$i;$j++){
-				
+
 				//compare the function at $j with the function at $i
 				//print_r( $func_list[$i]);
-				if($func_list[$i]["end"]<$func_list[$j]["end"]){
-					
-					//if the end of function i is before the end of function j;
-					//they are nested. it's already ordered because they're ordered 
-					//by start value.
-					$func_list[$i]["filepath"] .= "/". $func_list[$j]["header"];
+				if($func_list[$i]["start"] > $func_list[$j]["start"] 
+					and $func_list[$i]["end"]<$func_list[$j]["end"]){
+					$nesting_path = $nesting_path. "/". $func_list[$j]["header"];
 				}
+			}
+			//TODO: this could as might be made empty when there is no nesting, and then fix in other places
+			if(strcmp("", $nesting_path) !== false){
+				$func_list[$i]["filepath"] = $nesting_path;
 			}
 		}
 		$f["functions"] = $func_list;
