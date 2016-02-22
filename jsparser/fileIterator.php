@@ -596,11 +596,11 @@ function nested_variables($file_array){
 	return $file_array;
 }
 
-function compare_by_key($a, $b, $key){
-	if($a[$key] == $b[$key]){
+function compare_by_start_offset($a, $b){
+	if($a["start"] == $b["start"]){
 		return 0;
 	}
-	return $a[$key] > $b[$key] ? 1 : -1;
+	return $a["start"] > $b["start"] ? 1 : -1;
 }
 
 function nested_invocations($file_array){
@@ -615,18 +615,18 @@ function nested_invocations($file_array){
 			for($j=0;$j<count($func_list);$j++){
 				//compare the function at $j with the invocation at $i
 				//echo "invocation start, end = " . $invoc_list[$i]["start"]. "," .$invoc_list[$i]["end"] . ", Function start, end = " . $func_list[$j]["start"] . ",". $func_list[$j]["end"] .  "<br>";
-				if($invoc_list[$i]["start"]>$func_list[$j]["start"]&&
-					$invoc_list[$i]["end"]<$func_list[$j]["end"] ){
+				if($invoc_list[$i]["start"]> $func_list[$j]["start"]&&
+					$invoc_list[$i]["end"]< $func_list[$j]["end"] ){
 					array_push($nesting_list, $func_list[$j]);
 				}
 			}
-			usort($nesting_list, compare_by_key);
+			usort($nesting_list, "compare_by_start_offset");
 			$header = "";
 			for($k=0; $k<count($nesting_list); $k++){
-				$header = "/".$nesting_list[$k]["header"];
+				$header = $header."/".$nesting_list[$k]["header"];
 			}
 			$invoc_list[$i]["filepath"] = $header;
-			$f["invocations"] =$invoc_list;
+			$f["invocations"] = $invoc_list;
 		}
 	}
 	return $file_array;
