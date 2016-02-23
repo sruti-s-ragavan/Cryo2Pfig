@@ -123,7 +123,8 @@ def generate_predictions(inputDbFile, outputFolder):
                          "-s", "je.txt",
                          "-d", inputDbFile,
                          "-p", sourceDirectory,
-                         "-o", outputFolder])
+                         "-o", outputFolder,
+                        "-x", "algorithm-config.xml"])
 
 def main():
     sourceFile = sys.argv[1]
@@ -143,9 +144,9 @@ def main():
     print "Generating Predictions ; Running PFIS"
     generate_predictions(sourceFile, outputFolder)
 
-    print "Updating navigation types for analysis..."
-    pfisHistoryPath = os.path.join(outputFolder, "pfis_history.txt")
-    #navClassifier = NavigationClassifier(pfisHistoryPath)
+    # print "Updating navigation types for analysis..."
+    # pfisHistoryPath = os.path.join(outputFolder, "pfis_history.txt")
+    # navClassifier = NavigationClassifier(pfisHistoryPath)
     # navClassifier.updateNavTypes()
 
 if __name__ == "__main__":
