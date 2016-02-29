@@ -272,7 +272,7 @@ class Converter:
         """The event when someone clicks a different place in the code"""
         new_event = self.new_event(event)
         document_name = event['path']
-        position = event['position'] 
+        position = event['position']
         line = position['line'] 
         column = position['column'] 
         offset = 0
@@ -466,7 +466,6 @@ class Converter:
 
         def event_tuple_generate(new_events,self,item,event,declaration_type,document_name):
 
-            new_event = None
             if(declaration_type == "Method declaration" or declaration_type == "Variable declaration"):
 
                 header = normalizer(item["header"])
@@ -531,6 +530,18 @@ class Converter:
         function_list = []
         call_list = []
         var_dec_list = []
+
+        if event["event-type"] == "activate-tab":
+            #This happens in activate-tab right after open-document event -- on file open
+            # Open document event has this in event["cursor"], always at 1,1.
+            # This is done to add a nav to first location of file, that's where cursor goes on opening a file
+            event['position'] = {"line":1, "column":1}
+
+            text_selection_offset_to_first_character_of_file = self.convert_change_cursor_event(event);
+            new_events.append(text_selection_offset_to_first_character_of_file)
+
+        # Add declarations after nav to first location, only after nav can a person see what's in there.
+        # This is a PFIS assumption
         for item in miv_array:
              
             if(item['functions'] ==None):
