@@ -64,11 +64,14 @@ class TimeFormatConverter:
     def __init__(self, start_time):
         self.start_time = start_time
 
-    def convert_cryolog_to_pfis_time_fmt(self, cryolog_fmt_time_string):
+    def convert_cryolog_to_pfis_time_fmt(self, cryolog_fmt_time_string, increment_timestamp):
         # crylog time example format = '2014-04-01T20:43:06.803Z'
         generic_time = TimeFormatConverter.get_time_obj_from_cryo_fmt(cryolog_fmt_time_string)
 
         #PFIS3 format : 2010-01-25 00:00:00.000
+        if increment_timestamp:
+            generic_time = generic_time + datetime.timedelta(milliseconds=1)
+
         pfis3_time = generic_time.strftime(TimeFormatConverter.PFIS3_FORMAT)
         elapsed_time = generic_time - self.start_time
 
@@ -111,36 +114,7 @@ class Cryolog:
         event_types = set()
         for event in events:
             event_types.add(event['event-type'])
-
         return event_types
-'''there is a one-ms offset applied to all text-selection offset events to make sure that
-pfis records the first text selection after a newly opened document before the document opens,
-so that we aren't giving pfis more information than the participant sees. This function is to 
-offset the time of method invocations, declarations and their associated entries by the same amount,
-to be used if and only if this isn't the first time the file was opened. Hacky, I know.'''
-'''time format: 2015-04-21T18:43:29.684Z'''
-def sub_one_ms(timestamp):
-    time = timestamp
-    time2 = time
-    time2 = time2[0:20] + str(int(time2[20:23])-1).zfill(3) + time2[23:]
-    if(time2[20:23] =='-01'):
-        time2 = time2[0:20] + str(999) + time2[23:]
-        if(time[17:19] == '00'):
-            #replace 00 w/ 59
-            time2 = time2[0:17] + str(59) + time2[19:]
-            #propogate changes to minutes
-            if(time[14:16] == '00'):
-                #replace 00 w/ 59
-                time2 = time2[0:14] + str(59) + time2[16:]
-                #progogate changes to hours
-                time2 = time2[0:11] + str(int(time2[11:13])-1).zfill(2) + time2[13:]
-            #else we just need to sub 1 from m
-            else:
-                time2 = time2[0:14] + str(int(time2[14:16])-1).zfill(2) + time2[16:]
-        #else we just need to sub 1 from s
-        else:
-            time2 = time2[0:17] + str(int(time2[17:19])-1).zfill(2) + time2[19:]
-    return time2
 
 class Pfislog:
     """Represents a pfis log file. 
@@ -248,7 +222,7 @@ class Converter:
         self.current_document_name = ''
         self.current_document_ast_node_count = 0
 
-    def new_event(self, event):
+    def new_event(self, event, increment_timestamp=False):
         """Creates an event with a new id and initializes boilerplate variables."""
         new_event = dict()
         new_event['id'] = self.current_id
@@ -259,7 +233,7 @@ class Converter:
         elif('logged-timestamp' in event):
             cryolog_time = event['logged-timestamp']
 
-        pfis_time = self.time_converter.convert_cryolog_to_pfis_time_fmt(cryolog_time)
+        pfis_time = self.time_converter.convert_cryolog_to_pfis_time_fmt(cryolog_time, increment_timestamp)
         new_event['timestamp'] = pfis_time[0]
         new_event['elapsed_time'] = pfis_time[1]
         new_event['agent'] = PFIS_AGENT
@@ -420,45 +394,8 @@ class Converter:
             s = s.replace(",", "\",\"")
             return s
 
-        def getPFISFormatEvent(declaration_type, item, parentEvent=None):
-
-            # When JS std method is invoked, invsrc and hence referrer for method invocation is JS_STD_REFERRER_STRING.
-            # We use it to prefix the target with JS_STD_PREFIX for all four Method Invocation (event, offset, length, scent) event-tuple.
-
-            parentEventReferrer = parentEvent['referrer']
-
-            header = normalizer(item["header"])
-            filepath = normalizer(item["src"])
-            if "invsrc" in item.keys():
-                invsrc = normalizer(item["invsrc"])
-            contents = normalizer(item["contents"])
-
-            methodFQN = FQNUtils.getFullMethodPath(filepath, header)
-            if declaration_type == "Method declaration" or declaration_type == "Variable declaration":
-                target, referrer = (FQNUtils.getFullClassPath(filepath), methodFQN)
-            elif declaration_type == "Method invocation":
-                target, referrer = (methodFQN, invsrc)
-            elif declaration_type.endswith("offset"):
-                target, referrer = (methodFQN, item["start"])
-            elif declaration_type.endswith("length"):
-                target, referrer = (methodFQN, item["length"])
-            elif declaration_type.endswith("scent"):
-                target, referrer = (methodFQN, contents)
-            else:
-                raise ValueError("Unknown declaration type Value ", declaration_type)
-
-            new_event = self.new_event(event)
-            new_event['action'] = declaration_type
-            new_event['referrer'] = referrer
-            new_event['target'] = target
-
-            FQNUtils.correctJSStandardInvocationTargets(new_event, parentEventReferrer)
-            FQNUtils.addFQNPrefixForEvent(new_event)
-
-            return new_event
-
-        def get_event(event_type, target, referrer):
-            new_event = self.new_event(event)
+        def get_events_on_newly_opened_document(event_type, target, referrer):
+            new_event = self.new_event(event, increment_timestamp = True)
             new_event['action'] = event_type
             new_event['referrer'] = referrer
             new_event['target'] = target
@@ -473,22 +410,22 @@ class Converter:
                 methodFQN = FQNUtils.getFullMethodPath(declaration_file, header)
                 contents = normalizer(item["contents"])
 
-                new_event = get_event(declaration_type, FQNUtils.getFullClassPath(declaration_file), methodFQN)
+                new_event = get_events_on_newly_opened_document(declaration_type, FQNUtils.getFullClassPath(declaration_file), methodFQN)
                 FQNUtils.addFQNPrefixForEvent(new_event)
                 new_events.append(new_event)
 
                 offset_event_type = declaration_type + ' offset'
-                new_event = get_event(offset_event_type, methodFQN, item["start"])
+                new_event = get_events_on_newly_opened_document(offset_event_type, methodFQN, item["start"])
                 FQNUtils.addFQNPrefixForEvent(new_event)
                 new_events.append(new_event)
 
                 length_event_type = declaration_type + ' length'
-                new_event = get_event(length_event_type, methodFQN, item["length"])
+                new_event = get_events_on_newly_opened_document(length_event_type, methodFQN, item["length"])
                 FQNUtils.addFQNPrefixForEvent(new_event)
                 new_events.append(new_event)
 
                 scent_event_type = declaration_type + ' scent'
-                new_event = get_event(scent_event_type, methodFQN, contents)
+                new_event = get_events_on_newly_opened_document(scent_event_type, methodFQN, contents)
                 FQNUtils.addFQNPrefixForEvent(new_event)
                 new_events.append(new_event)
 
@@ -504,22 +441,22 @@ class Converter:
                 #TODO: includes called method header too, needs to be removed
                 invoking_method_fqn = FQNUtils.getFullMethodPath(invoking_file, invocation_path_within_file)
 
-                new_event = get_event(declaration_type, invoking_method_fqn, invoked_method_fqn)
+                new_event = get_events_on_newly_opened_document(declaration_type, invoking_method_fqn, invoked_method_fqn)
                 FQNUtils.addFQNPrefixForEvent(new_event)
                 new_events.append(new_event)
 
                 offset_event_type = declaration_type + ' offset'
-                new_event = get_event(offset_event_type, invoked_method_fqn, item["start"])
+                new_event = get_events_on_newly_opened_document(offset_event_type, invoked_method_fqn, item["start"])
                 FQNUtils.addFQNPrefixForEvent(new_event)
                 new_events.append(new_event)
 
                 length_event_type = declaration_type + ' length'
-                new_event = get_event(length_event_type, invoked_method_fqn, item["length"])
+                new_event = get_events_on_newly_opened_document(length_event_type, invoked_method_fqn, item["length"])
                 FQNUtils.addFQNPrefixForEvent(new_event)
                 new_events.append(new_event)
 
                 scent_event_type = declaration_type + ' scent'
-                new_event = get_event(scent_event_type, invoked_method_fqn, contents)
+                new_event = get_events_on_newly_opened_document(scent_event_type, invoked_method_fqn, contents)
                 FQNUtils.addFQNPrefixForEvent(new_event)
                 new_events.append(new_event)
 
@@ -535,7 +472,7 @@ class Converter:
             #This happens in activate-tab right after open-document event -- on file open
             # Open document event has this in event["cursor"], always at 1,1.
             # This is done to add a nav to first location of file, that's where cursor goes on opening a file
-            event['position'] = {"line":1, "column":1}
+            event['position'] = {"line":1, "column":0}
 
             text_selection_offset_to_first_character_of_file = self.convert_change_cursor_event(event);
             new_events.append(text_selection_offset_to_first_character_of_file)
