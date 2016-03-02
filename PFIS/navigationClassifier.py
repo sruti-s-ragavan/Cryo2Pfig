@@ -5,10 +5,10 @@ class NavigationClassifier:
     DESTINATION_VARIANT_NAME = "Current"
 
     #/hexcom/2014-05-26-10:18:35/js/view.js;.renderText(x"," y"," fontSize"," color"," text)
-    METHOD_TARGET_REGEX = re.compile(r'/hexcom/(.*?)/(.*?).js;.(.*?)\((.*?)')
+    METHOD_TARGET_REGEX = re.compile(r'L/hexcom/(.*?)/(.*?).js;.(.*?)\((.*?)')
 
     #/hexcom/Current/js_v9/view,UNKNOWN,0
-    UNKNOWN_TARGET_REGEX =  re.compile(r'/hexcom/(.*?)/(.*?),(UNKNOWN),(.*?)')
+    UNKNOWN_TARGET_REGEX =  re.compile(r'/hexcom/(.*?)/(.*?) at (.*?)')
 
     def __init__(self, csvPredictionFileName):
         self.fileName = csvPredictionFileName
@@ -32,33 +32,78 @@ class NavigationClassifier:
             else:
                 prevNav = self.navs[i - 1]
             self.updateBetweenVariantNav(nav, prevNav)
+            self.updatePredictionAccuracyParams(nav)
 
-    def updatePredictionAccuracyParams(self, row, nav):
+    def updatePredictionAccuracyParams(self, nav):
 
-        nav["accurate_variant"] = False
-        nav["accurate_file"] = False
-        nav["accurate_method"] = False
+        nav["accurate_variant"] = None
+        nav["accurate_file"] = None
+        nav["accurate_method"] = None
 
-        if(row[9] == "1"):
+        row = nav["prediction_row_array"]
+        if(row[2] != "999999"):
             #'[u\\'/hexcom/2014-05-26-09:30:45/js/view.js;.showModal(text"," secondaryText)\\']'
             REGEX = re.compile(r"\[u'(.*?)'\]")
-            match = REGEX.match(row[10])
+            match = REGEX.match(row[7])
             prediction = match.groups()[0]
             prediction_parts = self.getTargetPathParts(prediction)
             nav["accurate_variant"] = (prediction_parts[0].lower() == nav["variant_name"].lower())
             nav["accurate_file"] = (prediction_parts[1].lower() == nav["file_name"].lower())
-            nav["accurate_method"] = (prediction_parts[2].lower() == nav["method_name"].lower())
+
+            methodAccuracy= (prediction_parts[2].lower() == nav["method_name"].lower())
+
+            #This is because a.js;.pfigheader() is not same as b.hs;.pfigheader()
+            #But a.js;.render == b.js;.render because functions can be moved around
+            if methodAccuracy == True and "pfigheader" in prediction_parts[2].lower():
+                methodAccuracy = False
+
+            nav["accurate_method"] = methodAccuracy
+
+        self.__computeNavAccuracy(nav)
+        self.__updatePercentageBasedRanking(nav)
+
+
+    def __computeNavAccuracy(self, nav):
+        def accuracy(val, level):
+            if val == True:
+                return "Right"+ " "+ level
+            elif val == False:
+                return "Incorrect"+ " " + level
+            else:
+                return ''
+
+        variant = accuracy(nav["accurate_variant"], "variant")
+        file = accuracy(nav["accurate_file"], "file")
+        method = accuracy(nav["accurate_method"], "method")
+
+        accuracy_str = 'NA'
+        if variant != '' and file != '' and method != '':
+            accuracy_str =  variant + " " + file + " " + method
+        nav["accuracy"] = accuracy_str
+
+    def __updatePercentageBasedRanking(self,nav):
+        row = nav["prediction_row_array"]
+        rank = float(row[2])
+        out_of = float(row[3])
+        if out_of == 0:
+            nav["rank_percent"] = None
+        else:
+            nav["rank_percent"] = (rank / out_of) * 100.0
+
 
     def writeBackToCsv(self, fileHandle):
         fileHandle.write(self.headerRow)
 
         for nav in self.navs:
-            row = nav["prediction_row"] + "\t" \
+            rowString = self.arrayToTabSeparatedString(nav["prediction_row_array"])
+            row = rowString + "\t" \
                              + str(nav["is_destination_variant"]) + "\t" \
                              + str(nav["is_between_variant"]) + "\t" \
                             + str(nav["accurate_variant"]) + "\t" \
                             + str(nav["accurate_file"]) + "\t" \
-                            + str(nav["accurate_method"]) + "\n"
+                            + str(nav["accurate_method"]) + "\t" \
+                            + str(nav["rank_percent"]) + "\t" \
+                            + str(nav["accuracy"]) + "\n"
             fileHandle.write(row)
 
     def arrayToTabSeparatedString(self, array):
@@ -70,7 +115,8 @@ class NavigationClassifier:
         headerRowArray = reader.next() #skips header row
         self.headerRow = self.arrayToTabSeparatedString(headerRowArray) + "\t" + \
                          "Dest Variant?" + "\t" + "Bet variant?" + "\t" + \
-                         "Right variant?" + "\t" + "Right file?" + "\t" + "Right method?" + "\n"
+                         "Right variant?" + "\t" + "Right file?" + "\t" +\
+                         "Right method?" + "\t" + "Rank %" + "\t" + " Accuracy Level"+  "\n"
 
         navs = []
         for row in reader:
@@ -89,16 +135,15 @@ class NavigationClassifier:
             "method_name": parts[2],
             "target": fullyQualifiedLocation,
             "is_destination_variant": parts[0] == self.DESTINATION_VARIANT_NAME,
-            "prediction_row" : self.arrayToTabSeparatedString(row)
+            "prediction_row_array": row
         }
 
-        self.updatePredictionAccuracyParams(row, nav)
         return nav
 
     def getTargetPathParts(self, target):
 
         METHOD_REGEX = re.compile('(.*?)/([a-z|A-Z]+)')
-        if target.__contains__("UNKNOWN"):
+        if target.__contains__(" at "):
             regex = NavigationClassifier.UNKNOWN_TARGET_REGEX
         else:
             regex = NavigationClassifier.METHOD_TARGET_REGEX
