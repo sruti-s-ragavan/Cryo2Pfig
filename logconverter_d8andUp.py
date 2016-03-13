@@ -202,15 +202,17 @@ class Converter:
     """
     def check_doc_opened(self,event,document_name):
         new_events = []
+
         global opened_doc_list
         if(document_name in opened_doc_list):
-            return
+            return None
         if(document_name[-2:] !='js'):
-            return 
+            return None
         else:
             opened_doc_list.append(document_name)
             new_events = self.convert_open_document_event(event,document_name)
             return new_events
+
     def __init__(self, timeConverter):
         self.current_id = 1
         self.time_converter = timeConverter
@@ -468,19 +470,10 @@ class Converter:
         call_list = []
         var_dec_list = []
 
-        if event["event-type"] == "activate-tab":
-            #This happens in activate-tab right after open-document event -- on file open
-            # Open document event has this in event["cursor"], always at 1,1.
-            # This is done to add a nav to first location of file, that's where cursor goes on opening a file
-            event['position'] = {"line":1, "column":0}
-
-            text_selection_offset_to_first_character_of_file = self.convert_change_cursor_event(event);
-            new_events.append(text_selection_offset_to_first_character_of_file)
-
         # Add declarations after nav to first location, only after nav can a person see what's in there.
         # This is a PFIS assumption
         for item in miv_array:
-             
+
             if(item['functions'] ==None):
                 pass
             else:
@@ -498,12 +491,12 @@ class Converter:
         for item in function_list:
             if(item['src']==document_name):
                 new_events = event_tuple_generate(new_events,self,item,event,declaration_type,document_name)
-            
+
         declaration_type = 'Method invocation'
         for item in call_list:
             if(item['src']==document_name):
                 new_events = event_tuple_generate(new_events,self,item,event,declaration_type,document_name)
-            
+
         declaration_type = 'Variable declaration'
         for item in var_dec_list:
             if(item['src']==document_name):
@@ -516,7 +509,7 @@ class Converter:
         new_events = []
         paths = event['paths']
         #paths = paths.replace('/', '\\')
-        
+
         for path in paths:
             new_event = self.new_event(event)
             new_event['action'] = 'Package Explorer tree selection'
@@ -544,8 +537,8 @@ class Converter:
 
             new_events.append(new_event)
         return new_events
-        
-    def check_keys(self,new, new_events):
+
+    def append_event(self, new, new_events):
         if new == None:
             return None
         elif 'target' in new:
@@ -556,7 +549,7 @@ class Converter:
 
     def convert_cryolog_to_pfislog(self, cryolog):
         """Iterates through cryolog events and calls the approprate converter
-        functions for each type of event. 
+        functions for each type of event.
         These map to every type of event that we are converting.
         """
         new_events = []
@@ -573,11 +566,16 @@ class Converter:
             else:
                 event_type = event['event-type']
                 if event_type == 'activate-tab':
-                    new_events = self.check_keys(self.convert_tab_event(event, 'Part activated'),new_events)
+                    self.append_event(self.convert_tab_event(event, 'Part activated'), new_events)
+
                     if('path' in event.keys() and "[B]" not in event['path']):
-                        n = self.check_doc_opened(event,event['path'])
-                        if n:
-                            new_events = self.check_keys(n, new_events)
+                        event['position'] = {"line":1, "column":0}
+                        new_events = self.append_event(self.convert_change_cursor_event(event), new_events)
+
+                        new_doc_events = self.check_doc_opened(event,event['path'])
+                        if new_doc_events:
+                            new_events = self.append_event(new_doc_events, new_events)
+
                 elif event_type == 'change-document':
                     if(event['syntax'] in ['text','css', 'html']):
                         pass
@@ -595,21 +593,21 @@ class Converter:
                                 text = text + "\n" + line
                         line = event['start']['line']
                         column = event['start']['column']
-                        new_events = self.check_keys(self.convert_change_document_event(event),new_events)
+                        new_events = self.append_event(self.convert_change_document_event(event), new_events)
                         update_file(document_name, action, text, line, column)
                         array_gen_single_folder(event['path'])
                         #slightly increase the timestamp of the event to make sure that it's AFTER change and BEFORE text selection/offset
                         #event['action-timestamp'] = event['action-timestamp'][:-1]+'3'+event['action-timestamp'][-1:]
-                        new_events = self.check_keys(self.convert_open_document_event(event,document_name),new_events)
+                        new_events = self.append_event(self.convert_open_document_event(event, document_name), new_events)
                 elif event_type == 'copy-workspace-directory':
                     copy_dir(event['paths'][0], event['paths'][1])
                     add_dir_to_miv(event['paths'][1])
                 elif event_type == 'close-tab':
-                    new_events = self.check_keys(self.convert_tab_event(event, 'Part closed'),new_events)
+                    new_events = self.append_event(self.convert_tab_event(event, 'Part closed'), new_events)
                 elif event_type == 'create-tab':
-                    new_events = self.check_keys(self.convert_tab_event(event, 'Part opened'),new_events)
+                    new_events = self.append_event(self.convert_tab_event(event, 'Part opened'), new_events)
                 elif event_type == 'deactivate-tab':
-                    new_events = self.check_keys(self.convert_tab_event(event, 'Part deactivated'),new_events)
+                    new_events = self.append_event(self.convert_tab_event(event, 'Part deactivated'), new_events)
                 # elif event_type == 'expand-workspace-tree-node':
                 #     new_events = self.check_keys(self.convert_expand_workspace_tree_node_event(event),new_events)
                 #     pass
@@ -618,15 +616,15 @@ class Converter:
                     #print event['action-timestamp']
                     #event['action-timestamp'] = event['action-timestamp'][:-1]+'2'+event['action-timestamp'][-1:]
                     #print event['action-timestamp']
-                    new_events = self.check_keys(self.convert_change_cursor_event(event),new_events)
+                    new_events = self.append_event(self.convert_change_cursor_event(event), new_events)
                 elif event_type == 'change-selection':
                     #slightly increase the timestamp of the event to make sure that it's AFTER change and AFTER Method/Invocation stuff and BEFORE Text selection offset
                    # event['action-timestamp'] = event['action-timestamp'][:-1]+'1'+event['action-timestamp'][-1:]
-                    new_events = self.check_keys(self.convert_change_selection_event(event),new_events)
+                    new_events = self.append_event(self.convert_change_selection_event(event), new_events)
                 elif event_type == 'select-workspace-tree-nodes':
-                    new_events = self.check_keys(self.convert_select_workspace_tree_nodes_event(event),new_events)
+                    new_events = self.append_event(self.convert_select_workspace_tree_nodes_event(event), new_events)
                 elif event_type == 'start-logging':
-                    new_events = self.check_keys(self.convert_start_logging_event(event),new_events)
+                    new_events = self.append_event(self.convert_start_logging_event(event), new_events)
                 elif event_type == 'update-workspace-tree':
                     # commenting out package explorer stuff
                     #new_events = self.check_keys(self.convert_update_workspace_tree_event(event),new_events)
@@ -859,6 +857,3 @@ if __name__ == '__main__':
     pfislog = converter.convert_cryolog_to_pfislog(cryolog)
     pfislog.export_to_file(sys.argv[3])
     create_db(sys.argv[3])
-
-
-
