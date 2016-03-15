@@ -259,7 +259,8 @@ class Converter:
         #add one millisecond from time if this is the first time a document has been opened.
         #This is because there is no initial text selection event upon opening a file, so this navigation occurs AFTER the particpant sees the methods, etc.
         if(doc_curr_len > doc_prev_len):
-            new_event['timestamp'] = str(datetime.datetime.strptime(new_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(milliseconds = +1))+'000'
+            new_event['timestamp'] = str(datetime.datetime.strptime(new_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") +
+                                         datetime.timedelta(microseconds=50))+'000'
         new_event['referrer'] = offset
         new_event['action'] = 'Text selection offset'
         new_event['target'] = document_name
