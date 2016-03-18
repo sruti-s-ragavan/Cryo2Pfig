@@ -98,8 +98,11 @@ def main():
 
     print "Updating navigation types for analysis..."
     pfisHistoryPath = os.path.join(outputFolder, "pfis_history_spread2.txt")
-    navClassifier = NavigationClassifier(pfisHistoryPath)
-    navClassifier.updateNavTypes()
+    if os.path.isfile(pfisHistoryPath):
+        navClassifier = NavigationClassifier(pfisHistoryPath)
+        navClassifier.updateNavTypes()
+    else:
+        print "No predictions file found!!!"
 
 if __name__ == "__main__":
     main()
