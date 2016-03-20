@@ -1,11 +1,13 @@
 import re
 import csv
+import json
 
 class NavigationClassifier:
     DESTINATION_VARIANT_NAME = "Current"
 
     #/hexcom/2014-05-26-10:18:35/js/view.js;.renderText(x"," y"," fontSize"," color"," text)
-    METHOD_TARGET_REGEX = re.compile(r'L/hexcom/(.*?)/(.*?).js;.(.*?)\((.*?)')
+    #L/hexcom/Current/js_v9/Hex.js/Hex(sideLength);.rotate() -- nested methods
+    METHOD_TARGET_REGEX = re.compile(r'L/hexcom/(.*?)/(.*?).js(.*?);.(.*?)\((.*?)')
 
     #/hexcom/Current/js_v9/view,UNKNOWN,0
     UNKNOWN_TARGET_REGEX =  re.compile(r'/hexcom/(.*?)/(.*?) at (.*?)')
@@ -43,9 +45,8 @@ class NavigationClassifier:
         row = nav["prediction_row_array"]
         if(row[2] != "999999"):
             #'[u\\'/hexcom/2014-05-26-09:30:45/js/view.js;.showModal(text"," secondaryText)\\']'
-            REGEX = re.compile(r"\[u'(.*?)'\]")
-            match = REGEX.match(row[7])
-            prediction = match.groups()[0]
+            predictions = eval(row[7])
+            prediction = str(predictions[0])
             prediction_parts = self.getTargetPathParts(prediction)
             nav["accurate_variant"] = (prediction_parts[0].lower() == nav["variant_name"].lower())
             nav["accurate_file"] = (prediction_parts[1].lower() == nav["file_name"].lower())
@@ -143,21 +144,28 @@ class NavigationClassifier:
     def getTargetPathParts(self, target):
 
         METHOD_REGEX = re.compile('(.*?)/([a-z|A-Z]+)')
-        if target.__contains__(" at "):
+
+        isNavToUnknownTarget = target.__contains__(" at ")
+        if isNavToUnknownTarget:
             regex = NavigationClassifier.UNKNOWN_TARGET_REGEX
         else:
             regex = NavigationClassifier.METHOD_TARGET_REGEX
 
         match = regex.match(target)
         groups = match.groups()
-        variantName = groups[0]
-        fullyQualifiedFileName = groups[1]
-        methodName = groups[2]
 
-        if fullyQualifiedFileName.__contains__("/"):
+        variantName = groups[0]
+
+        fullyQualifiedFileName = groups[1]
+        if fullyQualifiedFileName.__contains__("/"): #Can be "js_v9/Hex.js" -- get just file name
             fileName = METHOD_REGEX.match(fullyQualifiedFileName).groups()[1]
         else:
             fileName = fullyQualifiedFileName
+
+        if isNavToUnknownTarget:
+            methodName = ''
+        else:
+            methodName = groups[3]
 
         return (variantName, fileName, methodName)
 

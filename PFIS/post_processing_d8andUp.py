@@ -85,7 +85,7 @@ def main():
     sourceFile = sys.argv[1]
     outputFolder = "results"
 
-    #optional nav file argument for manual navigations
+    # optional nav file argument for manual navigations
     if (len(sys.argv) > 2): #manual navs for expand tree folders
         navFile = sys.argv[2];
         newDbFile = sourceFile + "_new_"
@@ -97,12 +97,15 @@ def main():
     generate_predictions(sourceFile, outputFolder)
 
     print "Updating navigation types for analysis..."
-    pfisHistoryPath = os.path.join(outputFolder, "pfis_history_spread2.txt")
-    if os.path.isfile(pfisHistoryPath):
+
+    all_files = os.listdir(outputFolder)
+    prediction_files = [f for f in all_files if f.endswith(".txt")]
+
+    for prediction_file in prediction_files:
+        print "Adding extra details to: ", prediction_file
+        pfisHistoryPath = os.path.join(outputFolder, prediction_file)
         navClassifier = NavigationClassifier(pfisHistoryPath)
         navClassifier.updateNavTypes()
-    else:
-        print "No predictions file found!!!"
 
 if __name__ == "__main__":
     main()
