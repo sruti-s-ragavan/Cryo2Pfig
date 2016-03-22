@@ -85,14 +85,6 @@ def main():
     sourceFile = sys.argv[1]
     outputFolder = "results"
 
-    # optional nav file argument for manual navigations
-    if (len(sys.argv) > 2): #manual navs for expand tree folders
-        navFile = sys.argv[2];
-        newDbFile = sourceFile + "_new_"
-        print "Inserting Manual Navigations"
-        manualNavs(sourceFile,newDbFile, navFile)
-        sourceFile = newDbFile
-
     print "Generating Predictions ; Running PFIS"
     generate_predictions(sourceFile, outputFolder)
 
