@@ -1,5 +1,5 @@
 --C07
-UPDATE logger_log where referrer = referrer -1 where action = 'Text selection offset' and referrer > 0;
+UPDATE logger_log SET referrer = referrer -1 where action = 'Text selection offset' and referrer > 0;
 --End of C07
 
 --D09
