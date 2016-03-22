@@ -31,6 +31,8 @@ class FQNUtils:
 
     @staticmethod
     def getFullMethodPath(filepath, header):
+        if header == '': #This happens when a call site is not another method body -- JS specific!
+            return FQNUtils.getFullClassPath(filepath)
         return FQNUtils.getFullClassPath(filepath) + "." + header
 
     @staticmethod
