@@ -19,6 +19,10 @@ INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93', '2015-0
  'checking.js', '/hexcom/Current/js_v9/checking.js', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '0:24:34.559000');
 INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93', '2015-07-28 00:52:33.666000', 'Text selection offset', 
 '/hexcom/Current/js_v9/checking.js', '0', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '0:24:34.759000');
-
 commit
 -- end of D13
+
+--D12
+update logger_log set referrer = '1229' where timestamp = '2015-06-11 21:04:49.723050000'
+-- End of d12
+
