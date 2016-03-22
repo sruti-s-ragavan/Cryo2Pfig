@@ -4,10 +4,10 @@
 		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="false">
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
-			fileName="undirected_call_graph.txt" enabled="false" includeTop="true">
+			fileName="undirected_call_graph.txt" enabled="true" includeTop="true">
 		</algorithm>
 		<algorithm class="Frequency" name="Frequency"
-			fileName="frequency.txt" enabled="false" includeTop="true">
+			fileName="frequency.txt" enabled="true" includeTop="true">
 		</algorithm>
 		<algorithm class="PFIS" name="PFIS with history, spread 2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="false" includeTop="true">
@@ -23,22 +23,22 @@
 			enabled="true" fileName="pfis_no_history_spread100.txt" numSpread="100" includeTop="true">
 		</algorithm>
 		<algorithm class="PFISTouchOnce" name="PFIS 1 Touch with history"
-			enabled="false" fileName="pfis_touch_once_with_history.txt" history="false" includeTop="true">
+			enabled="true" fileName="pfis_touch_once_with_history.txt" history="false" includeTop="true">
 		</algorithm>
 		<algorithm class="PFISTouchOnce" name="PFIS 1 Touch without history"
-			enabled="false" fileName="pfis_touch_once_no_history.txt" includeTop="true">
+			enabled="true" fileName="pfis_touch_once_no_history.txt" includeTop="true">
 		</algorithm>
 		<algorithm class="Recency" name="Recency"
-			enabled="false" fileName="recency.txt" includeTop="true">
+			enabled="true" fileName="recency.txt" includeTop="true">
 		</algorithm>
 		<algorithm class="SourceTopology" name="Source Topology"
-			enabled="false" fileName="source_topology.txt" includeTop="true">
+			enabled="true" fileName="source_topology.txt" includeTop="true">
 		</algorithm>
 		<algorithm class="TFIDF" name="TF-IDF (method)"
-			enabled="false" fileName="tfidf.txt" includeTop="true">
+			enabled="true" fileName="tfidf.txt" includeTop="true">
 		</algorithm>
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
-			enabled="false" fileName="working_set.txt" includeTop="true">
+			enabled="true" fileName="working_set.txt" includeTop="true">
 		</algorithm>
 	</algorithms>
 </options>
