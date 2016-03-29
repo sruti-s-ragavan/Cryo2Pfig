@@ -74,7 +74,8 @@ def generate_predictions(inputDbFile, outputFolder):
                          "-d", inputDbFile,
                          "-p", sourceDirectory,
                          "-o", outputFolder,
-                        "-x", "algorithm-config.xml"])
+                        "-x", "algorithm-config.xml",
+                        "-n", os.path.join(outputFolder,"top-predictions")])
 
 def copyDatabase(dbpath, newdbpath):
     print "Making a working copy of the database..."
@@ -88,16 +89,16 @@ def main():
     print "Generating Predictions ; Running PFIS"
     generate_predictions(sourceFile, outputFolder)
 
-    print "Updating navigation types for analysis..."
-
-    all_files = os.listdir(outputFolder)
-    prediction_files = [f for f in all_files if f.endswith(".txt")]
-
-    for prediction_file in prediction_files:
-        print "Adding extra details to: ", prediction_file
-        pfisHistoryPath = os.path.join(outputFolder, prediction_file)
-        navClassifier = NavigationClassifier(pfisHistoryPath)
-        navClassifier.updateNavTypes()
+    # print "Updating navigation types for analysis..."
+    #
+    # all_files = os.listdir(outputFolder)
+    # prediction_files = [f for f in all_files if f.endswith(".txt")]
+    #
+    # for prediction_file in prediction_files:
+    #     print "Adding extra details to: ", prediction_file
+    #     pfisHistoryPath = os.path.join(outputFolder, prediction_file)
+    #     navClassifier = NavigationClassifier(pfisHistoryPath)
+    #     navClassifier.updateNavTypes()
 
 if __name__ == "__main__":
     main()

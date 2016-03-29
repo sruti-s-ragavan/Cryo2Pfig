@@ -1,44 +1,34 @@
 <?xml version="1.0"?>
 <options>
 	<algorithms>
-		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="false">
+		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true"
+		includeTop="false" numTopPredictions="1">
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
-			fileName="undirected_call_graph.txt" enabled="true" includeTop="true">
+			fileName="undirected_call_graph.txt" enabled="true" includeTop="false" numTopPredictions="1">
 		</algorithm>
 		<algorithm class="Frequency" name="Frequency"
-			fileName="frequency.txt" enabled="true" includeTop="true">
+			fileName="frequency.txt" enabled="true" includeTop="false" numTopPredictions="1">
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS with history, spread 2"
-			enabled="true" fileName="pfis_history_spread2.txt" history="false" includeTop="true">
+		<algorithm class="PFIS" name="PFIS with history, spread 50"
+			enabled="true" fileName="pfis_history_spread50.txt" history="true"
+			numSpread="100" includeTop="false" numTopPredictions="1">
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS without history, spread 2"
-			enabled="true" fileName="pfis_no_history_spread2.txt" includeTop="true">
-		</algorithm>
-		<algorithm class="PFIS" name="PFIS with history, spread 100"
-			enabled="true" fileName="pfis_history_spread100.txt" history="false"
-			numSpread="100" includeTop="true">
-		</algorithm>
-		<algorithm class="PFIS" name="PFIS without history, spread 100" 
-			enabled="true" fileName="pfis_no_history_spread100.txt" numSpread="100" includeTop="true">
-		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS 1 Touch with history"
-			enabled="true" fileName="pfis_touch_once_with_history.txt" history="false" includeTop="true">
-		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS 1 Touch without history"
-			enabled="true" fileName="pfis_touch_once_no_history.txt" includeTop="true">
+		<algorithm class="PFIS" name="PFIS without history, spread 50"
+			enabled="true" fileName="pfis_no_history_spread50.txt" numSpread="50"
+				   includeTop="false" numTopPredictions="1">
 		</algorithm>
 		<algorithm class="Recency" name="Recency"
-			enabled="true" fileName="recency.txt" includeTop="true">
+			enabled="true" fileName="recency.txt" includeTop="false" numTopPredictions="1">
 		</algorithm>
 		<algorithm class="SourceTopology" name="Source Topology"
-			enabled="true" fileName="source_topology.txt" includeTop="true">
+			enabled="true" fileName="source_topology.txt" includeTop="false" numTopPredictions="1">
 		</algorithm>
 		<algorithm class="TFIDF" name="TF-IDF (method)"
-			enabled="true" fileName="tfidf.txt" includeTop="true">
+			enabled="true" fileName="tfidf.txt" includeTop="false" numTopPredictions="1">
 		</algorithm>
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
-			enabled="true" fileName="working_set.txt" includeTop="true">
+			enabled="true" fileName="working_set.txt" includeTop="false" numTopPredictions="1">
 		</algorithm>
 	</algorithms>
 </options>
