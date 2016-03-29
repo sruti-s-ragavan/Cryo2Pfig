@@ -1,6 +1,6 @@
 #!/bin/bash
 python /Users/srutis90/Projects/VFT/Cryo2Pfig/PFIS/pfis3/scripts/runScript.py \
-	-R \
+	-A \
 	-e /Users/srutis90/Projects/VFT/Cryo2Pfig/PFIS/pfis3/src/python/pfis3.py \
     -d /Users/srutis90/Projects/VFT/DB-corrected/small \
 	-s /Users/srutis90/Projects/VFT/Cryo2Pfig/PFIS/je.txt \
