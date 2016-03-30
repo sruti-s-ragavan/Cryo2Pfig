@@ -1,14 +1,18 @@
 #!/bin/bash
-python /Users/srutis90/Projects/VFT/Cryo2Pfig/PFIS/pfis3/scripts/runScript.py \
+
+repo_root=$(pwd)
+db_folder=$1
+
+python "$repo_root/PFIS/pfis3/scripts/runScript.py" \
 	-A \
-	-e /Users/srutis90/Projects/VFT/Cryo2Pfig/PFIS/pfis3/src/python/pfis3.py \
-    -d /Users/srutis90/Projects/VFT/DB-corrected/small \
-	-s /Users/srutis90/Projects/VFT/Cryo2Pfig/PFIS/je.txt \
+	-e "$repo_root/PFIS/pfis3/src/python/pfis3.py" \
+    -d "$db_folder" \
+	-s "$repo_root/PFIS/je.txt" \
 	-l "JS" \
 	-t 1 \
-	-p /Users/srutis90/Projects/VFT/Cryo2Pfig/jsparser/src \
-	-o /Users/srutis90/Projects/VFT/Cryo2Pfig/PFIS/results \
-	-x /Users/srutis90/Projects/VFT/Cryo2Pfig/PFIS/algorithm-config.xml \
+	-p "$repo_root/jsparser/src" \
+	-o "$repo_root/PFIS/results" \
+	-x "$repo_root/PFIS/algorithm-config.xml" \
 	-c "combined-results.txt" \
 	-m "multi-factors.txt" \
 	-h "10" \
