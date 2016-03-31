@@ -18,6 +18,14 @@
 			enabled="true" fileName="pfis_no_history_spread50.txt" numSpread="50"
 				   includeTop="false" numTopPredictions="10">
 		</algorithm>
+		<algorithm class="PFISEqualRankAcrossVariants" name="PFIS without history, equal ranks across variants, spread 50"
+			enabled="true" fileName="pfis_no_history_equal_across_variants_spread50.txt" numSpread="50"
+				   includeTop="false" numTopPredictions="10">
+		</algorithm>
+		<algorithm class="PFISEqualRankAcrossVariants" name="PFIS with history, equal ranks across variants, spread 50"
+			enabled="true" fileName="pfis_with_history_equal_across_variants_spread50.txt" numSpread="50"
+				   history = "true" includeTop="false" numTopPredictions="10">
+		</algorithm>
 		<algorithm class="Recency" name="Recency"
 			enabled="true" fileName="recency.txt" includeTop="false" numTopPredictions="10">
 		</algorithm>
