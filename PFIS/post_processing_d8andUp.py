@@ -75,7 +75,8 @@ def generate_predictions(inputDbFile, outputFolder):
                          "-p", sourceDirectory,
                          "-o", outputFolder,
                         "-x", "algorithm-config.xml",
-                        "-n", os.path.join(outputFolder,"top-predictions")])
+                        "-n", os.path.join(outputFolder,"top-predictions"),
+                        "-v", "True"])
 
 def copyDatabase(dbpath, newdbpath):
     print "Making a working copy of the database..."
