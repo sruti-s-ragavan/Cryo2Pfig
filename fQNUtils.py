@@ -31,9 +31,23 @@ class FQNUtils:
 
     @staticmethod
     def getFullMethodPath(filepath, header):
+        fullClassPath = FQNUtils.getFullClassPath(filepath)
         if header == '': #This happens when a call site is not another method body -- JS specific!
-            return FQNUtils.getFullClassPath(filepath)
-        return FQNUtils.getFullClassPath(filepath) + "." + header
+            return fullClassPath
+        else:
+            nested_path_within_file = ''
+
+            start_method_name = header.rfind("/")
+            if start_method_name == -1:
+                method_name = header
+                return fullClassPath+ "." + method_name
+            else:
+                #There is a nested method:
+                # filepath../Block.js | header: /Block(..)/addNewBlock()
+                #Should be FQN: ../Block.js/Block(..);.addNewBlock()
+                nested_path_within_file = header[:start_method_name]
+                method_name = header[start_method_name+1:]
+                return fullClassPath[:-1] + "/" + nested_path_within_file + ";." + method_name
 
     @staticmethod
     def correctJSStandardInvocationTargets(event, parentEventReferrer):

@@ -837,7 +837,7 @@ def array_gen(fn):
 
 def create_db(pfislog_name):
     f = open(pfislog_name, 'r')
-    db_name = pfislog_name[:-4] + '_db'
+    db_name = pfislog_name[:-4] + '.db'
     if(os.path.exists(db_name)):
         os.remove(db_name)
     conn = sqlite3.connect(db_name)
