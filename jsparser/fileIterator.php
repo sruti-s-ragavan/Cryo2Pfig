@@ -621,11 +621,14 @@ function nested_invocations($file_array){
 				}
 			}
 			usort($nesting_list, "compare_by_start_offset");
-			$header = "";
-			for($k=0; $k<count($nesting_list); $k++){
-				$header = $header."/".$nesting_list[$k]["header"];
+			$nesting_levels = count($nesting_list);
+
+			$filepath = "";
+			for($k=0; $k<$nesting_levels-1; $k++){
+				$filepath = $filepath."/".$nesting_list[$k]["header"];
 			}
-			$invoc_list[$i]["filepath"] = $header;
+			$invoc_list[$i]["filepath"] = $filepath;
+			$invoc_list[$i]["header"] = $nesting_list[$nesting_levels-1]["header"];
 			$f["invocations"] = $invoc_list;
 		}
 	}

@@ -390,11 +390,14 @@ class Converter:
         generated because PFIS can't handle the natural order of events.
         """
         def normalizer(s):
-            s = s.replace('\r\n', '\u00a')
-            s = s.replace("\n", "\u00a")
-            s = s.replace("\r", "\u00a")
-            s = s.replace("'", "''")
-            s = s.replace(",", "\",\"")
+            if s!=None:
+                s = s.replace('\r\n', '\u00a')
+                s = s.replace("\n", "\u00a")
+                s = s.replace("\r", "\u00a")
+                s = s.replace("'", "''")
+                s = s.replace(",", "\",\"")
+            else:
+                s=''
             return s
 
         def get_events_on_newly_opened_document(event_type, target, referrer):
@@ -408,9 +411,11 @@ class Converter:
 
             if(declaration_type == "Method declaration" or declaration_type == "Variable declaration"):
 
-                header = normalizer(item["header"])
                 declaration_file = normalizer(item["src"])
-                methodFQN = FQNUtils.getFullMethodPath(declaration_file, header)
+                nesting_path = normalizer(item["filepath"])
+                header = normalizer(item["header"])
+
+                methodFQN = FQNUtils.getFullMethodPath(declaration_file, nesting_path, header)
                 contents = normalizer(item["contents"])
 
                 new_event = get_events_on_newly_opened_document(declaration_type, FQNUtils.getFullClassPath(declaration_file), methodFQN)
@@ -436,13 +441,14 @@ class Converter:
 
             if(declaration_type == "Method invocation"):
 
-                invocation_path_within_file = normalizer(item["filepath"])[1:]
                 invoking_file = normalizer(item["src"])
+                invocation_path_within_file = normalizer(item["filepath"])
+                header = normalizer(item["header"])
+
                 contents = normalizer(item["contents"])
                 invoked_method_fqn = normalizer(item["invsrc"])
 
-                #TODO: includes called method header too, needs to be removed
-                invoking_method_fqn = FQNUtils.getFullMethodPath(invoking_file, invocation_path_within_file)
+                invoking_method_fqn = FQNUtils.getFullMethodPath(invoking_file, invocation_path_within_file, header)
 
                 new_event = get_events_on_newly_opened_document(declaration_type, invoking_method_fqn, invoked_method_fqn)
                 FQNUtils.addFQNPrefixForEvent(new_event)
@@ -768,7 +774,7 @@ def array_gen(fn):
     if(os.path.isfile("fullAST.txt")==False):   
         
         while(i<=len(src_list)-4):
-            print str(i) + src_list[i]
+            # print str(i) + src_list[i]
             p=multiprocessing.Process(target=get_array, args=(src_list[i], fn+'1.txt',))
             p.start()
             q=multiprocessing.Process(target=get_array, args=(src_list[i+1],fn+'2.txt',))
