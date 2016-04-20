@@ -14,7 +14,9 @@ def convert_log(log_file_name, log_folder, db_folder):
     print "Converting: ", log_file
     output_txt_file = os.path.join(db_folder, file_name_without_extn) + "txt"
     args = ['python', 'logconverter_d8andUp.py', 'file', log_file, output_txt_file]
-    subprocess.call(args)
+    output_log_name = os.path.join(db_folder, "_"+file_name_without_extn) + "log"
+    output_log = open(output_log_name, "w")
+    subprocess.call(args, stdout=output_log)
     print "Converted logs in: ", output_txt_file
 
 def updateDbWithManualNavs(db, navs):
@@ -34,9 +36,14 @@ def add_manual_navs(db_folder, navs_folder):
         nav_file = os.path.join(navs_folder, file_name[:-2]+"sql")
         db_file = os.path.join(db_folder, file_name)
         if os.path.exists(nav_file):
+            print "Updating manual navs: ", db_file
+            print "Nav file: ", nav_file
             updateDbWithManualNavs(db_file, nav_file)
 
 def main():
+    if len(sys.argv)<3:
+        raise Exception("Usage: python convert_logs.py <log_files_folder> <output_db_folder> <manual_nav_files_folder>")
+
     log_folder = sys.argv[1]
     db_folder_name = sys.argv[2]
 
