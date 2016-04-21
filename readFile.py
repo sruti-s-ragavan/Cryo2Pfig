@@ -51,28 +51,44 @@ def main():
 	variant_keys = variantstoFunctionsMap.keys()
 	variant_keys.sort()
 	index = 0
-	print variantstoFunctionsMap['2014-05-17-07:18:41']
 	for variant in variant_keys:
-		for functions in variantstoFunctionsMap[variant]:
+		for function in variantstoFunctionsMap[variant]:
+
 			if index == 0:
-				methodFQN = FQNUtils.getFullMethodPath(functions['filepath'],functions['header'])
-				c.execute('insert into variantstofunctions values (?,?,?,?)', [methodFQN, getVariantName(functions['src']), getVariantName(functions['src']), functions['contents']])
+				methodFQN = FQNUtils.getFullMethodPath(function['filepath'],function['header'])
+				c.execute('insert into variantstofunctions values (?,?,?,?)', [methodFQN, getVariantName(function['src']), getVariantName(function['src']), function['contents']])
 			else:
-				method_body = functions['contents']
-				function_name = functions['header']
-				file_name = functions['filepath']
-				current_variant_name = getVariantName(functions['src'])
+
+				method_body = function['contents']
+				function_name = function['header']
+				file_name = function['filepath']
+				current_variant_name = getVariantName(function['src'])
+
 				var = variantstoFunctionsMap[variant_keys[index-1]]
+
+				boolvar = False
 				for each in var:
-					if each['header'] == function_name: #and each['filepath'] == file_name:
+
+					if boolvar == False:
+						if each['header'] == function_name:
+
 							if each['contents'] == method_body:
-							#	print "Here methods are same!"
+
 								methodFQN = FQNUtils.getFullMethodPath(each['filepath'],each['header'])
 								c.execute('update variantstofunctions set end = ? where method = ? and body = ?',(current_variant_name, methodFQN, method_body))
+								boolvar = True
 							else:
-							#	print "None same"
-								methodFQN = FQNUtils.getFullMethodPath(functions['filepath'],functions['header'])
-								c.execute('insert into variantstofunctions values (?,?,?,?)', [methodFQN, getVariantName(functions['src']), getVariantName(functions['src']), functions['contents']])
+
+								methodFQN = FQNUtils.getFullMethodPath(function['filepath'],function['header'])
+								c.execute('insert into variantstofunctions values (?,?,?,?)', [methodFQN, current_variant_name, current_variant_name, method_body])
+								boolvar = True
+							
+					elif each['header'] != function_name and boolvar == False:
+						methodFQN = FQNUtils.getFullMethodPath(function['filepath'],function['header'])
+						c.execute('insert into variantstofunctions values (?,?,?,?)', [methodFQN, current_variant_name, current_variant_name, method_body])
+						boolvar = True
+				
+
 		index += 1
 	conn.commit()
 	c.close()
