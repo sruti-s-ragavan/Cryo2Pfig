@@ -5,13 +5,17 @@ import sqlite3
 import uuid
 from fQNUtils import FQNUtils
 
+DB_FILE_NAME= "variantstofunctions.db"
+
+CREATE_TABLE_QUERY = 'CREATE TABLE VARIANTS_TO_FUNCTIONS(METHOD VARCHAR(30), START VARCHAR(20), END VARCHAR(20), BODY TEXT)'
+DB_INSERT_QUERY = 'INSERT INTO VARIANTS_TO_FUNCTIONS VALUES (?,?,?,?)'
+UPDATE_QUERY = 'UPDATE VARIANTS_TO_FUNCTIONS SET END = ? WHERE METHOD = ? AND BODY = ?'
 
 def getVariantName(filename):
 	regex = re.compile('/hexcom/([^/]*)/.*')
-#r'/hexcom/([^/]*)/.*'            ([0-9].*[0-9])
 	match = regex.match(filename)
 	if match == None:
-		raise "No such file"
+		raise Exception("No such file: "+ filename)
 	return match.groups()[0]
 
 def getFilePath(path):
@@ -21,97 +25,112 @@ def getFilePath(path):
 		return ""
 	return match.groups()[0]
 
-def main():
-	variantstoFunctionsMap = {}
+def readASTFile():
+	obj = None
 	file = open('fullAST.txt')
 	obj = json.loads(file.read())
-	variant_functions = obj[0]
+	file.close()
+	return obj[0]
+
+def isVariant(f1, f2):
+	if f1 == None or f2 == None:
+		return False
+	#TODO: fileName (src value) should exclude variant name from comparison
+	# add filename part of f1['src'] == f2['src']
+	if f1['header'] == f2['header'] \
+			and f1['filepath'] == f2['filepath'] \
+			and f1['contents'] == f2['contents']:
+		return True
+
+	return False
+
+def insertFunctionToDb(function, prevVarFunctions, conn):
+	fileName = function['src']
+	nestedPathWithinFile = function['filepath']
+	functionName = function["header"]
+	methodBody = function['contents']
+	variantName = getVariantName(fileName)
+
+	prevVariantOfFunction = None
+	if prevVarFunctions != None:
+		for f in prevVarFunctions:
+			if isVariant(f, function):
+				print "Prev variant exists"
+				prevVariantOfFunction = f
+
+	if prevVariantOfFunction == None:
+		methodFQN = FQNUtils.getFullMethodPath(fileName, nestedPathWithinFile, functionName)
+		conn.execute(DB_INSERT_QUERY, [methodFQN, variantName, variantName, methodBody])
+	else:
+		methodFQN = FQNUtils.getFullMethodPath(prevVariantOfFunction['src'], prevVariantOfFunction['filepath'], prevVariantOfFunction['header'])
+		conn.execute(UPDATE_QUERY,[variantName, methodFQN, methodBody])
+	conn.commit()
+
+def main():
+
+	ast = readASTFile()
+	variantsToFunctionsMap = getFunctionsInVariants(ast)
+
+	createDbAndInitialTables()
+
+	variantNames = variantsToFunctionsMap.keys()
+	variantNames.sort()
+
+	conn = sqlite3.connect(DB_FILE_NAME)
+	for index in range(0, len(variantNames)):
+		variant = variantNames[index]
+		prevVariantFunctions = None
+
+		if index > 0:
+				prevVariantFunctions = variantsToFunctionsMap[variantNames[index-1]]
+
+		for function in variantsToFunctionsMap[variant]:
+			insertFunctionToDb(function, prevVariantFunctions, conn)
+
+	conn.close()
+
+
+def createDbAndInitialTables():
+	if (os.path.exists(DB_FILE_NAME)):
+		os.remove(DB_FILE_NAME)
+	conn = sqlite3.connect(DB_FILE_NAME)
+	c = conn.cursor()
+	c.execute(CREATE_TABLE_QUERY)
+	c.close()
+	conn.commit()
+
+
+def getFunctionsInVariants(variant_functions):
+	variantsToFunctionsMap = {}
 
 	for variant in variant_functions:
 		functions_list = variant['functions']
+		if len(functions_list) > 0:
 
-		if len(functions_list)>0:
 			file_name = functions_list[0]['src']
 			variant_name = getVariantName(file_name)
 
-			if variant_name in variantstoFunctionsMap:
-				variantstoFunctionsMap[variant_name].extend(functions_list)
+			if variant_name in variantsToFunctionsMap:
+				variantsToFunctionsMap[variant_name].extend(functions_list)
 			else:
-				variantstoFunctionsMap[variant_name] = functions_list
-	file.close()
-	
-	db_name= "variantstofunctions.db"
-	if(os.path.exists(db_name)):
-		os.remove(db_name)
-	conn = sqlite3.connect(db_name)
-	c = conn.cursor()
-	c.execute('create table variantstofunctions(method varchar(30), start varchar(20), end varchar(20), body TEXT)')
-	conn.commit()
+				variantsToFunctionsMap[variant_name] = functions_list
 
-	variant_keys = variantstoFunctionsMap.keys()
-	variant_keys.sort()
-	index = 0
-	for variant in variant_keys:
-		for function in variantstoFunctionsMap[variant]:
+	return variantsToFunctionsMap
 
-			if index == 0:
-				methodFQN = FQNUtils.getFullMethodPath(function['filepath'],function['header'])
-				c.execute('insert into variantstofunctions values (?,?,?,?)', [methodFQN, getVariantName(function['src']), getVariantName(function['src']), function['contents']])
-			else:
-
-				method_body = function['contents']
-				function_name = function['header']
-				file_name = function['filepath']
-				current_variant_name = getVariantName(function['src'])
-
-				var = variantstoFunctionsMap[variant_keys[index-1]]
-
-				boolvar = False
-				for each in var:
-
-					if boolvar == False:
-						if each['header'] == function_name:
-
-							if each['contents'] == method_body:
-
-								methodFQN = FQNUtils.getFullMethodPath(each['filepath'],each['header'])
-								c.execute('update variantstofunctions set end = ? where method = ? and body = ?',(current_variant_name, methodFQN, method_body))
-								boolvar = True
-							else:
-
-								methodFQN = FQNUtils.getFullMethodPath(function['filepath'],function['header'])
-								c.execute('insert into variantstofunctions values (?,?,?,?)', [methodFQN, current_variant_name, current_variant_name, method_body])
-								boolvar = True
-							
-					elif each['header'] != function_name and boolvar == False:
-						methodFQN = FQNUtils.getFullMethodPath(function['filepath'],function['header'])
-						c.execute('insert into variantstofunctions values (?,?,?,?)', [methodFQN, current_variant_name, current_variant_name, method_body])
-						boolvar = True
-				
-
-		index += 1
-	conn.commit()
-	c.close()
 
 main()
-
-
-
-
-
-
 
 
 '''
 
 {
-    u'src': u'/hexcom/2014-05-22-13:38:32/js/entities.js',
-    u'end': 4251,
-    u'filepath': u'/Clock(sideLength)',
-    u'header': u'addBlock()',
-    u'length': 474,
-    u'start': 3777,
-    u'contents': u'this.addBlock = function(block) {\n\t\tblock.settled = 1;\n\t\tblock.tint = .6;\n\t\tvar lane = this.sides - block.lane;//  -this.position;\n\t\tlane += this.position;\n\t\twhile (lane < 0) {\n\t\t\tlane += this.sides;\n\t\t}\n\t\tlane = lane % this.sides;\n\t\tblock.distFromHex = MainClock.sideLength / 2 * Math.sqrt(3) + block.height * this.blocks[lane].length;\n\t\tthis.blocks[lane].push(block);\n\t\tblock.parentArr = this.blocks[lane];\n\t\tconsolidateBlocks(this, lane, this.blocks[lane].length - 1);\n\t};'
+	u'src': u'/hexcom/2014-05-22-13:38:32/js/entities.js',
+	u'end': 4251,
+	u'filepath': u'/Clock(sideLength)',
+	u'header': u'addBlock()',
+	u'length': 474,
+	u'start': 3777,
+	u'contents': u'this.addBlock = function(block) {\n\t\tblock.settled = 1;\n\t\tblock.tint = .6;\n\t\tvar lane = this.sides - block.lane;//  -this.position;\n\t\tlane += this.position;\n\t\twhile (lane < 0) {\n\t\t\tlane += this.sides;\n\t\t}\n\t\tlane = lane % this.sides;\n\t\tblock.distFromHex = MainClock.sideLength / 2 * Math.sqrt(3) + block.height * this.blocks[lane].length;\n\t\tthis.blocks[lane].push(block);\n\t\tblock.parentArr = this.blocks[lane];\n\t\tconsolidateBlocks(this, lane, this.blocks[lane].length - 1);\n\t};'
   },
 '''
 
@@ -128,11 +147,11 @@ main()
 #	print xyz
 #	print variantstoFunctionsMap[xyz]
 #src': u'/hexcom/2014-05-17-07:18:31/server.js',
-    #u'end': 342,
-    #u'filepath': u'',
-    #u'header': u'handler (req, res)',
+	#u'end': 342,
+	#u'filepath': u'',
+	#u'header': u'handler (req, res)',
    # u'length': 253,
-    #u'start': 89,
+	#u'start': 89,
   #  u'contents'
 '''
 current= variantstoFunctionsMap['Current']
