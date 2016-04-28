@@ -9,7 +9,7 @@ DB_FILE_NAME= "variantstofunctions.db"
 
 CREATE_TABLE_QUERY = 'CREATE TABLE VARIANTS_TO_FUNCTIONS(METHOD VARCHAR(30), START VARCHAR(20), END VARCHAR(20), BODY TEXT)'
 DB_INSERT_QUERY = 'INSERT INTO VARIANTS_TO_FUNCTIONS VALUES (?,?,?,?)'
-UPDATE_QUERY = 'UPDATE VARIANTS_TO_FUNCTIONS SET END = ? WHERE METHOD = ? AND BODY = ?'
+UPDATE_QUERY = 'UPDATE VARIANTS_TO_FUNCTIONS SET END = ? WHERE END = ? AND METHOD = ? AND BODY = ?'
 
 def getVariantName(filename):
 	regex = re.compile('/hexcom/([^/]*)/.*')
@@ -37,7 +37,7 @@ def isVariant(f1, f2):
 		return False
 	#TODO: fileName (src value) should exclude variant name from comparison
 	# add filename part of f1['src'] == f2['src']
-	if f1['header'] == f2['header'] \
+	if f1['header'] == f2['header']\
 			and f1['filepath'] == f2['filepath'] \
 			and f1['contents'] == f2['contents']:
 		return True
@@ -45,25 +45,28 @@ def isVariant(f1, f2):
 	return False
 
 def insertFunctionToDb(function, prevVarFunctions, conn):
-	fileName = function['src']
+	fileNameFromRoot = function['src']
+
 	nestedPathWithinFile = function['filepath']
-	functionName = function["header"]
+	functionHeader = function["header"]
 	methodBody = function['contents']
-	variantName = getVariantName(fileName)
+	variantName = getVariantName(fileNameFromRoot)
+	fileNameRelativeToVariant = FQNUtils.getRelativeFilePathWithinVariant(fileNameFromRoot)
 
 	prevVariantOfFunction = None
 	if prevVarFunctions != None:
 		for f in prevVarFunctions:
 			if isVariant(f, function):
-				print "Prev variant exists"
 				prevVariantOfFunction = f
 
 	if prevVariantOfFunction == None:
-		methodFQN = FQNUtils.getFullMethodPath(fileName, nestedPathWithinFile, functionName)
+		methodFQN = FQNUtils.getFullMethodPath(fileNameRelativeToVariant, nestedPathWithinFile, functionHeader)
 		conn.execute(DB_INSERT_QUERY, [methodFQN, variantName, variantName, methodBody])
 	else:
-		methodFQN = FQNUtils.getFullMethodPath(prevVariantOfFunction['src'], prevVariantOfFunction['filepath'], prevVariantOfFunction['header'])
-		conn.execute(UPDATE_QUERY,[variantName, methodFQN, methodBody])
+		#Update will break -- update where end = prev var name
+		methodFQN = FQNUtils.getFullMethodPath(fileNameRelativeToVariant, nestedPathWithinFile, functionHeader)
+		prevVariantName = getVariantName(prevVariantOfFunction['src'])
+		conn.execute(UPDATE_QUERY,[variantName, prevVariantName, methodFQN, methodBody])
 	conn.commit()
 
 def main():
