@@ -46,7 +46,6 @@ class FQNUtils:
 	def getRelativeFilePathWithinVariant(src):
 		match = RELATIVE_FILE_PATH_WITHIN_VARIANT_REGEX.match(src)
 		pathWithinVariant = match.groups()[1]
-		print pathWithinVariant
 		return pathWithinVariant
 
 	@staticmethod
