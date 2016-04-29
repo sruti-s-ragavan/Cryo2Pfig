@@ -7,8 +7,11 @@ from fQNUtils import FQNUtils
 
 DB_FILE_NAME= "variantstofunctions.db"
 
-CREATE_TABLE_QUERY = 'CREATE TABLE VARIANTS_TO_FUNCTIONS(METHOD VARCHAR(30), START VARCHAR(20), END VARCHAR(20), BODY TEXT)'
-DB_INSERT_QUERY = 'INSERT INTO VARIANTS_TO_FUNCTIONS VALUES (?,?,?,?)'
+CREATE_VARIANTS_TABLE_QUERY = 'CREATE TABLE VARIANTS(NUM INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR(50))'
+CREATE_PATCHES_TABLE_QUERY = 'CREATE TABLE VARIANTS_TO_FUNCTIONS(METHOD VARCHAR(30), START INTEGER, END INTEGER, BODY TEXT)'
+VARIANT_INSERT_QUERY = 'INSERT INTO VARIANTS(NAME) VALUES (?)'
+FUNCTION_INSERT_QUERY = 'INSERT INTO VARIANTS_TO_FUNCTIONS VALUES (?,?,?,?)'
+
 UPDATE_QUERY = 'UPDATE VARIANTS_TO_FUNCTIONS SET END = ? WHERE END = ? AND METHOD = ? AND BODY = ?'
 
 def getVariantName(filename):
@@ -44,7 +47,7 @@ def isVariant(f1, f2):
 
 	return False
 
-def insertFunctionToDb(function, prevVarFunctions, conn):
+def insertFunctionToDb(index, function, prevVarFunctions, conn):
 	fileNameFromRoot = function['src']
 
 	nestedPathWithinFile = function['filepath']
@@ -61,13 +64,20 @@ def insertFunctionToDb(function, prevVarFunctions, conn):
 
 	if prevVariantOfFunction == None:
 		methodFQN = FQNUtils.getFullMethodPath(fileNameRelativeToVariant, nestedPathWithinFile, functionHeader)
-		conn.execute(DB_INSERT_QUERY, [methodFQN, variantName, variantName, methodBody])
+		conn.execute(FUNCTION_INSERT_QUERY, [methodFQN, index, index, methodBody])
 	else:
 		#Update will break -- update where end = prev var name
 		methodFQN = FQNUtils.getFullMethodPath(fileNameRelativeToVariant, nestedPathWithinFile, functionHeader)
-		prevVariantName = getVariantName(prevVariantOfFunction['src'])
-		conn.execute(UPDATE_QUERY,[variantName, prevVariantName, methodFQN, methodBody])
+		conn.execute(UPDATE_QUERY,[index, index-1, methodFQN, methodBody])
 	conn.commit()
+
+def insertVariants(sortedVariants):
+	conn = sqlite3.connect(DB_FILE_NAME)
+	for variant in sortedVariants:
+		conn.execute(VARIANT_INSERT_QUERY, [variant])
+
+	conn.commit()
+	conn.close()
 
 def main():
 
@@ -78,6 +88,7 @@ def main():
 
 	variantNames = variantsToFunctionsMap.keys()
 	variantNames.sort()
+	insertVariants(variantNames)
 
 	conn = sqlite3.connect(DB_FILE_NAME)
 	for index in range(0, len(variantNames)):
@@ -88,7 +99,7 @@ def main():
 				prevVariantFunctions = variantsToFunctionsMap[variantNames[index-1]]
 
 		for function in variantsToFunctionsMap[variant]:
-			insertFunctionToDb(function, prevVariantFunctions, conn)
+			insertFunctionToDb(index, function, prevVariantFunctions, conn)
 
 	conn.close()
 
@@ -98,7 +109,8 @@ def createDbAndInitialTables():
 		os.remove(DB_FILE_NAME)
 	conn = sqlite3.connect(DB_FILE_NAME)
 	c = conn.cursor()
-	c.execute(CREATE_TABLE_QUERY)
+	c.execute(CREATE_PATCHES_TABLE_QUERY)
+	c.execute(CREATE_VARIANTS_TABLE_QUERY)
 	c.close()
 	conn.commit()
 
