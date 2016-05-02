@@ -1,56 +1,56 @@
 <?xml version="1.0"?>
 <options>
 	<algorithms>
-		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true">
+		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" graphType="PfisGraph">
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
-			fileName="undirected_call_graph.txt" enabled="true">
+			fileName="undirected_call_graph.txt" enabled="true" graphType="PfisGraph">
 		</algorithm>
 		<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">
 		</algorithm>
 		<algorithm class="PFIS" name="PFIS with history, variant unaware, spread 50"
-			enabled="true" fileName="pfis_history_spread50.txt" history="true" numSpread="50" variant="false">
+			enabled="true" fileName="pfis_history_spread50.txt" history="true" numSpread="50" variant="false" graphType="PfisGraph">
 		</algorithm>
 		<algorithm class="PFIS" name="PFIS without history, variant unaware, spread 50"
-			enabled="true" fileName="pfis_no_history_spread50.txt" numSpread="50" variant="false">
+			enabled="true" fileName="pfis_no_history_spread50.txt" numSpread="50" variant="false" graphType="PfisGraph">
 		</algorithm>
 		<algorithm class="PFISTouchOnce" name="PFIS touch once with history variant unaware"
-			enabled="true" fileName="pfis_history_touch_once.txt" history="true" variant="false">
+			enabled="true" fileName="pfis_history_touch_once.txt" history="true" variant="false" graphType="PfisGraph">
 		</algorithm>
 		<algorithm class="PFISTouchOnce" name="PFIS touch once without history variant unaware"
-			enabled="true" fileName="pfis_no_history_touch_once.txt" history="false" variant="false">
+			enabled="true" fileName="pfis_no_history_touch_once.txt" history="false" graphType="PfisGraph">
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once with history variant aware"
-			enabled="true" fileName="pfis_history_touch_once_with_variant.txt" history="true" variant="true">
-		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once without history variant aware"
-			enabled="true" fileName="pfis_no_history_touch_once_with_variant.txt" history="false" variant="true">
-		</algorithm>
+		<!--<algorithm class="PFISTouchOnce" name="PFIS touch once with history variant aware"-->
+			<!--enabled="true" fileName="pfis_history_touch_once_with_variant.txt" history="true" graphType="PfisGraphWithVariants">-->
+		<!--</algorithm>-->
+		<!--<algorithm class="PFISTouchOnce" name="PFIS touch once without history variant aware"-->
+			<!--enabled="true" fileName="pfis_no_history_touch_once_with_variant.txt" history="false" graphType="PfisGraphWithVariants">-->
+		<!--</algorithm>-->
 
 		<algorithm class="PFIS" name="PFIS with history, variant unaware, spread 2"
-			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" variant="false">
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" graphType="PfisGraph">
 		</algorithm>
 		<algorithm class="PFIS" name="PFIS without history, variant unaware, spread 2"
-			enabled="true" fileName="pfis_no_history_spread2.txt" numSpread="2" variant="false">
+			enabled="true" fileName="pfis_no_history_spread2.txt" numSpread="2" graphType="PfisGraph">
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS with history, variant aware, spread 2" history="true"
-			enabled="true" fileName="pfis_history_with_variant_spread2.txt" numSpread="2" variant="true">
+		<!--algorithm class="PFIS" name="PFIS with history, variant aware, spread 2" history="true"
+			enabled="true" fileName="pfis_history_with_variant_spread2.txt" numSpread="2" graphType="PfisGraphWithVariants">
 		</algorithm>
 		<algorithm class="PFIS" name="PFIS without history, variant aware, spread 2"
-			enabled="true" fileName="pfis_no_history_with_variant_spread2.txt" numSpread="2" variant="true">
-		</algorithm>
+			enabled="true" fileName="pfis_no_history_with_variant_spread2.txt" numSpread="2" graphType="PfisGraphWithVariants">
+		</algorithm-->
 
 		<algorithm class="Recency" name="Recency"
-			enabled="true" fileName="recency.txt">
+			enabled="true" fileName="recency.txt" graphType="PfisGraph">
 		</algorithm>
 		<algorithm class="SourceTopology" name="Source Topology"
-			enabled="true" fileName="source_topology.txt">
+			enabled="true" fileName="source_topology.txt" graphType="PfisGraph">
 		</algorithm>
 		<algorithm class="TFIDF" name="TF-IDF (method)"
-			enabled="true" fileName="tfidf.txt">
+			enabled="true" fileName="tfidf.txt" graphType="PfisGraph">
 		</algorithm>
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
-			enabled="true" fileName="working_set.txt">
+			enabled="true" fileName="working_set.txt" graphType="PfisGraph">
 		</algorithm>
 	</algorithms>
 </options>

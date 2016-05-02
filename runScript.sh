@@ -18,5 +18,4 @@ python "$repo_root/PFIS/pfis3/scripts/runScript.py" \
 	-h "10" \
 	-i "0" \
 	-f "results.final" \
-	-n "top-predictions" \
-	-v "True"
+	-n "top-predictions"
