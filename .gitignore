@@ -1,1 +1,6 @@
 venv/
+file*
+fullAST.txt
+*.log
+*.db
+*_temp
