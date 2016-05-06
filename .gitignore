@@ -4,3 +4,4 @@ fullAST.txt
 *.log
 *.db
 *_temp
+*.pyc
