@@ -8,9 +8,9 @@ from fQNUtils import FQNUtils
 DB_FILE_NAME= "variantstofunctions.db"
 
 CREATE_VARIANTS_TABLE_QUERY = 'CREATE TABLE VARIANTS(NUM INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR(50))'
-CREATE_PATCHES_TABLE_QUERY = 'CREATE TABLE VARIANTS_TO_FUNCTIONS(METHOD VARCHAR(30), START INTEGER, END INTEGER, BODY TEXT)'
+CREATE_PATCHES_TABLE_QUERY = 'CREATE TABLE VARIANTS_TO_FUNCTIONS(METHOD VARCHAR(30), START INTEGER, END INTEGER, BODY TEXT, UUID VARCHAR)'
 VARIANT_INSERT_QUERY = 'INSERT INTO VARIANTS(NAME) VALUES (?)'
-FUNCTION_INSERT_QUERY = 'INSERT INTO VARIANTS_TO_FUNCTIONS VALUES (?,?,?,?)'
+FUNCTION_INSERT_QUERY = 'INSERT INTO VARIANTS_TO_FUNCTIONS VALUES (?,?,?,?,?)'
 
 UPDATE_QUERY = 'UPDATE VARIANTS_TO_FUNCTIONS SET END = ? WHERE END = ? AND METHOD = ? AND BODY = ?'
 
@@ -64,7 +64,9 @@ def insertFunctionToDb(index, function, prevVarFunctions, conn):
 
 	if prevVariantOfFunction == None:
 		methodFQN = FQNUtils.getFullMethodPath(fileNameRelativeToVariant, nestedPathWithinFile, functionHeader)
-		conn.execute(FUNCTION_INSERT_QUERY, [methodFQN, index, index, methodBody])
+		uuidValue = uuid.uuid1()
+		conn.execute(FUNCTION_INSERT_QUERY, [methodFQN, index, index, methodBody, str(uuidValue)])
+
 	else:
 		#Update will break -- update where end = prev var name
 		methodFQN = FQNUtils.getFullMethodPath(fileNameRelativeToVariant, nestedPathWithinFile, functionHeader)
