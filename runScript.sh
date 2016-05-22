@@ -18,4 +18,5 @@ python "$repo_root/PFIS/pfis3/scripts/runScript.py" \
 	-h "10" \
 	-i "0" \
 	-f "results.final" \
+	-v "$repo_root/variantstofunctions.db" \
 	-n "top-predictions"

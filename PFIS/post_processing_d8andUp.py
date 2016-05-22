@@ -75,6 +75,7 @@ def generate_predictions(inputDbFile, outputFolder):
                          "-p", sourceDirectory,
                          "-o", outputFolder,
                         "-x", "algorithm-config.xml",
+                        "-v", os.path.join(projectRootDirectory, "variantstofunctions.db"),
                         "-n", os.path.join(outputFolder,"top-predictions")
                      ])
 
