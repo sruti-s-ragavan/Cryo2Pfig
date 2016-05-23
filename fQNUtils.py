@@ -56,3 +56,12 @@ class FQNUtils:
 			if JS_STD_REFERRER_STRING in str(event['referrer'])\
 					or (parentEventReferrer <> None and JS_STD_REFERRER_STRING in parentEventReferrer):
 				event['target'] = JS_STD_PREFIX + event['target']
+
+	@staticmethod
+	def normalizer(s):
+		s = s.replace('\r\n', '\u00a')
+		s = s.replace("\n", "\u00a")
+		s = s.replace("\r", "\u00a")
+		s = s.replace("'", "''")
+		s = s.replace(",", "\",\"")
+		return s

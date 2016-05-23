@@ -316,13 +316,6 @@ class Converter:
                 return sum
                 
     def convert_change_selection_event(self, event):
-        def normalizer(s):
-            s = s.replace('\r\n', '\u00a')
-            s = s.replace("\n", "\u00a")
-            s = s.replace("\r", "\u00a")
-            s = s.replace("'", "''")
-            s = s.replace(",", "\",\"")
-            return s
         """When the user highlights code"""
         new_event = self.new_event(event)
         document_name = event['path']
@@ -343,7 +336,7 @@ class Converter:
             pass
         else: 
             for x in range((event['selection'][0]['start']['line']), (event['selection'][0]['end']['line'])):
-                lines.append(normalizer(f.readline()))
+                lines.append(FQNUtils.normalizer(f.readline()))
         referrer = ''
         for line in lines:
             referrer += line
@@ -391,11 +384,7 @@ class Converter:
         """
         def normalizer(s):
             if s!=None:
-                s = s.replace('\r\n', '\u00a')
-                s = s.replace("\n", "\u00a")
-                s = s.replace("\r", "\u00a")
-                s = s.replace("'", "''")
-                s = s.replace(",", "\",\"")
+                s = FQNUtils.normalizer(s)
             else:
                 s=''
             return s
