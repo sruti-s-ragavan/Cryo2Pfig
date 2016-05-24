@@ -40,21 +40,17 @@ def isVariant(f1, f2):
 		return False
 	#TODO: fileName (src value) should exclude variant name from comparison
 	# add filename part of f1['src'] == f2['src']
-	if f1['header'] == f2['header']\
-			and f1['filepath'] == f2['filepath'] \
+	if getMethodFqn(f1) == getMethodFqn(f2) \
 			and f1['contents'] == f2['contents']:
 		return True
 
 	return False
 
 def insertFunctionToDb(index, function, prevVarFunctions, conn):
-	fileNameFromRoot = function['src']
-
-	nestedPathWithinFile = function['filepath']
-	functionHeader = function["header"]
+	methodFQN = getMethodFqn(function)
 	methodBody = function['contents']
-	variantName = getVariantName(fileNameFromRoot)
-	fileNameRelativeToVariant = FQNUtils.getRelativeFilePathWithinVariant(fileNameFromRoot)
+	variantName = getVariantName(function['src'])
+
 
 	prevVariantOfFunction = None
 	if prevVarFunctions != None:
@@ -62,19 +58,30 @@ def insertFunctionToDb(index, function, prevVarFunctions, conn):
 			if isVariant(f, function):
 				prevVariantOfFunction = f
 
-	if prevVariantOfFunction == None:
-		methodFQN = FQNUtils.getFullMethodPath(fileNameRelativeToVariant, nestedPathWithinFile, functionHeader)
+	c = conn.cursor()
+	if prevVariantOfFunction is None:
 		uuidValue = uuid.uuid1()
-		conn.execute(FUNCTION_INSERT_QUERY, [methodFQN, index, index, methodBody, str(uuidValue)])
+		c.execute(FUNCTION_INSERT_QUERY, [FQNUtils.normalizer(methodFQN), index, index, FQNUtils.normalizer(methodBody), str(uuidValue)])
 
 	else:
 		#Update will break -- update where end = prev var name
-		methodFQN = FQNUtils.getFullMethodPath(fileNameRelativeToVariant, nestedPathWithinFile, functionHeader)
-		conn.execute(UPDATE_QUERY,[index, index-1, methodFQN, methodBody])
+		c.execute(UPDATE_QUERY,[index, index-1, FQNUtils.normalizer(methodFQN), FQNUtils.normalizer(methodBody)])
+		
 	conn.commit()
+
+
+def getMethodFqn(function):
+	fileNameFromRoot = function['src']
+	nestedPathWithinFile = function['filepath']
+	functionHeader = function["header"]
+	fileNameRelativeToVariant = FQNUtils.getRelativeFilePathWithinVariant(fileNameFromRoot)
+	methodFQN = FQNUtils.getFullMethodPath(fileNameRelativeToVariant, nestedPathWithinFile, functionHeader)
+	return methodFQN
+
 
 def insertVariants(sortedVariants):
 	conn = sqlite3.connect(DB_FILE_NAME)
+
 	for variant in sortedVariants:
 		conn.execute(VARIANT_INSERT_QUERY, [variant])
 
@@ -101,7 +108,8 @@ def main():
 				prevVariantFunctions = variantsToFunctionsMap[variantNames[index-1]]
 
 		for function in variantsToFunctionsMap[variant]:
-			insertFunctionToDb(index, function, prevVariantFunctions, conn)
+			variantPos = index + 1
+			insertFunctionToDb(variantPos, function, prevVariantFunctions, conn)
 
 	conn.close()
 
@@ -133,7 +141,6 @@ def getFunctionsInVariants(variant_functions):
 				variantsToFunctionsMap[variant_name] = functions_list
 
 	return variantsToFunctionsMap
-
 
 main()
 
