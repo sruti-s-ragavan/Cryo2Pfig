@@ -1,6 +1,6 @@
 import re
 import json
-import os, sys
+import os
 import sqlite3
 import uuid
 from fQNUtils import FQNUtils
@@ -49,8 +49,6 @@ def isVariant(f1, f2):
 def insertFunctionToDb(index, function, prevVarFunctions, conn):
 	methodFQN = getMethodFqn(function)
 	methodBody = function['contents']
-	variantName = getVariantName(function['src'])
-
 
 	prevVariantOfFunction = None
 	if prevVarFunctions != None:
@@ -66,7 +64,7 @@ def insertFunctionToDb(index, function, prevVarFunctions, conn):
 	else:
 		#Update will break -- update where end = prev var name
 		c.execute(UPDATE_QUERY,[index, index-1, FQNUtils.normalizer(methodFQN), FQNUtils.normalizer(methodBody)])
-		
+
 	conn.commit()
 
 
@@ -89,29 +87,29 @@ def insertVariants(sortedVariants):
 	conn.close()
 
 def main():
+	createDbAndInitialTables()
 
 	ast = readASTFile()
 	variantsToFunctionsMap = getFunctionsInVariants(ast)
-
-	createDbAndInitialTables()
 
 	variantNames = variantsToFunctionsMap.keys()
 	variantNames.sort()
 	insertVariants(variantNames)
 
 	conn = sqlite3.connect(DB_FILE_NAME)
-	for index in range(0, len(variantNames)):
-		variant = variantNames[index]
+	for i in range(0, len(variantNames)):
+		variant = variantNames[i]
 		prevVariantFunctions = None
 
-		if index > 0:
-				prevVariantFunctions = variantsToFunctionsMap[variantNames[index-1]]
+		if i > 0:
+				prevVariantFunctions = variantsToFunctionsMap[variantNames[i-1]]
 
 		for function in variantsToFunctionsMap[variant]:
-			variantPos = index + 1
+			variantPos = i + 1
 			insertFunctionToDb(variantPos, function, prevVariantFunctions, conn)
 
 	conn.close()
+
 
 
 def createDbAndInitialTables():
@@ -140,6 +138,8 @@ def getFunctionsInVariants(variant_functions):
 			else:
 				variantsToFunctionsMap[variant_name] = functions_list
 
+			variantsToFunctionsMap[variant_name] = sorted(variantsToFunctionsMap[variant_name], key=lambda item:item["start"])
+
 	return variantsToFunctionsMap
 
 main()
@@ -158,27 +158,3 @@ main()
   },
 '''
 
-
-
-
-
-#print functions_list
-#print variantstoFunctionsMap.keys()
-#print variantstoFunctionsMap['2014-05-22-13:38:32']
-#print len(variantstoFunctionsMap.keys())
-#for i in range(0,5):
-#	xyz = variantstoFunctionsMap.keys()[i]
-#	print xyz
-#	print variantstoFunctionsMap[xyz]
-#src': u'/hexcom/2014-05-17-07:18:31/server.js',
-	#u'end': 342,
-	#u'filepath': u'',
-	#u'header': u'handler (req, res)',
-   # u'length': 253,
-	#u'start': 89,
-  #  u'contents'
-'''
-current= variantstoFunctionsMap['Current']
-for functions in current:
-	print functions['src']
-'''
