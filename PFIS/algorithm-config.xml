@@ -38,7 +38,7 @@
 		<algorithm class="PFISTouchOnce" name="PFIS touch once with history variant unaware"
 			enabled="true" fileName="pfis_history_touch_once.txt" history="true"  >
 		</algorithm>
-	</algorithms-->
+	</algorithms>
 	<algorithms graphType="PfisGraphWithVariants">
 		<algorithm class="PFIS" name="PFIS with history, with variants, spread 2"
 			enabled="true" fileName="pfis_history_spread2_with_variants.txt" history="true" numSpread="2"  >
@@ -59,8 +59,28 @@
 			enabled="true" fileName="pfis_history_touch_once_with_variants.txt" history="true"  >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches">
-		<algorithm class="PFIS" name="PFIS with history, with variants, spread 2, Collapsed patches"
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variantstofunctions_1.db" name = "PureEquivalenceCollapse">
+		<algorithm class="PFIS" name="PFIS with history, with variants, spread 2, Collapsed patches2"
+			enabled="true" fileName="pfis_history_spread2_with_variants_collapsed_patches1.txt" history="true" numSpread="2"  >
+		</algorithm>
+		<algorithm class="PFIS" name="PFIS without history, with variants, spread 2, Collapsed patches2"
+			enabled="true" fileName="pfis_no_history_spread2_with_variants_collapsed_patches1.txt" numSpread="2"  >
+		</algorithm>
+		<algorithm class="PFIS" name="PFIS with history, with variants, spread 50, Collapsed patches2"
+			enabled="true" fileName="pfis_history_spread50_with_variants_collapsed_patches1.txt" history="true" numSpread="50"  >
+		</algorithm>
+		<algorithm class="PFIS" name="PFIS without history, with variants, spread 50, Collapsed patches2"
+			enabled="true" fileName="pfis_no_history_spread50_with_variants_collapsed_patches1.txt" numSpread="50"  >
+		</algorithm>
+		<algorithm class="PFISTouchOnce" name="PFIS touch once without history with variants, Collapsed patches2"
+			enabled="true" fileName="pfis_no_history_touch_once_with_variants_collapsed_patches1.txt" history="false" >
+		</algorithm>
+		<algorithm class="PFISTouchOnce" name="PFIS touch once with history with variants, Collapsed patches2"
+			enabled="true" fileName="pfis_history_touch_once_with_variants_collapsed_patches1.txt" history="true"  >
+		</algorithm>
+	</algorithms-->
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variantstofunctions.db" name="TextEquivalenceCollapse">
+		<!--algorithm class="PFIS" name="PFIS with history, with variants, spread 2, Collapsed patches"
 			enabled="true" fileName="pfis_history_spread2_with_variants_collapsed_patches.txt" history="true" numSpread="2"  >
 		</algorithm>
 		<algorithm class="PFIS" name="PFIS without history, with variants, spread 2, Collapsed patches"
@@ -74,7 +94,7 @@
 		</algorithm>
 		<algorithm class="PFISTouchOnce" name="PFIS touch once without history with variants, Collapsed patches"
 			enabled="true" fileName="pfis_no_history_touch_once_with_variants_collapsed_patches.txt" history="false" >
-		</algorithm>
+		</algorithm-->
 		<algorithm class="PFISTouchOnce" name="PFIS touch once with history with variants, Collapsed patches"
 			enabled="true" fileName="pfis_history_touch_once_with_variants_collapsed_patches.txt" history="true"  >
 		</algorithm>
