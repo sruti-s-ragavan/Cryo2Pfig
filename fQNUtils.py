@@ -1,11 +1,12 @@
 import re
-
-JS_STD_PREFIX = "JS_Std_lib/"
-JS_STD_REFERRER_STRING = 'JavaScript_standard;.'
-
-RELATIVE_FILE_PATH_WITHIN_VARIANT_REGEX = re.compile(r'/hexcom/([^/]*)/(.*)')
+import os
 
 class FQNUtils:
+	JS_STD_PREFIX = "JS_Std_lib"
+	JS_STD_REFERRER_STRING = 'JavaScript_standard;.'
+
+	RELATIVE_FILE_PATH_WITHIN_VARIANT_REGEX = re.compile(r'/hexcom/([^/]*)/(.*)')
+
 	@staticmethod
 	def addFQNPrefixForEvent(event):
 		event['target'] = FQNUtils.getFQN(event['target'])
@@ -44,7 +45,7 @@ class FQNUtils:
 
 	@staticmethod
 	def getRelativeFilePathWithinVariant(src):
-		match = RELATIVE_FILE_PATH_WITHIN_VARIANT_REGEX.match(src)
+		match = FQNUtils.RELATIVE_FILE_PATH_WITHIN_VARIANT_REGEX.match(src)
 		pathWithinVariant = match.groups()[1]
 		return pathWithinVariant
 
@@ -53,9 +54,9 @@ class FQNUtils:
 		if event['action'].startswith("Method invocation"):
 			#Referrer has standard for method invocation
 			#ParentEventReferrer has standard for Method invocation offset, length and scent methods.
-			if JS_STD_REFERRER_STRING in str(event['referrer'])\
-					or (parentEventReferrer <> None and JS_STD_REFERRER_STRING in parentEventReferrer):
-				event['target'] = JS_STD_PREFIX + event['target']
+			if FQNUtils.JS_STD_REFERRER_STRING in str(event['referrer'])\
+					or (parentEventReferrer <> None and FQNUtils.JS_STD_REFERRER_STRING in parentEventReferrer):
+				event['target'] = os.path.join(FQNUtils.JS_STD_PREFIX, event['target'])
 
 	@staticmethod
 	def normalizer(s):
