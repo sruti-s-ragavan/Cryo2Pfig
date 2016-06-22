@@ -79,7 +79,7 @@
 			enabled="true" fileName="pfis_history_touch_once_with_variants.txt" history="true"  >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variantstofunctions_1.db" suffix = "PureEquivalenceCollapse">
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "PureEquivalenceCollapse">
 		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
@@ -118,7 +118,7 @@
 			enabled="true" fileName="pfis_history_touch_once_with_variants_collapsed_patches1.txt" history="true"  >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variantstofunctions.db" suffix="TextEquivalenceCollapse">
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="TextEquivalenceCollapse">
 		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
