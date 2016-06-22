@@ -97,7 +97,7 @@ def getFunctionsAndInvocationsInVariants(variant_functions):
 	return (variantsToFuncDefinitionMap, variantsToFuncCallsMap)
 
 def buildGraph(definitions, invocations):
-	graph = nx.Graph()
+	graph = nx.DiGraph()
 
 	for i in range(0, len(definitions)):
 		# print i, " of ", len(definitions)
@@ -109,6 +109,11 @@ def buildGraph(definitions, invocations):
 			graph.add_edge(fqn, fqn_Prev, attr_dict={"edge_type":"adjacent"})
 			# print "Adj : ", fqn, fqn_Prev
 
+		if i < len(definitions) - 1 :
+			fqn_Next = getMethodFqnRelativeToVariant(definitions[i+1])
+			graph.add_edge(fqn, fqn_Next, attr_dict={"edge_type":"adjacent"})
+			# print "Adj : ", fqn, fqn_Next
+
 	for invocation in invocations:
 		invoked_method = FQNUtils.normalizer(invocation["invsrc"])
 
@@ -119,7 +124,7 @@ def buildGraph(definitions, invocations):
 			invoking_method_fqn = getMethodFqnRelativeToVariant(invocation)
 			invoked_method_fqn = FQNUtils.getRelativeFilePathWithinVariant(invoked_method)
 			graph.add_edge(invoking_method_fqn, invoked_method_fqn, attr_dict={"edge_type":"call"})
-			# print "Call: ", invoked_method_fqn, invoking_method_fqn
+			# print "Call: ", invoking_method_fqn, invoked_method_fqn
 
 	return graph
 
