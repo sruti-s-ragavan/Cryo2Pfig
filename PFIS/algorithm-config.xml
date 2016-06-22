@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
+<!-- Include substrings PFIS, __ (double underscore) for suffix and filenames with discretion. See runScript.py for details. -->
 <options>
-	<!--algorithms graphType="PfisGraph">
+	<algorithms graphType="PfisGraph" suffix = "VariantUnaware">
 		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
@@ -39,7 +40,26 @@
 			enabled="true" fileName="pfis_history_touch_once.txt" history="true"  >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithVariants">
+	<algorithms graphType="PfisGraphWithVariants" suffix = "VariantAware">
+		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="CallDepth" name="Undirected Call Graph"
+			fileName="undirected_call_graph.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">
+		</algorithm>
+		<algorithm class="Recency" name="Recency"
+			enabled="true" fileName="recency.txt">
+		</algorithm>
+		<algorithm class="SourceTopology" name="Source Topology"
+			enabled="true" fileName="source_topology.txt">
+		</algorithm>
+		<algorithm class="TFIDF" name="TF-IDF (method)"
+			enabled="true" fileName="tfidf.txt" >
+		</algorithm>
+		<algorithm class="WorkingSet" name="Working Set, delta 10"
+			enabled="true" fileName="working_set.txt">
+		</algorithm>
 		<algorithm class="PFIS" name="PFIS with history, with variants, spread 2"
 			enabled="true" fileName="pfis_history_spread2_with_variants.txt" history="true" numSpread="2"  >
 		</algorithm>
@@ -59,7 +79,26 @@
 			enabled="true" fileName="pfis_history_touch_once_with_variants.txt" history="true"  >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variantstofunctions_1.db" name = "PureEquivalenceCollapse">
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variantstofunctions_1.db" suffix = "PureEquivalenceCollapse">
+		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="CallDepth" name="Undirected Call Graph"
+			fileName="undirected_call_graph.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">
+		</algorithm>
+		<algorithm class="Recency" name="Recency"
+			enabled="true" fileName="recency.txt" >
+		</algorithm>
+		<algorithm class="SourceTopology" name="Source Topology"
+			enabled="true" fileName="source_topology.txt">
+		</algorithm>
+		<algorithm class="TFIDF" name="TF-IDF (method)"
+			enabled="true" fileName="tfidf.txt" >
+		</algorithm>
+		<algorithm class="WorkingSet" name="Working Set, delta 10"
+			enabled="true" fileName="working_set.txt">
+		</algorithm>
 		<algorithm class="PFIS" name="PFIS with history, with variants, spread 2, Collapsed patches2"
 			enabled="true" fileName="pfis_history_spread2_with_variants_collapsed_patches1.txt" history="true" numSpread="2"  >
 		</algorithm>
@@ -78,9 +117,28 @@
 		<algorithm class="PFISTouchOnce" name="PFIS touch once with history with variants, Collapsed patches2"
 			enabled="true" fileName="pfis_history_touch_once_with_variants_collapsed_patches1.txt" history="true"  >
 		</algorithm>
-	</algorithms-->
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variantstofunctions.db" name="TextEquivalenceCollapse">
-		<!--algorithm class="PFIS" name="PFIS with history, with variants, spread 2, Collapsed patches"
+	</algorithms>
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variantstofunctions.db" suffix="TextEquivalenceCollapse">
+		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="CallDepth" name="Undirected Call Graph"
+			fileName="undirected_call_graph.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">
+		</algorithm>
+		<algorithm class="Recency" name="Recency"
+			enabled="true" fileName="recency.txt" >
+		</algorithm>
+		<algorithm class="SourceTopology" name="Source Topology"
+			enabled="true" fileName="source_topology.txt">
+		</algorithm>
+		<algorithm class="TFIDF" name="TF-IDF (method)"
+			enabled="true" fileName="tfidf.txt" >
+		</algorithm>
+		<algorithm class="WorkingSet" name="Working Set, delta 10"
+			enabled="true" fileName="working_set.txt">
+		</algorithm>
+		<algorithm class="PFIS" name="PFIS with history, with variants, spread 2, Collapsed patches"
 			enabled="true" fileName="pfis_history_spread2_with_variants_collapsed_patches.txt" history="true" numSpread="2"  >
 		</algorithm>
 		<algorithm class="PFIS" name="PFIS without history, with variants, spread 2, Collapsed patches"
@@ -94,7 +152,7 @@
 		</algorithm>
 		<algorithm class="PFISTouchOnce" name="PFIS touch once without history with variants, Collapsed patches"
 			enabled="true" fileName="pfis_no_history_touch_once_with_variants_collapsed_patches.txt" history="false" >
-		</algorithm-->
+		</algorithm>
 		<algorithm class="PFISTouchOnce" name="PFIS touch once with history with variants, Collapsed patches"
 			enabled="true" fileName="pfis_history_touch_once_with_variants_collapsed_patches.txt" history="true"  >
 		</algorithm>
