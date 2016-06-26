@@ -556,16 +556,14 @@ class Converter:
             print str(event['sequence-id']) + " " + event['event-type'] + " " + event['logged-timestamp']
             if((k in event) and ((event['title'] in ["Immediate","Terminal","Preferences"]) or "[P]" in event['title'])):
                 pass
-            if((event['event-type'] != "expand-workspace-tree-node") and ('path' in event) and (event['path'][-2:] != 'js')):
-                #print "Not js", event['path'], " | " , event['sequence-id'], " | ", event['event-type']
-                pass
             else:
                 event_type = event['event-type']
                 if event_type == 'activate-tab':
                     self.append_event(self.convert_tab_event(event, 'Part activated'), new_events)
 
-                    if('path' in event.keys() and "[B]" not in event['path']):
+                    if('path' in event.keys() and event['path'][-2:] == 'js' and "[B]" not in event['path']):
                         event['position'] = {"line":1, "column":0}
+
                         new_events = self.append_event(self.convert_change_cursor_event(event), new_events)
 
                         new_doc_events = self.check_doc_opened(event,event['path'])
@@ -573,10 +571,12 @@ class Converter:
                             new_events = self.append_event(new_doc_events, new_events)
 
                 elif event_type == 'change-document':
+                    document_name = event['path']
+
+                    #TODO: Now: SS, BP: Revisit and add js check if things break
                     if(event['syntax'] in ['text','css', 'html']):
                         pass
                     else:
-                        document_name = event['path']
                         action = event['action']
                         text = ""
                         if action == "insert" or action == "remove":
@@ -612,11 +612,17 @@ class Converter:
                     #print event['action-timestamp']
                     #event['action-timestamp'] = event['action-timestamp'][:-1]+'2'+event['action-timestamp'][-1:]
                     #print event['action-timestamp']
-                    new_events = self.append_event(self.convert_change_cursor_event(event), new_events)
+                    if event['path'][-2:] != 'js':
+                        pass
+                    else:
+                        new_events = self.append_event(self.convert_change_cursor_event(event), new_events)
                 elif event_type == 'change-selection':
                     #slightly increase the timestamp of the event to make sure that it's AFTER change and AFTER Method/Invocation stuff and BEFORE Text selection offset
                    # event['action-timestamp'] = event['action-timestamp'][:-1]+'1'+event['action-timestamp'][-1:]
-                    new_events = self.append_event(self.convert_change_selection_event(event), new_events)
+                    if event['path'][-2:] != 'js':
+                        pass
+                    else:
+                        new_events = self.append_event(self.convert_change_selection_event(event), new_events)
                 elif event_type == 'select-workspace-tree-nodes':
                     new_events = self.append_event(self.convert_select_workspace_tree_nodes_event(event), new_events)
                 elif event_type == 'start-logging':
