@@ -21,23 +21,23 @@
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
 			enabled="true" fileName="working_set.txt">
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS with history, variant unaware, spread2"
-			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2"  >
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS without history, variant unaware, spread 2"
-			enabled="true" fileName="pfis_no_history_spread2.txt" numSpread="2"  >
+		<algorithm class="PFIS" name="PFIS without history, spread 2"
+			enabled="true" fileName="pfis_no_history_spread2.txt" numSpread="2" >
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS with history, variant unaware, spread 50"
-			enabled="true" fileName="pfis_history_spread50.txt" history="true" numSpread="50"  >
+		<algorithm class="PFIS" name="PFIS with history, spread 50"
+			enabled="true" fileName="pfis_history_spread50.txt" history="true" numSpread="50" >
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS without history, variant unaware, spread 50"
-			enabled="true" fileName="pfis_no_history_spread50.txt" numSpread="50"  >
+		<algorithm class="PFIS" name="PFIS without history, spread 50"
+			enabled="true" fileName="pfis_no_history_spread50.txt" numSpread="50" >
 		</algorithm>
 		<algorithm class="PFISTouchOnce" name="PFIS touch once without history variant unaware"
 			enabled="true" fileName="pfis_no_history_touch_once.txt" history="false" >
 		</algorithm>
 		<algorithm class="PFISTouchOnce" name="PFIS touch once with history variant unaware"
-			enabled="true" fileName="pfis_history_touch_once.txt" history="true"  >
+			enabled="true" fileName="pfis_history_touch_once.txt" history="true" >
 		</algorithm>
 	</algorithms>
 	<algorithms graphType="PfisGraphWithVariants" suffix = "VariantAware">
@@ -49,7 +49,7 @@
 		<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">
 		</algorithm>
 		<algorithm class="Recency" name="Recency"
-			enabled="true" fileName="recency.txt">
+			enabled="true" fileName="recency.txt" >
 		</algorithm>
 		<algorithm class="SourceTopology" name="Source Topology"
 			enabled="true" fileName="source_topology.txt">
@@ -60,23 +60,23 @@
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
 			enabled="true" fileName="working_set.txt">
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS with history, with variants, spread 2"
-			enabled="true" fileName="pfis_history_spread2_with_variants.txt" history="true" numSpread="2"  >
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS without history, with variants, spread 2"
-			enabled="true" fileName="pfis_no_history_spread2_with_variants.txt" numSpread="2"  >
+		<algorithm class="PFIS" name="PFIS without history, spread 2"
+			enabled="true" fileName="pfis_no_history_spread2.txt" numSpread="2" >
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS with history, with variants, spread 50"
-			enabled="true" fileName="pfis_history_spread50_with_variants.txt" history="true" numSpread="50"  >
+		<algorithm class="PFIS" name="PFIS with history, spread 50"
+			enabled="true" fileName="pfis_history_spread50.txt" history="true" numSpread="50" >
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS without history, with variants, spread 50"
-			enabled="true" fileName="pfis_no_history_spread100_with_variants.txt" numSpread="50"  >
+		<algorithm class="PFIS" name="PFIS without history, spread 50"
+			enabled="true" fileName="pfis_no_history_spread50.txt" numSpread="50" >
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once without history with variants"
-			enabled="true" fileName="pfis_no_history_touch_once_with_variants.txt" history="false" >
+		<algorithm class="PFISTouchOnce" name="PFIS touch once without history variant unaware"
+			enabled="true" fileName="pfis_no_history_touch_once.txt" history="false" >
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once with history with variants"
-			enabled="true" fileName="pfis_history_touch_once_with_variants.txt" history="true"  >
+		<algorithm class="PFISTouchOnce" name="PFIS touch once with history variant unaware"
+			enabled="true" fileName="pfis_history_touch_once.txt" history="true" >
 		</algorithm>
 	</algorithms>
 	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "PureEquivalenceCollapse">
@@ -99,23 +99,23 @@
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
 			enabled="true" fileName="working_set.txt">
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS with history, with variants, spread 2, Collapsed patches2"
-			enabled="true" fileName="pfis_history_spread2_with_variants_collapsed_patches1.txt" history="true" numSpread="2"  >
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS without history, with variants, spread 2, Collapsed patches2"
-			enabled="true" fileName="pfis_no_history_spread2_with_variants_collapsed_patches1.txt" numSpread="2"  >
+		<algorithm class="PFIS" name="PFIS without history, spread 2"
+			enabled="true" fileName="pfis_no_history_spread2.txt" numSpread="2" >
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS with history, with variants, spread 50, Collapsed patches2"
-			enabled="true" fileName="pfis_history_spread50_with_variants_collapsed_patches1.txt" history="true" numSpread="50"  >
+		<algorithm class="PFIS" name="PFIS with history, spread 50"
+			enabled="true" fileName="pfis_history_spread50.txt" history="true" numSpread="50" >
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS without history, with variants, spread 50, Collapsed patches2"
-			enabled="true" fileName="pfis_no_history_spread50_with_variants_collapsed_patches1.txt" numSpread="50"  >
+		<algorithm class="PFIS" name="PFIS without history, spread 50"
+			enabled="true" fileName="pfis_no_history_spread50.txt" numSpread="50" >
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once without history with variants, Collapsed patches2"
-			enabled="true" fileName="pfis_no_history_touch_once_with_variants_collapsed_patches1.txt" history="false" >
+		<algorithm class="PFISTouchOnce" name="PFIS touch once without history variant unaware"
+			enabled="true" fileName="pfis_no_history_touch_once.txt" history="false" >
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once with history with variants, Collapsed patches2"
-			enabled="true" fileName="pfis_history_touch_once_with_variants_collapsed_patches1.txt" history="true"  >
+		<algorithm class="PFISTouchOnce" name="PFIS touch once with history variant unaware"
+			enabled="true" fileName="pfis_history_touch_once.txt" history="true" >
 		</algorithm>
 	</algorithms>
 	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="TextEquivalenceCollapse">
@@ -138,23 +138,23 @@
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
 			enabled="true" fileName="working_set.txt">
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS with history, with variants, spread 2, Collapsed patches"
-			enabled="true" fileName="pfis_history_spread2_with_variants_collapsed_patches.txt" history="true" numSpread="2"  >
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS without history, with variants, spread 2, Collapsed patches"
-			enabled="true" fileName="pfis_no_history_spread2_with_variants_collapsed_patches.txt" numSpread="2"  >
+		<algorithm class="PFIS" name="PFIS without history, spread 2"
+			enabled="true" fileName="pfis_no_history_spread2.txt" numSpread="2" >
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS with history, with variants, spread 50, Collapsed patches"
-			enabled="true" fileName="pfis_history_spread50_with_variants_collapsed_patches.txt" history="true" numSpread="50"  >
+		<algorithm class="PFIS" name="PFIS with history, spread 50"
+			enabled="true" fileName="pfis_history_spread50.txt" history="true" numSpread="50" >
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS without history, with variants, spread 50, Collapsed patches"
-			enabled="true" fileName="pfis_no_history_spread50_with_variants_collapsed_patches.txt" numSpread="50"  >
+		<algorithm class="PFIS" name="PFIS without history, spread 50"
+			enabled="true" fileName="pfis_no_history_spread50.txt" numSpread="50" >
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once without history with variants, Collapsed patches"
-			enabled="true" fileName="pfis_no_history_touch_once_with_variants_collapsed_patches.txt" history="false" >
+		<algorithm class="PFISTouchOnce" name="PFIS touch once without history variant unaware"
+			enabled="true" fileName="pfis_no_history_touch_once.txt" history="false" >
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once with history with variants, Collapsed patches"
-			enabled="true" fileName="pfis_history_touch_once_with_variants_collapsed_patches.txt" history="true"  >
+		<algorithm class="PFISTouchOnce" name="PFIS touch once with history variant unaware"
+			enabled="true" fileName="pfis_history_touch_once.txt" history="true" >
 		</algorithm>
 	</algorithms>
 </options>
