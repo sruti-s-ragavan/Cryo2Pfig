@@ -1,0 +1,1 @@
+UPDATE logger_log SET referrer = referrer -1 where action = 'Text selection offset' and referrer > 0;

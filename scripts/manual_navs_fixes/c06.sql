@@ -1,0 +1,18 @@
+update logger_log set referrer = '3880' where timestamp ='2015-04-21 19:00:42.967050000' and elapsed_time = '0:17:13.283000';
+INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93', '2015-04-21 19:10:35.287000', 'Part activated', 'main.js', '/hexcom/Current/js_v9/main.js', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '00:27:05.603000');
+INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93','2015-04-21 19:10:35.288000', 'Text selection offset', '/hexcom/Current/js_v9/main.js', '0', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '00:27:05.604000');
+INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93', '2015-04-21 19:11:06.287000', 'Part activated', 'initialization.js', '/hexcom/Current/js_v9/initialization.js', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '00:27:36.603000');
+INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93','2015-04-21 19:11:06.288000', 'Text selection offset', '/hexcom/Current/js_v9/initialization.js', '0', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '00:27:36.604000');
+INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93', '2015-04-21 19:11:48.753000', 'Part activated', 'main.js', '/hexcom/Current/js_v9/main.js', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '0:22:55.194000');
+INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93', '2015-04-21 19:11:48.754000', 'Text selection offset', '/hexcom/Current/js_v9/main.js', '0', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '0:22:55.195000');
+INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93', '2015-04-21 19:11:52.754000', 'Part activated', 'initialization.js', '/hexcom/Current/js_v9/initialization.js', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '0:22:59.195000');
+INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93', '2015-04-21 19:11:52.755000', 'Text selection offset', '/hexcom/Current/js_v9/initialization.js', '1122', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '0:22:59.196000');
+INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93', '2015-04-21 19:12:26.755000', 'Text selection offset', '/hexcom/Current/js_v9/initialization.js', '13', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '0:23:33.196000');
+INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93', '2015-04-21 19:13:51.755000', 'Text selection offset', '/hexcom/Current/js_v9/initialization.js', '905', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '0:24:58.196000');
+
+INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93', '2015-04-21 19:13:57.755000', 'Part activated', 'main.js', '/hexcom/Current/js_v9/main.js', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '0:25:04.196000');
+INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93', '2015-04-21 19:13:57.756000', 'Text selection offset', '/hexcom/Current/js_v9/main.js', '0', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '0:25:04.197000');
+INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93', '2015-04-21 19:14:13.756000', 'Part activated', 'initialization.js', '/hexcom/Current/js_v9/initialization.js', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '0:25:20.197000');
+INSERT INTO logger_log values(0, 'c486980a-74df-40a1-b4eb-07ff1c1dff93', '2015-04-21 19:14:13.757000', 'Text selection offset', '/hexcom/Current/js_v9/initialization.js', '0', '8ea5d9be-d1b5-4319-9def-495bdccb7f51', '0:25:20.198000');
+update logger_log set timestamp ='2015-04-21 19:11:06.289000', elapsed_time = '00:27:36.605000' where timestamp = '2015-04-21 19:11:19.531000';
+update logger_log set timestamp = '2015-04-21 19:10:35.289000', elapsed_time = '00:27:05.605000' where timestamp ='2015-04-21 19:20:49.350000';
