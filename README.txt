@@ -21,8 +21,11 @@
 
 To bulk-convert logs:
 	python convert_logs.py <log_files_folder> <db_folder> <manual_navs_folder>
+
 	Ensure log files are of format A.log, and corresponding manual navs have same name as A.sql
-	The DB will be present in the <db_folder> you mentioned above. 
+	Manual navs are present in Cryo2Pfig/scripts/manual_navs_fixes
+
+	The DB will be present in the <db_folder> you mentioned above.
 	** ALWAYS COPY THE DB after conversion and just operate on the copy!**
 
 To create variations information (collapse) databases
