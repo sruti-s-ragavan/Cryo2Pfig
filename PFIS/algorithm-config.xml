@@ -33,14 +33,14 @@
 		<algorithm class="PFIS" name="PFIS without history, spread 50"
 			enabled="true" fileName="pfis_no_history_spread50.txt" numSpread="50" >
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once without history variant unaware"
+		<algorithm class="PFISTouchOnce" name="PFIS touch once without history "
 			enabled="true" fileName="pfis_no_history_touch_once.txt" history="false" >
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once with history variant unaware"
+		<algorithm class="PFISTouchOnce" name="PFIS touch once with history "
 			enabled="true" fileName="pfis_history_touch_once.txt" history="true" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithVariants" suffix = "VariantAware">
+	<algorithms graphType="PfisGraphWithVariants" suffix = "NoCollapse">
 		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
@@ -72,10 +72,10 @@
 		<algorithm class="PFIS" name="PFIS without history, spread 50"
 			enabled="true" fileName="pfis_no_history_spread50.txt" numSpread="50" >
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once without history variant unaware"
+		<algorithm class="PFISTouchOnce" name="PFIS touch once without history "
 			enabled="true" fileName="pfis_no_history_touch_once.txt" history="false" >
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once with history variant unaware"
+		<algorithm class="PFISTouchOnce" name="PFIS touch once with history "
 			enabled="true" fileName="pfis_history_touch_once.txt" history="true" >
 		</algorithm>
 	</algorithms>
@@ -111,10 +111,10 @@
 		<algorithm class="PFIS" name="PFIS without history, spread 50"
 			enabled="true" fileName="pfis_no_history_spread50.txt" numSpread="50" >
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once without history variant unaware"
+		<algorithm class="PFISTouchOnce" name="PFIS touch once without history "
 			enabled="true" fileName="pfis_no_history_touch_once.txt" history="false" >
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once with history variant unaware"
+		<algorithm class="PFISTouchOnce" name="PFIS touch once with history "
 			enabled="true" fileName="pfis_history_touch_once.txt" history="true" >
 		</algorithm>
 	</algorithms>
@@ -148,12 +148,12 @@
 			enabled="true" fileName="pfis_history_spread50.txt" history="true" numSpread="50" >
 		</algorithm>
 		<algorithm class="PFIS" name="PFIS without history, spread 50"
-			enabled="true" fileName="pfis_no_history_spread50.txt" numSpread="50" >
+			enabled="true" fileName="pfis_no_history_spread50.txt" numSpread="50">
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once without history variant unaware"
+		<algorithm class="PFISTouchOnce" name="PFIS touch once without history "
 			enabled="true" fileName="pfis_no_history_touch_once.txt" history="false" >
 		</algorithm>
-		<algorithm class="PFISTouchOnce" name="PFIS touch once with history variant unaware"
+		<algorithm class="PFISTouchOnce" name="PFIS touch once with history "
 			enabled="true" fileName="pfis_history_touch_once.txt" history="true" >
 		</algorithm>
 	</algorithms>
