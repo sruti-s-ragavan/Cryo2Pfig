@@ -1,0 +1,105 @@
+Prediction	Timestamp	From loc	To loc	Elapsed_time	Segment_Foraging
+1	2015-06-11 20:18:51.168000+00:00	L/hexcom/Current/js_v9/main.js;.scaleCanvas()	L/hexcom/Current/js_v9/main.js;.init(b)	16:35.8	DP
+2	2015-06-11 20:19:49.871000+00:00	L/hexcom/Current/js_v9/main.js;.init(b)	L/hexcom/Current/js_v9/main.js;.animLoop()	17:34.5	DP
+3	2015-06-11 20:20:22.630050+00:00	L/hexcom/Current/js_v9/main.js;.animLoop()	/hexcom/Current/js_v9/render.js at 0	18:07.3	DP
+4	2015-06-11 20:21:24.423050+00:00	L/hexcom/Current/js_v9/render.js;.render()	/hexcom/Current/js_v9/view.js at 0	19:09.1	DP
+5	2015-06-11 20:21:35.829000+00:00	L/hexcom/Current/js_v9/view.js;.pfigheader()V	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	19:20.5	DP
+6	2015-06-11 20:30:11.004050+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	/hexcom/Current/js_v9/input.js at 0	27:55.6	OTH
+7	2015-06-11 20:30:24.871000+00:00	L/hexcom/Current/js_v9/input.js;.addKeyListeners()	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	28:09.5	OTH
+8	2015-06-11 20:32:50.346050+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	/hexcom/2014-08-26-10:42:29/js_v8/view.js at 0	30:35.0	DP
+9	2015-06-11 20:32:52.607000+00:00	L/hexcom/2014-08-26-10:42:29/js_v8/view.js;.pfigheader()V	L/hexcom/2014-08-26-10:42:29/js_v8/view.js;.drawScoreboard()	30:37.3	DP
+10	2015-06-11 20:33:07.546000+00:00	L/hexcom/2014-08-26-10:42:29/js_v8/view.js;.drawScoreboard()	L/hexcom/Current/js_v9/main.js;.animLoop()	30:52.2	DP
+11	2015-06-11 20:33:07.574000+00:00	L/hexcom/Current/js_v9/main.js;.animLoop()	L/hexcom/Current/js_v9/main.js;.init(b)	30:52.2	DP
+12	2015-06-11 20:33:19.005050+00:00	L/hexcom/Current/js_v9/main.js;.init(b)	/hexcom/Current/js_v9/Hex.js at 0	31:03.6	SV
+13	2015-06-11 20:33:21.145000+00:00	L/hexcom/Current/js_v9/Hex.js;.Hex(sideLength)	L/hexcom/Current/js_v9/Hex.js/Hex(sideLength);.shake()	31:05.8	SV
+14	2015-06-11 20:33:25.923000+00:00	L/hexcom/Current/js_v9/Hex.js/Hex(sideLength);.shake()	L/hexcom/Current/js_v9/Hex.js;.Hex(sideLength)	31:10.6	SV
+15	2015-06-11 20:33:26.687000+00:00	L/hexcom/Current/js_v9/Hex.js;.Hex(sideLength)	L/hexcom/Current/js_v9/Hex.js/Hex(sideLength);.shake()	31:11.3	SV
+16	2015-06-11 20:33:43.605000+00:00	L/hexcom/Current/js_v9/Hex.js/Hex(sideLength);.shake()	L/hexcom/Current/js_v9/main.js;.init(b)	31:28.2	SV
+17	2015-06-11 20:33:58.316000+00:00	L/hexcom/Current/js_v9/main.js;.init(b)	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	31:43.0	SP
+18	2015-06-11 20:34:10.414000+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	L/hexcom/2014-08-26-10:42:29/js_v8/view.js;.drawScoreboard()	31:55.1	SP
+19	2015-06-11 20:34:22.921000+00:00	L/hexcom/2014-08-26-10:42:29/js_v8/view.js;.drawScoreboard()	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	32:07.6	SP
+20	2015-06-11 20:34:27.671050+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	/hexcom/2014-08-18-20:09:11/js/view.js at 0	32:12.3	SP
+21	2015-06-11 20:34:29.803000+00:00	L/hexcom/2014-08-18-20:09:11/js/view.js;.pfigheader()V	L/hexcom/2014-08-18-20:09:11/js/view.js;.drawScoreboard()	32:14.4	SP
+22	2015-06-11 20:34:37.986000+00:00	L/hexcom/2014-08-18-20:09:11/js/view.js;.drawScoreboard()	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	32:22.6	SP
+23	2015-06-11 20:34:46.428050+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	/hexcom/2014-06-24-10:16:46/js/view.js at 0	32:31.1	SV
+24	2015-06-11 20:34:55.238000+00:00	L/hexcom/2014-06-24-10:16:46/js/view.js;.pfigheader()V	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	32:39.9	SV
+25	2015-06-11 20:35:19.995050+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	/hexcom/2014-05-24-12:52:38/js/view.js at 0	33:04.6	SV
+26	2015-06-11 20:35:24.495000+00:00	L/hexcom/2014-05-24-12:52:38/js/view.js;.pfigheader()V	L/hexcom/2014-05-24-12:52:38/js/view.js;.showModal(text"," secondaryText)	33:09.1	SV
+27	2015-06-11 20:35:27.722000+00:00	L/hexcom/2014-05-24-12:52:38/js/view.js;.showModal(text"," secondaryText)	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	33:12.4	SV
+28	2015-06-11 20:35:29.289000+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	L/hexcom/2014-05-24-12:52:38/js/view.js;.showModal(text"," secondaryText)	33:13.9	SV
+29	2015-06-11 20:35:30.465000+00:00	L/hexcom/2014-05-24-12:52:38/js/view.js;.showModal(text"," secondaryText)	L/hexcom/2014-05-24-12:52:38/js/view.js;.renderText(lines"," x"," y"," fontSize)	33:15.1	SV
+30	2015-06-11 20:36:09.547000+00:00	L/hexcom/2014-05-24-12:52:38/js/view.js;.renderText(lines"," x"," y"," fontSize)	L/hexcom/Current/js_v9/Hex.js/Hex(sideLength);.shake()	33:54.2	SV
+31	2015-06-11 20:37:04.704000+00:00	L/hexcom/Current/js_v9/Hex.js/Hex(sideLength);.shake()	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	34:49.3	SV
+32	2015-06-11 20:39:09.250050+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	/hexcom/2014-05-26-10:18:35/js/view.js at 0	36:53.9	SV
+33	2015-06-11 20:39:11.497000+00:00	L/hexcom/2014-05-26-10:18:35/js/view.js;.pfigheader()V	L/hexcom/2014-05-26-10:18:35/js/view.js;.renderText(x"," y"," fontSize"," color"," text)	36:56.1	SV
+34	2015-06-11 20:39:15.877000+00:00	L/hexcom/2014-05-26-10:18:35/js/view.js;.renderText(x"," y"," fontSize"," color"," text)	L/hexcom/2014-05-26-10:18:35/js/view.js;.drawScoreboard()	37:00.5	SV
+35	2015-06-11 20:39:17.417000+00:00	L/hexcom/2014-05-26-10:18:35/js/view.js;.drawScoreboard()	L/hexcom/2014-05-26-10:18:35/js/view.js;.renderText(x"," y"," fontSize"," color"," text)	37:02.1	SV
+36	2015-06-11 20:39:18.026000+00:00	L/hexcom/2014-05-26-10:18:35/js/view.js;.renderText(x"," y"," fontSize"," color"," text)	L/hexcom/2014-05-26-10:18:35/js/view.js;.drawScoreboard()	37:02.7	SV
+37	2015-06-11 20:39:47.687050+00:00	L/hexcom/2014-05-26-10:18:35/js/view.js;.drawScoreboard()	/hexcom/2014-05-25-07:03:28/js/view.js at 0	37:32.3	SV
+38	2015-06-11 20:39:50.186000+00:00	L/hexcom/2014-05-25-07:03:28/js/view.js;.pfigheader()V	L/hexcom/2014-05-25-07:03:28/js/view.js;.renderText(lines"," x"," y"," fontSize)	37:34.8	SV
+39	2015-06-11 20:40:10.474050+00:00	L/hexcom/2014-05-25-07:03:28/js/view.js;.renderText(lines"," x"," y"," fontSize)	/hexcom/2014-05-25-08:15:22/js/view.js at 0	37:55.1	SV
+40	2015-06-11 20:40:15.415000+00:00	L/hexcom/2014-05-25-08:15:22/js/view.js;.pfigheader()V	L/hexcom/2014-05-25-08:15:22/js/view.js;.renderText(lines"," x"," y"," fontSize)	38:00.1	SV
+41	2015-06-11 20:40:21.611050+00:00	L/hexcom/2014-05-25-08:15:22/js/view.js;.renderText(lines"," x"," y"," fontSize)	/hexcom/2014-05-25-16:53:02/js/view.js at 0	38:06.3	SV
+42	2015-06-11 20:40:22.482000+00:00	L/hexcom/2014-05-25-16:53:02/js/view.js;.pfigheader()V	L/hexcom/2014-05-25-16:53:02/js/view.js;.renderText(lines"," x"," y"," fontSize)	38:07.1	SV
+43	2015-06-11 20:40:33.366050+00:00	L/hexcom/2014-05-25-16:53:02/js/view.js;.renderText(lines"," x"," y"," fontSize)	/hexcom/2014-05-25-18:59:47/js/view.js at 0	38:18.0	SV
+44	2015-06-11 20:40:38.672000+00:00	L/hexcom/2014-05-25-18:59:47/js/view.js;.pfigheader()V	L/hexcom/2014-05-25-18:59:47/js/view.js;.renderText(lines"," x"," y"," fontSize)	38:23.3	SV
+45	2015-06-11 20:40:44.085050+00:00	L/hexcom/2014-05-25-18:59:47/js/view.js;.renderText(lines"," x"," y"," fontSize)	/hexcom/2014-05-25-19:06:15/js/view.js at 0	38:28.7	SV
+46	2015-06-11 20:40:44.908000+00:00	L/hexcom/2014-05-25-19:06:15/js/view.js;.pfigheader()V	L/hexcom/2014-05-25-19:06:15/js/view.js;.renderText(lines"," x"," y"," fontSize)	38:29.6	SV
+47	2015-06-11 20:40:51.903050+00:00	L/hexcom/2014-05-25-19:06:15/js/view.js;.renderText(lines"," x"," y"," fontSize)	/hexcom/2014-05-26-09:52:57/js/view.js at 0	38:36.5	SV
+48	2015-06-11 20:40:53.172000+00:00	L/hexcom/2014-05-26-09:52:57/js/view.js;.pfigheader()V	L/hexcom/2014-05-26-09:52:57/js/view.js;.renderText(x"," y"," fontSize"," color"," text)	38:37.8	SV
+49	2015-06-11 20:40:53.531000+00:00	L/hexcom/2014-05-26-09:52:57/js/view.js;.renderText(x"," y"," fontSize"," color"," text)	L/hexcom/2014-05-26-09:52:57/js/view.js;.drawScoreboard()	38:38.2	SV
+50	2015-06-11 20:41:01.691000+00:00	L/hexcom/2014-05-26-09:52:57/js/view.js;.drawScoreboard()	L/hexcom/2014-05-26-09:52:57/js/view.js;.clearGameBoard()	38:46.3	SV
+51	2015-06-11 20:41:01.834000+00:00	L/hexcom/2014-05-26-09:52:57/js/view.js;.clearGameBoard()	L/hexcom/2014-05-26-09:52:57/js/view.js;.drawScoreboard()	38:46.5	SV
+52	2015-06-11 20:41:15.518000+00:00	L/hexcom/2014-05-26-09:52:57/js/view.js;.drawScoreboard()	L/hexcom/2014-05-25-19:06:15/js/view.js;.renderText(lines"," x"," y"," fontSize)	39:00.2	SV
+53	2015-06-11 20:41:20.439000+00:00	L/hexcom/2014-05-25-19:06:15/js/view.js;.renderText(lines"," x"," y"," fontSize)	L/hexcom/2014-05-25-18:59:47/js/view.js;.renderText(lines"," x"," y"," fontSize)	39:05.1	SV
+54	2015-06-11 20:41:25.574000+00:00	L/hexcom/2014-05-25-18:59:47/js/view.js;.renderText(lines"," x"," y"," fontSize)	L/hexcom/2014-05-25-08:15:22/js/view.js;.renderText(lines"," x"," y"," fontSize)	39:10.2	SV
+55	2015-06-11 20:41:28.330000+00:00	L/hexcom/2014-05-25-08:15:22/js/view.js;.renderText(lines"," x"," y"," fontSize)	L/hexcom/2014-05-25-08:15:22/js/view.js;.updateScoreboard()	39:13.0	SV
+56	2015-06-11 20:43:31.315000+00:00	L/hexcom/2014-05-25-08:15:22/js/view.js;.updateScoreboard()	L/hexcom/2014-05-25-08:15:22/js/view.js;.renderText(lines"," x"," y"," fontSize)	41:16.0	SP
+57	2015-06-11 20:43:31.553000+00:00	L/hexcom/2014-05-25-08:15:22/js/view.js;.renderText(lines"," x"," y"," fontSize)	L/hexcom/2014-05-25-08:15:22/js/view.js;.updateScoreboard()	41:16.2	SP
+58	2015-06-11 20:43:31.616000+00:00	L/hexcom/2014-05-25-08:15:22/js/view.js;.updateScoreboard()	L/hexcom/2014-05-25-08:15:22/js/view.js;.clearGameBoard()	41:16.3	SP
+59	2015-06-11 20:43:31.822000+00:00	L/hexcom/2014-05-25-08:15:22/js/view.js;.clearGameBoard()	L/hexcom/2014-05-25-08:15:22/js/view.js;.renderText(lines"," x"," y"," fontSize)	41:16.5	SP
+60	2015-06-11 20:43:41.344000+00:00	L/hexcom/2014-05-25-08:15:22/js/view.js;.renderText(lines"," x"," y"," fontSize)	L/hexcom/2014-05-25-08:15:22/js/view.js;.updateScoreboard()	41:26.0	SP
+61	2015-06-11 20:45:08.794000+00:00	L/hexcom/2014-05-25-08:15:22/js/view.js;.updateScoreboard()	L/hexcom/2014-05-25-08:15:22/js/view.js;.clearGameBoard()	42:53.4	SP
+62	2015-06-11 20:45:23.670000+00:00	L/hexcom/2014-05-25-08:15:22/js/view.js;.clearGameBoard()	L/hexcom/2014-05-25-08:15:22/js/view.js;.updateScoreboard()	43:08.3	SP
+63	2015-06-11 20:47:32.465050+00:00	L/hexcom/2014-05-25-08:15:22/js/view.js;.updateScoreboard()	/hexcom/2014-05-25-08:31:05/js/view.js at 0	45:17.1	SP
+64	2015-06-11 20:47:33.414000+00:00	L/hexcom/2014-05-25-08:31:05/js/view.js;.pfigheader()V	L/hexcom/2014-05-25-08:31:05/js/view.js;.updateScoreboard()	45:18.1	SP
+65	2015-06-11 20:47:39.230050+00:00	L/hexcom/2014-05-25-08:31:05/js/view.js;.updateScoreboard()	/hexcom/2014-05-25-18:49:18/js/view.js at 0	45:23.9	SP
+66	2015-06-11 20:47:42.122000+00:00	L/hexcom/2014-05-25-18:49:18/js/view.js;.pfigheader()V	L/hexcom/2014-05-25-18:59:47/js/view.js;.renderText(lines"," x"," y"," fontSize)	45:26.8	SP
+67	2015-06-11 20:47:46.396000+00:00	L/hexcom/2014-05-25-18:59:47/js/view.js;.renderText(lines"," x"," y"," fontSize)	L/hexcom/2014-05-26-09:52:57/js/view.js;.drawScoreboard()	45:31.0	SV
+68	2015-06-11 20:47:53.264000+00:00	L/hexcom/2014-05-26-09:52:57/js/view.js;.drawScoreboard()	L/hexcom/2014-05-25-19:06:15/js/view.js;.renderText(lines"," x"," y"," fontSize)	45:37.9	SV
+69	2015-06-11 20:48:22.728050+00:00	L/hexcom/2014-05-25-19:06:15/js/view.js;.renderText(lines"," x"," y"," fontSize)	/hexcom/2014-05-26-09:49:24/js/view.js at 0	46:07.4	SV
+70	2015-06-11 20:48:32.151000+00:00	L/hexcom/2014-05-26-09:49:24/js/view.js;.pfigheader()V	L/hexcom/2014-05-25-19:06:15/js/view.js;.renderText(lines"," x"," y"," fontSize)	46:16.8	SV
+71	2015-06-11 20:48:36.471000+00:00	L/hexcom/2014-05-25-19:06:15/js/view.js;.renderText(lines"," x"," y"," fontSize)	L/hexcom/2014-05-25-19:06:15/js/view.js;.showModal(text"," secondaryText)	46:21.1	SV
+72	2015-06-11 20:48:37.707000+00:00	L/hexcom/2014-05-25-19:06:15/js/view.js;.showModal(text"," secondaryText)	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	46:22.4	SV
+73	2015-06-11 20:48:45.996000+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	L/hexcom/2014-05-26-09:52:57/js/view.js;.drawScoreboard()	46:30.6	SV
+74	2015-06-11 20:48:53.348050+00:00	L/hexcom/2014-05-26-09:52:57/js/view.js;.drawScoreboard()	/hexcom/2014-05-26-08:22:52/js/view.js at 0	46:38.0	SV
+75	2015-06-11 20:49:00.572050+00:00	L/hexcom/2014-05-26-08:22:52/js/view.js;.pfigheader()V	/hexcom/2014-05-25-20:12:47/js/view.js at 0	46:45.2	SV
+76	2015-06-11 20:49:07.176050+00:00	L/hexcom/2014-05-25-20:12:47/js/view.js;.pfigheader()V	/hexcom/2014-05-25-21:06:41/js/view.js at 0	46:51.8	SV
+77	2015-06-11 20:49:12.046050+00:00	L/hexcom/2014-05-25-21:06:41/js/view.js;.pfigheader()V	/hexcom/2014-05-25-20:42:17/js/view.js at 0	46:56.7	SV
+78	2015-06-11 20:49:15.703050+00:00	L/hexcom/2014-05-25-20:42:17/js/view.js;.pfigheader()V	/hexcom/2014-05-25-19:29:36/js/view.js at 0	47:00.3	SV
+79	2015-06-11 20:49:16.943000+00:00	L/hexcom/2014-05-25-19:29:36/js/view.js;.pfigheader()V	L/hexcom/2014-05-25-19:29:36/js/view.js;.updateScoreboard()	47:01.6	SV
+80	2015-06-11 20:55:03.253000+00:00	L/hexcom/2014-05-25-19:29:36/js/view.js;.updateScoreboard()	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	52:47.9	SP
+81	2015-06-11 20:55:07.333000+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	L/hexcom/2014-05-26-08:22:52/js/view.js;.pfigheader()V	52:52.0	SP
+82	2015-06-11 20:55:09.286000+00:00	L/hexcom/2014-05-26-08:22:52/js/view.js;.pfigheader()V	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	52:53.9	SP
+83	2015-06-11 20:59:29.779000+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	L/hexcom/2014-05-25-21:06:41/js/view.js;.pfigheader()V	57:14.4	Integrate
+84	2015-06-11 20:59:34.221000+00:00	L/hexcom/2014-05-25-21:06:41/js/view.js;.pfigheader()V	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	57:18.9	Integrate
+85	2015-06-11 20:59:40.199050+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	/hexcom/2014-05-22-22:10:12/js/view.js at 0	57:24.8	Integrate
+86	2015-06-11 20:59:42.271000+00:00	L/hexcom/2014-05-22-22:10:12/js/view.js;.pfigheader()V	L/hexcom/2014-05-22-22:10:12/js/view.js;.updateScoreboard()	57:26.9	Integrate
+87	2015-06-11 20:59:47.964000+00:00	L/hexcom/2014-05-22-22:10:12/js/view.js;.updateScoreboard()	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	57:32.6	SV
+88	2015-06-11 20:59:52.706000+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	L/hexcom/2014-05-22-22:10:12/js/view.js;.updateScoreboard()	57:37.4	SV
+89	2015-06-11 21:00:15.155000+00:00	L/hexcom/2014-05-22-22:10:12/js/view.js;.updateScoreboard()	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	57:59.8	SV
+90	2015-06-11 21:00:19.291000+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	L/hexcom/2014-05-22-22:10:12/js/view.js;.updateScoreboard()	58:03.9	DP
+91	2015-06-11 21:02:25.482000+00:00	L/hexcom/2014-05-22-22:10:12/js/view.js;.updateScoreboard()	L/hexcom/2014-05-22-22:10:12/js/view.js;.clearShadows()	00:10.1	Integrate
+92	2015-06-11 21:02:26.223000+00:00	L/hexcom/2014-05-22-22:10:12/js/view.js;.clearShadows()	L/hexcom/2014-05-22-22:10:12/js/view.js;.updateScoreboard()	00:10.9	Integrate
+93	2015-06-11 21:02:29.132000+00:00	L/hexcom/2014-05-22-22:10:12/js/view.js;.updateScoreboard()	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	00:13.8	Integrate
+94	2015-06-11 21:04:08.724000+00:00	L/hexcom/Current/js_v9/view.js;.drawScoreboard()	L/hexcom/2014-05-22-22:10:12/js/view.js;.updateScoreboard()	01:53.4	Integrate
+95	2015-06-11 21:04:49.723050+00:00	L/hexcom/2014-05-22-22:10:12/js/view.js;.updateScoreboard()	/hexcom/2014-05-22-22:10:12/js/main.js at 1228	02:34.4	SP
+96	2015-06-11 21:05:07.378000+00:00	L/hexcom/2014-05-22-22:10:12/js/main.js;.init()	L/hexcom/2014-05-22-22:10:12/js/main.js;.update()	02:52.0	SP
+97	2015-06-11 21:05:37.288000+00:00	L/hexcom/2014-05-22-22:10:12/js/main.js;.update()	L/hexcom/2014-05-22-22:10:12/js/main.js;.render()	03:21.9	SP
+98	2015-06-11 21:06:24.678000+00:00	L/hexcom/2014-05-22-22:10:12/js/main.js;.render()	L/hexcom/Current/js_v9/main.js;.init(b)	04:09.3	SP
+99	2015-06-11 21:06:26.422000+00:00	L/hexcom/Current/js_v9/main.js;.init(b)	L/hexcom/Current/js_v9/main.js;.setStartScreen()	04:11.1	SP
+100	2015-06-11 21:06:26.505000+00:00	L/hexcom/Current/js_v9/main.js;.setStartScreen()	L/hexcom/Current/js_v9/main.js;.checkGameOver()	04:11.1	SP
+101	2015-06-11 21:06:34.587000+00:00	L/hexcom/Current/js_v9/main.js;.checkGameOver()	L/hexcom/Current/js_v9/main.js;.scaleCanvas()	04:19.2	SP
+102	2015-06-11 21:06:39.082000+00:00	L/hexcom/Current/js_v9/main.js;.scaleCanvas()	L/hexcom/2014-05-22-22:10:12/js/main.js;.init()	04:23.7	SP
+103	2015-06-11 21:06:41.093000+00:00	L/hexcom/2014-05-22-22:10:12/js/main.js;.init()	L/hexcom/Current/js_v9/main.js;.scaleCanvas()	04:25.7	SP
+104	2015-06-11 21:06:47.799000+00:00	L/hexcom/Current/js_v9/main.js;.scaleCanvas()	L/hexcom/Current/js_v9/main.js;.init(b)	04:32.4	SP,DP
