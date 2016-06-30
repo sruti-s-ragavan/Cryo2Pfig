@@ -1,25 +1,27 @@
 import sys
 import os
+PLOT_FOLDER_NAME = "PlotData"
 
 def main():
-	participantName = sys.argv[1]
-	resultsFolder = sys.argv[2]
-	navSegmentsFolder = sys.argv[3]
-	outputFolderName = os.path.join(resultsFolder, participantName, "PlotData")
 
+	resultsFolder = sys.argv[1]
+	navSegmentsFolder = sys.argv[2]
+
+	folders = [folder for folder in os.listdir(resultsFolder) if os.path.isdir(os.path.join(resultsFolder,folder)) and not folder.startswith(".")]
+	for participantName in folders:
+		processParticipant(participantName, resultsFolder, navSegmentsFolder)
+
+
+def processParticipant(participantName, resultsFolder, navSegmentsFolder):
+	outputFolderName = os.path.join(resultsFolder, participantName, PLOT_FOLDER_NAME)
 	if not os.path.exists(outputFolderName):
 		os.makedirs(outputFolderName)
-
 	combinedFileName = os.path.join(resultsFolder, participantName, "multi-factors.txt")
 	navSegmentsFileName = os.path.join(navSegmentsFolder, participantName) + ".txt"
-
 	headers = getFileHeaders(combinedFileName)
-
 	allAlgorithms = headers[4:]
 	graphTypes = set([algorithm.split("__")[-1] for algorithm in allAlgorithms])
-
 	navSegments = getSegments(navSegmentsFileName)
-
 	for graphType in graphTypes:
 		outputFileName = os.path.join(outputFolderName, graphType) + ".txt"
 
