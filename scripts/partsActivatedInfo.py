@@ -22,6 +22,7 @@ def getInfo(dbName):
 	checkedOutputArr = []
 	variantsArr = []
 	checkedReadmeArr = []
+	checkedMethodsArr = []
 
 	conn = sqlite3.connect(dbName)
 	c = conn.cursor()
@@ -37,11 +38,15 @@ def getInfo(dbName):
 				checkedOutputArr.append(variantName)
 			if file[0].endswith(".txt") or file[0].endswith(".md"):
 				checkedReadmeArr.append(variantName)
+			if file[0].endswith(".js"):
+				checkedMethodsArr.append(variantName)
+
 
 
 	print "The number of unique variants: ", len(set(variantsArr))
-	print "Number of output checked: ", len(set(checkedOutputArr))
-	print "Number of readmes checked: ", len(set(checkedReadmeArr))
+	print "Number of outputs viewed: ", len(set(checkedOutputArr))
+	print "Number of readmes viewed: ", len(set(checkedReadmeArr))
+	print "Number of variants in which JS files were visited: ", len(set(checkedMethodsArr))
 
 def getDBNames(path):
 	dbList = os.listdir(path)
