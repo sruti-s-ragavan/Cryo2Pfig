@@ -54,6 +54,11 @@ def writeGraphData(graphType, indexList, navSegments, combinedFileName, outputFi
 	outputRow.append("")
 	writeLine(outputFile, outputRow)
 
+	# Append unknown rates
+	outputRow = getDataAtIndex(getRowData(combinedFile.readline()), indexList)
+	outputRow.append("")
+	writeLine(outputFile, outputRow)
+
 	combinedFile.close()
 	outputFile.close()
 
