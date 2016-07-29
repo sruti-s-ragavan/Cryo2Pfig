@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- Include substrings PFIS, __ (double underscore) for suffix and filenames with discretion. See runScript.py for details. -->
 <options>
-	<algorithms graphType="PfisGraph" suffix = "VariantUnaware">
+	<!--algorithms graphType="PfisGraph" suffix = "VariantUnaware">
 		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
@@ -117,8 +117,8 @@
 		<algorithm class="PFISTouchOnce" name="PFIS touch once with history "
 			enabled="true" fileName="pfis_history_touch_once.txt" history="true" >
 		</algorithm>
-	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="TextEquivalenceCollapse">
+	</algorithms-->
+	<!--algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="TextEquivalenceCollapse">
 		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
@@ -155,6 +155,48 @@
 		</algorithm>
 		<algorithm class="PFISTouchOnce" name="PFIS touch once with history "
 			enabled="true" fileName="pfis_history_touch_once.txt" history="true" >
+		</algorithm>
+	</algorithms-->
+	<algorithms graphType="PfisGraph" suffix = "VariantUnaware">
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
+		</algorithm>
+	</algorithms>
+	<algorithms graphType="PfisGraphWithVariants" suffix = "NoCollapse">
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
+		</algorithm>
+	</algorithms>
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="TextCollapse">
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
+		</algorithm>
+	</algorithms>
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "PureEquivalenceCollapse">
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
+		</algorithm>
+	</algorithms>
+	<algorithms graphType="PfisGraph" suffix = "VariantUnaware-LesserUnknowns" navPathType="VariantAware">
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
+		</algorithm>
+	</algorithms>
+	<algorithms graphType="PfisGraphWithVariants" suffix = "NoCollapse-LesserUnknowns" navPathType="VariantAware">
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
+		</algorithm>
+	</algorithms>
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="TextCollapse-LesserUnknowns"
+	navPathType="VariantAware">
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
+		</algorithm>
+	</algorithms>
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_topologyAndTextSimilarity.db"
+				suffix = "PureEquivalenceCollapse-LesserUnknowns" navPathType="VariantAware">
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
 </options>
