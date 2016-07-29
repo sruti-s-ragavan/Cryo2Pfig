@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!-- Include substrings PFIS, __ (double underscore) for suffix and filenames with discretion. See runScript.py for details. -->
+<options>
+	<algorithms graphType="PfisGraph" suffix = "DM1-V" navPathType="VariantAware">
+		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="CallDepth" name="Undirected Call Graph"
+			fileName="undirected_call_graph.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">
+		</algorithm>
+		<algorithm class="Recency" name="Recency"
+			enabled="true" fileName="recency.txt" >
+		</algorithm>
+		<algorithm class="SourceTopology" name="Source Topology"
+			enabled="true" fileName="source_topology.txt">
+		</algorithm>
+		<algorithm class="TFIDF" name="TF-IDF (method)"
+			enabled="true" fileName="tfidf.txt" >
+		</algorithm>
+		<algorithm class="WorkingSet" name="Working Set, delta 10"
+			enabled="true" fileName="working_set.txt">
+		</algorithm>
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
+		</algorithm>
+	</algorithms>
+	<algorithms graphType="PfisGraphWithVariants" suffix = "DM2-V">
+		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="CallDepth" name="Undirected Call Graph"
+			fileName="undirected_call_graph.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">
+		</algorithm>
+		<algorithm class="Recency" name="Recency"
+			enabled="true" fileName="recency.txt" >
+		</algorithm>
+		<algorithm class="SourceTopology" name="Source Topology"
+			enabled="true" fileName="source_topology.txt">
+		</algorithm>
+		<algorithm class="TFIDF" name="TF-IDF (method)"
+			enabled="true" fileName="tfidf.txt" >
+		</algorithm>
+		<algorithm class="WorkingSet" name="Working Set, delta 10"
+			enabled="true" fileName="working_set.txt">
+		</algorithm>
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
+		</algorithm>
+	</algorithms>
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="DM3-V">
+		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="CallDepth" name="Undirected Call Graph"
+			fileName="undirected_call_graph.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">
+		</algorithm>
+		<algorithm class="Recency" name="Recency"
+			enabled="true" fileName="recency.txt" >
+		</algorithm>
+		<algorithm class="SourceTopology" name="Source Topology"
+			enabled="true" fileName="source_topology.txt">
+		</algorithm>
+		<algorithm class="TFIDF" name="TF-IDF (method)"
+			enabled="true" fileName="tfidf.txt" >
+		</algorithm>
+		<algorithm class="WorkingSet" name="Working Set, delta 10"
+			enabled="true" fileName="working_set.txt">
+		</algorithm>
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
+		</algorithm>
+	</algorithms>
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4-V">
+		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="CallDepth" name="Undirected Call Graph"
+			fileName="undirected_call_graph.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">
+		</algorithm>
+		<algorithm class="Recency" name="Recency"
+			enabled="true" fileName="recency.txt" >
+		</algorithm>
+		<algorithm class="SourceTopology" name="Source Topology"
+			enabled="true" fileName="source_topology.txt">
+		</algorithm>
+		<algorithm class="TFIDF" name="TF-IDF (method)"
+			enabled="true" fileName="tfidf.txt" >
+		</algorithm>
+		<algorithm class="WorkingSet" name="Working Set, delta 10"
+			enabled="true" fileName="working_set.txt">
+		</algorithm>
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
+		</algorithm>
+	</algorithms>
+</options>
