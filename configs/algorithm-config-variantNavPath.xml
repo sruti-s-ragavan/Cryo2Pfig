@@ -25,7 +25,7 @@
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithVariants" suffix = "DM2-V">
+	<algorithms graphType="PfisGraphWithVariants" suffix = "DM2-V" navPathType="VariantAware">
 		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
@@ -49,7 +49,7 @@
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="DM3-V">
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="DM3-V" navPathType="VariantAware">
 		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
@@ -73,7 +73,7 @@
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4-V">
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4-V" navPathType="VariantAware">
 		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
