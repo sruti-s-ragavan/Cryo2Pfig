@@ -1,44 +1,44 @@
 <?xml version="1.0"?>
 <!-- Include substrings PFIS, __ (double underscore) for suffix and filenames with discretion. See runScript.py for details. -->
 <options>
-    <algorithms graphType="PfisGraph" suffix = "VariantUnaware">
+    <algorithms graphType="PfisGraph" suffix = "DM1">
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithVariants" suffix = "NoCollapse">
+	<algorithms graphType="PfisGraphWithVariants" suffix = "DM2">
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="TextCollapse">
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="DM3">
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "PureEquivalenceCollapse">
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4">
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraph" suffix = "VariantUnaware-LesserUnknowns" navPathType="VariantAware">
+	<algorithms graphType="PfisGraph" suffix = "DM1-V" navPathType="VariantAware">
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithVariants" suffix = "NoCollapse-LesserUnknowns" navPathType="VariantAware">
+	<algorithms graphType="PfisGraphWithVariants" suffix = "DM2-V" navPathType="VariantAware">
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="TextCollapse-LesserUnknowns"
-	navPathType="VariantAware">
+	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="DM3-V"
+	navPathType="VariantAwareCollapsed">
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
 	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_topologyAndTextSimilarity.db"
-				suffix = "PureEquivalenceCollapse-LesserUnknowns" navPathType="VariantAware">
+				suffix = "DM4-V" navPathType="VariantAwareCollapsed">
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
