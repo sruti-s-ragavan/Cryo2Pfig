@@ -22,6 +22,7 @@
 To bulk-convert logs:
 	python convert_logs.py <log_files_folder> <db_folder> <manual_navs_folder>
 
+
 	Ensure log files are of format A.log, and corresponding manual navs have same name as A.sql
 	Manual navs are present in Cryo2Pfig/data/manual-navs
 
@@ -41,6 +42,15 @@ To create variations information (collapse) databases
 To run algorithms:
 	Make sure your PFIS/algorithm-config.xml has the right configs
 	runScript.sh <path_to_db_folder_copy>
+=======
+	Ensure log files are of format A.log, and corresponding manual navs have same name as A.sql
+	The DB will be present in the <db_folder> you mentioned above. 
+	** ALWAYS COPY THE DB after conversion and just operate on the copy!**
+
+To run algorithms:
+	Make sure your PFIS/algorithm-config.xml has the right configs
+	runScript.py <path_to_db_folder_copy>
+
 
 To detach TMUX, Hit Ctrl+B D
 To attach to same session, tmux attach. 

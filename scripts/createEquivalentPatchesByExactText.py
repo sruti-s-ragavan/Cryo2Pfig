@@ -142,6 +142,7 @@ def getFunctionsInVariants(variant_functions):
 
 	return variantsToFunctionsMap
 
+
 main()
 
 

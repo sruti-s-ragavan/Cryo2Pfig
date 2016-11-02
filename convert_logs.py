@@ -16,8 +16,11 @@ def convert_log(log_file_name, log_folder, db_folder):
     args = ['python', 'logconverter_d8andUp.py', 'file', log_file, output_txt_file]
     output_log_name = os.path.join(db_folder, "_"+file_name_without_extn) + "log"
     output_log = open(output_log_name, "w")
+
+    print "Logging to: ", output_log
+
     subprocess.call(args, stdout=output_log)
-    print "Converted logs in: ", output_txt_file
+    print "Converted logs as Text file in: ", output_txt_file
 
 def updateDbWithManualNavs(db, navs):
     file = open(navs, 'r')
