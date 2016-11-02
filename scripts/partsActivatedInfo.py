@@ -36,7 +36,7 @@ def getInfo(dbName):
 			variantsArr.append(variantName)
 			if file[0].startswith("[B]"):
 				checkedOutputArr.append(variantName)
-			if file[0].endswith(".txt") or file[0].endswith(".md"):
+			if file[0].endswith(".txt"):
 				checkedReadmeArr.append(variantName)
 			if file[0].endswith(".js"):
 				checkedMethodsArr.append(variantName)
