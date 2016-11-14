@@ -6,6 +6,7 @@ import json
 import shutil
 import sqlite3
 import datetime
+from fileUtils import fileUtils
 
 # sql utilities for parsing pfislog, pfislog's output is insert statements which are SQL
 import sqlparse
@@ -201,7 +202,7 @@ class Converter:
     Creates the list of pfislog events and returns a Pfislog object containing them.
     """
     def check_doc_opened(self,event,document_name):
-        new_events = []
+        method_declaration_events = []
 
         global opened_doc_list
         if(document_name in opened_doc_list):
@@ -210,8 +211,8 @@ class Converter:
             return None
         else:
             opened_doc_list.append(document_name)
-            new_events = self.convert_open_document_event(event,document_name)
-            return new_events
+            method_declaration_events = self.convert_open_document_event(event,document_name)
+            return method_declaration_events
 
     def __init__(self, timeConverter):
         self.current_id = 1
@@ -246,38 +247,41 @@ class Converter:
     """Cryolog Event Converters (1:1 mapping to Cryolog event-types, for the most part)"""
     def convert_change_cursor_event(self, event):
         """The event when someone clicks a different place in the code"""
-        new_event = self.new_event(event)
+        new_events = []
+        change_cursor_event = self.new_event(event)
         document_name = event['path']
         position = event['position']
         line = position['line'] 
-        column = position['column'] 
+        column = position['column']
         offset = 0
         document_name = event['path']
         doc_prev_len = len(opened_doc_list)
-        new_events = self.check_doc_opened(event,document_name)
+        method_declartion_events = self.check_doc_opened(event,document_name)
+
         doc_curr_len = len(opened_doc_list)
         #add one millisecond from time if this is the first time a document has been opened.
         #This is because there is no initial text selection event upon opening a file, so this navigation occurs AFTER the particpant sees the methods, etc.
         if(doc_curr_len > doc_prev_len):
-            new_event['timestamp'] = str(datetime.datetime.strptime(new_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") +
+            change_cursor_event['timestamp'] = str(datetime.datetime.strptime(change_cursor_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") +
                                          datetime.timedelta(microseconds=50))+'000'
-        new_event['referrer'] = offset
-        new_event['action'] = 'Text selection offset'
-        new_event['target'] = document_name
+        change_cursor_event['referrer'] = offset
+        change_cursor_event['action'] = 'Text selection offset'
+        change_cursor_event['target'] = document_name
         sum = self.get_offset_position(document_name, line, column)
 
         if(sum == -1 or sum == None):
             print("document not found. setting offset to 0")
             print document_name
             exit()
-            new_event['referrer'] = 0
+            change_cursor_event['referrer'] = 0
         else:
-            new_event['referrer'] = sum
+            change_cursor_event['referrer'] = sum
 
-        if(new_events == None):
-            new_events = new_event
-        else:
-            new_events.append(new_event)
+        new_events.append(change_cursor_event)
+
+        if(method_declartion_events is not None):
+            new_events.extend(method_declartion_events)
+
         return new_events
 
     def convert_change_document_event(self, event):
@@ -304,16 +308,20 @@ class Converter:
         return new_event
 
     def get_offset_position(self, document_name, line, column):
-        sum = 0    
- 
-        for item in doc_line_list:
-            if(item['file'] == document_name):
-                for i in range(0, line):
-                    if(i == line - 1):
-                        sum += column
-                    else:
-                        sum += item['len'][i]
-                return sum
+        sum = 0
+
+        if ("html" in document_name or "txt" in document_name):
+            sum = fileUtils.getOffset(self, document_name, line, column)
+
+        else:
+            for item in doc_line_list:
+                if(item['file'] == document_name):
+                    for i in range(0, line):
+                        if(i == line - 1):
+                            sum += column
+                        else:
+                            sum += item['len'][i]
+        return sum
                 
     def convert_change_selection_event(self, event):
         """When the user highlights code"""
@@ -330,8 +338,8 @@ class Converter:
         new_event['target'] = document_name
 
         lines=[]
-	f = open(rootdir+ "/"+event['path'], 'r')#Open the file the user is in
-        #Read the log of the event to get the start and end line then read the file the user is in through the relevant range 
+        f = open(rootdir+ "/"+event['path'], 'r')#Open the file the user is in
+        #Read the log of the event to get the start and end line then read the file the user is in through the relevant range
         if(event['selection'] == []):
             pass
         else: 
@@ -544,7 +552,7 @@ class Converter:
         return new_events
 
     def convert_cryolog_to_pfislog(self, cryolog):
-        """Iterates through cryolog events and calls the approprate converter
+        """Iterates through cryolog events and calls the appropriate converter
         functions for each type of event.
         These map to every type of event that we are converting.
         """
@@ -556,12 +564,14 @@ class Converter:
             print str(event['sequence-id']) + " " + event['event-type'] + " " + event['logged-timestamp']
             if((k in event) and ((event['title'] in ["Immediate","Terminal","Preferences"]) or "[P]" in event['title'])):
                 pass
+            if(('path' in event) and ('searchresults' in event['path'])):
+                pass
             else:
                 event_type = event['event-type']
                 if event_type == 'activate-tab':
                     self.append_event(self.convert_tab_event(event, 'Part activated'), new_events)
 
-                    if('path' in event.keys() and event['path'][-2:] == 'js' and "[B]" not in event['path']):
+                    if('path' in event.keys() and "[B]" not in event['path']):
                         event['position'] = {"line":1, "column":0}
 
                         new_events = self.append_event(self.convert_change_cursor_event(event), new_events)
@@ -612,17 +622,13 @@ class Converter:
                     #print event['action-timestamp']
                     #event['action-timestamp'] = event['action-timestamp'][:-1]+'2'+event['action-timestamp'][-1:]
                     #print event['action-timestamp']
-                    if event['path'][-2:] != 'js':
-                        pass
-                    else:
-                        new_events = self.append_event(self.convert_change_cursor_event(event), new_events)
+
+                    new_events = self.append_event(self.convert_change_cursor_event(event), new_events)
                 elif event_type == 'change-selection':
                     #slightly increase the timestamp of the event to make sure that it's AFTER change and AFTER Method/Invocation stuff and BEFORE Text selection offset
                    # event['action-timestamp'] = event['action-timestamp'][:-1]+'1'+event['action-timestamp'][-1:]
-                    if event['path'][-2:] != 'js':
-                        pass
-                    else:
-                        new_events = self.append_event(self.convert_change_selection_event(event), new_events)
+
+                    new_events = self.append_event(self.convert_change_selection_event(event), new_events)
                 elif event_type == 'select-workspace-tree-nodes':
                     new_events = self.append_event(self.convert_select_workspace_tree_nodes_event(event), new_events)
                 elif event_type == 'start-logging':
