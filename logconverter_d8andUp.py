@@ -266,13 +266,13 @@ class Converter:
         new_event['target'] = document_name
         sum = self.get_offset_position(document_name, line, column)
 
-        if(sum == -1 or sum == None):
-            print("document not found. setting offset to 0")
-            print document_name
-            exit()
-            new_event['referrer'] = 0
-        else:
-            new_event['referrer'] = sum
+
+        if(sum is not None):
+            change_cursor_event['referrer'] = sum
+            new_events.append(change_cursor_event)
+            if(method_declartion_events is not None):
+                new_events.extend(method_declartion_events)
+
 
         if(new_events == None):
             new_events = new_event
@@ -304,17 +304,23 @@ class Converter:
         return new_event
 
     def get_offset_position(self, document_name, line, column):
-        sum = 0    
- 
-        for item in doc_line_list:
-            if(item['file'] == document_name):
-                for i in range(0, line):
-                    if(i == line - 1):
-                        sum += column
-                    else:
-                        sum += item['len'][i]
-                return sum
-                
+
+        if ("changes.txt" in document_name):
+            sum = fileUtils.getOffset(self, rootdir, document_name, line, column)
+            return sum
+
+        elif (".js" in document_name):
+            sum = 0
+            for item in doc_line_list:
+                if (item['file'] == document_name):
+                    for i in range(0, line):
+                        if (i == line - 1):
+                            sum += column
+                        else:
+                            sum += item['len'][i]
+                    return sum
+
+
     def convert_change_selection_event(self, event):
         """When the user highlights code"""
         new_event = self.new_event(event)

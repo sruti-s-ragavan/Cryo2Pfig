@@ -7,7 +7,7 @@ python "$repo_root/PFIS/pfis3/scripts/runScript.py" \
 	-A \
 	-e "$repo_root/PFIS/pfis3/src/python/pfis3.py" \
     -d "$db_folder" \
-	-s "$repo_root/PFIS/je.txt" \
+	-s "$repo_root/variationsGoalWords.txt" \
 	-l "JS" \
 	-t 1 \
 	-p "$repo_root/jsparser/src" \
