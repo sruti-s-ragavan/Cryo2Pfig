@@ -6,13 +6,14 @@ import json
 import shutil
 import sqlite3
 import datetime
+from fileUtils import fileUtils
 
 # sql utilities for parsing pfislog, pfislog's output is insert statements which are SQL
 import sqlparse
 from sqlparse.sql import Parenthesis
-from sqlparse.sql import IdentifierList # instead of parsing by hand
+from sqlparse.sql import IdentifierList  # instead of parsing by hand
 
-#other classes
+# other classes
 from fQNUtils import FQNUtils
 
 # CREATE TABLE logger_log ( id INTEGER IDENTITY, user VARCHAR(50), timestamp DATETIME, action VARCHAR(50), target VARCHAR, referrer VARCHAR, agent VARCHAR(50));
@@ -21,14 +22,14 @@ PFIS_ID = '1'
 PFIS_USER = 'c486980a-74df-40a1-b4eb-07ff1c1dff93'
 PFIS_TIMESTAMP = '2014-03-14 09:34:58.231000000'
 PFIS_ACTION = 'Variable declaration'
-PFIS_TARGET = 'com.blah.blah' # varies depending on the event
-PFIS_REFERRER = 'com.blah.blah.blah' # varies depending on the event
+PFIS_TARGET = 'com.blah.blah'  # varies depending on the event
+PFIS_REFERRER = 'com.blah.blah.blah'  # varies depending on the event
 PFIS_AGENT = '8ea5d9be-d1b5-4319-9def-495bdccb7f51'
 
-#Global Variables
+# Global Variables
 rootdir = './jsparser/src'
 src_list = [name for name in os.listdir("./jsparser/src/hexcom") if os.path.isdir(os.path.join(
-"./jsparser/src/hexcom", name))]
+    "./jsparser/src/hexcom", name))]
 DEBUG = True
 miv_array = []
 opened_doc_list = []
@@ -51,15 +52,17 @@ def print_dict(to_print):
     for item in sorted_keys:
         print '* ' + item + ': ' + str(to_print[item])
 
+
 '''pretty prints a json dump'''
+
+
 def jsonprettyprint(event):
-    
-    print json.dumps(event,sort_keys=True, indent=4, separators=(',',':'))
+    print json.dumps(event, sort_keys=True, indent=4, separators=(',', ':'))
+
 
 class TimeFormatConverter:
-
     PFIS3_FORMAT = '%Y-%m-%d %H:%M:%S.%f'
-    CRYOLOG_FORMAT = '%Y-%m-%dT%H:%M:%S.%f' # NOTE: there is a 'T' hardcoded in the cryolog strings
+    CRYOLOG_FORMAT = '%Y-%m-%dT%H:%M:%S.%f'  # NOTE: there is a 'T' hardcoded in the cryolog strings
 
     def __init__(self, start_time):
         self.start_time = start_time
@@ -68,7 +71,7 @@ class TimeFormatConverter:
         # crylog time example format = '2014-04-01T20:43:06.803Z'
         generic_time = TimeFormatConverter.get_time_obj_from_cryo_fmt(cryolog_fmt_time_string)
 
-        #PFIS3 format : 2010-01-25 00:00:00.000
+        # PFIS3 format : 2010-01-25 00:00:00.000
         if increment_timestamp:
             generic_time = generic_time + datetime.timedelta(milliseconds=1)
 
@@ -92,18 +95,18 @@ class TimeFormatConverter:
 
 
 class Cryolog:
-    """Represents a cryolite log file. 
+    """Represents a cryolite log file.
     Each json node in the log file is an event in the events variable.
     """
 
     def __init__(self, filename):
         """Open the cryolog and create a list of events (json nodes)."""
         f = open(filename)
-        self.events = [] # empty list for the event json nodes on each line of the log
+        self.events = []  # empty list for the event json nodes on each line of the log
         for line in f.readlines():
             # load the json from the line of the file
             node = json.loads(line)
- 
+
             # add it to the list
             self.events.append(node)
         f.close()
@@ -116,8 +119,9 @@ class Cryolog:
             event_types.add(event['event-type'])
         return event_types
 
+
 class Pfislog:
-    """Represents a pfis log file. 
+    """Represents a pfis log file.
     Each insert statement is converted to a dictionary of values and added to the events variable.
     """
 
@@ -135,16 +139,16 @@ class Pfislog:
             f = open(filename)
             for line in f.readlines():
                 if 'INSERT' not in line:
-                    continue # don't care about anything other than insert statements
-                result = sqlparse.parse(line) # returns a list
+                    continue  # don't care about anything other than insert statements
+                result = sqlparse.parse(line)  # returns a list
                 statement = result[0]
 
-                # what we really care about is what's being inserted, get the values 
+                # what we really care about is what's being inserted, get the values
                 parens = next(token for token in statement.tokens if isinstance(token, Parenthesis))
                 identifiers = next(token for token in parens.tokens if isinstance(token, IdentifierList))
-                values = [] # each item in the VALUES parenthesis
+                values = []  # each item in the VALUES parenthesis
                 for item in identifiers.get_identifiers():
-                    values.append(item.value.strip('\'')) # strip because I want values, not strings with quotes
+                    values.append(item.value.strip('\''))  # strip because I want values, not strings with quotes
 
                 # create a dict with the values
                 event = dict()
@@ -163,7 +167,7 @@ class Pfislog:
         Uses the PFIS_LOG_FORMAT variable to generate the insert statements.
         """
         f = open(filename, 'w')
-        line = self.PFIS_LOG_FORMAT.format( 
+        line = self.PFIS_LOG_FORMAT.format(
             id="-1",
             user="-1",
             timestamp="-1",
@@ -172,17 +176,17 @@ class Pfislog:
             referrer="-1",
             agent="-1",
             elapsed_time="-1"
-            )
-        f.write(line)    
+        )
+        f.write(line)
         for event in self.events:
-            
-            if(isinstance(event, str)):
+
+            if (isinstance(event, str)):
                 pass
             elif event == None:
                 pass
             else:
-                #print event
-                line = self.PFIS_LOG_FORMAT.format( 
+                # print event
+                line = self.PFIS_LOG_FORMAT.format(
                     id=event['id'],
                     user=event['user'],
                     timestamp=event['timestamp'],
@@ -193,25 +197,27 @@ class Pfislog:
                     elapsed_time=event['elapsed_time']
                 )
                 f.write(line)
-     
+
         f.close()
 
+
 class Converter:
-    """Converts a cryolog to a pfislog. 
+    """Converts a cryolog to a pfislog.
     Creates the list of pfislog events and returns a Pfislog object containing them.
     """
-    def check_doc_opened(self,event,document_name):
-        new_events = []
+
+    def check_doc_opened(self, event, document_name):
+        method_declaration_events = []
 
         global opened_doc_list
-        if(document_name in opened_doc_list):
+        if (document_name in opened_doc_list):
             return None
-        if(document_name[-2:] !='js'):
+        if (document_name[-2:] != 'js' and document_name[-3:] != 'txt'):
             return None
         else:
             opened_doc_list.append(document_name)
-            new_events = self.convert_open_document_event(event,document_name)
-            return new_events
+            method_declaration_events = self.convert_open_document_event(event, document_name)
+            return method_declaration_events
 
     def __init__(self, timeConverter):
         self.current_id = 1
@@ -230,9 +236,9 @@ class Converter:
         new_event['id'] = self.current_id
         new_event['user'] = PFIS_USER
 
-        if('action-timestamp' in event):
+        if ('action-timestamp' in event):
             cryolog_time = event['action-timestamp']
-        elif('logged-timestamp' in event):
+        elif ('logged-timestamp' in event):
             cryolog_time = event['logged-timestamp']
 
         pfis_time = self.time_converter.convert_cryolog_to_pfis_time_fmt(cryolog_time, increment_timestamp)
@@ -244,40 +250,41 @@ class Converter:
         return new_event
 
     """Cryolog Event Converters (1:1 mapping to Cryolog event-types, for the most part)"""
+
     def convert_change_cursor_event(self, event):
         """The event when someone clicks a different place in the code"""
-        new_event = self.new_event(event)
+        new_events = []
+        change_cursor_event = self.new_event(event)
         document_name = event['path']
         position = event['position']
-        line = position['line'] 
-        column = position['column'] 
+        line = position['line']
+        column = position['column']
         offset = 0
         document_name = event['path']
         doc_prev_len = len(opened_doc_list)
-        new_events = self.check_doc_opened(event,document_name)
+
+        method_declartion_events = self.check_doc_opened(event, document_name)
+
         doc_curr_len = len(opened_doc_list)
-        #add one millisecond from time if this is the first time a document has been opened.
-        #This is because there is no initial text selection event upon opening a file, so this navigation occurs AFTER the particpant sees the methods, etc.
-        if(doc_curr_len > doc_prev_len):
-            new_event['timestamp'] = str(datetime.datetime.strptime(new_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") +
-                                         datetime.timedelta(microseconds=50))+'000'
-        new_event['referrer'] = offset
-        new_event['action'] = 'Text selection offset'
-        new_event['target'] = document_name
+        # add one millisecond from time if this is the first time a document has been opened.
+        # This is because there is no initial text selection event upon opening a file, so this navigation occurs AFTER the particpant sees the methods, etc.
+        if (doc_curr_len > doc_prev_len):
+            change_cursor_event['timestamp'] = str(
+                datetime.datetime.strptime(change_cursor_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") +
+                datetime.timedelta(microseconds=50)) + '000'
+        change_cursor_event['referrer'] = offset
+        change_cursor_event['action'] = 'Text selection offset'
+        change_cursor_event['target'] = document_name
         sum = self.get_offset_position(document_name, line, column)
 
-
-        if(sum is not None):
+        if (sum is not None):
             change_cursor_event['referrer'] = sum
+
             new_events.append(change_cursor_event)
-            if(method_declartion_events is not None):
+
+            if (method_declartion_events is not None):
                 new_events.extend(method_declartion_events)
 
-
-        if(new_events == None):
-            new_events = new_event
-        else:
-            new_events.append(new_event)
         return new_events
 
     def convert_change_document_event(self, event):
@@ -320,27 +327,28 @@ class Converter:
                             sum += item['len'][i]
                     return sum
 
-
     def convert_change_selection_event(self, event):
         """When the user highlights code"""
         new_event = self.new_event(event)
         document_name = event['path']
         doc_prev_len = len(opened_doc_list)
-        new_events = self.check_doc_opened(event,document_name)
+        new_events = self.check_doc_opened(event, document_name)
         doc_curr_len = len(opened_doc_list)
-        #add one millisecond from time if this is the first time a document has been opened.
-        #This is because there is no initial text selection event upon opening a file, so this navigation occurs AFTER the particpant sees the methods, etc.
-        if(doc_curr_len > doc_prev_len):
-            new_event['timestamp'] = str(datetime.datetime.strptime(new_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(milliseconds = +1))+'000'
+        # add one millisecond from time if this is the first time a document has been opened.
+        # This is because there is no initial text selection event upon opening a file, so this navigation occurs AFTER the particpant sees the methods, etc.
+        if (doc_curr_len > doc_prev_len):
+            new_event['timestamp'] = str(
+                datetime.datetime.strptime(new_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(
+                    milliseconds=+1)) + '000'
         new_event['action'] = 'Text selection'
         new_event['target'] = document_name
 
-        lines=[]
-	f = open(rootdir+ "/"+event['path'], 'r')#Open the file the user is in
-        #Read the log of the event to get the start and end line then read the file the user is in through the relevant range 
-        if(event['selection'] == []):
+        lines = []
+        f = open(rootdir + "/" + event['path'], 'r')  # Open the file the user is in
+        # Read the log of the event to get the start and end line then read the file the user is in through the relevant range
+        if (event['selection'] == []):
             pass
-        else: 
+        else:
             for x in range((event['selection'][0]['start']['line']), (event['selection'][0]['end']['line'])):
                 lines.append(FQNUtils.normalizer(f.readline()))
         referrer = ''
@@ -349,8 +357,8 @@ class Converter:
         f.close()
         new_event['referrer'] = referrer
 
-        #new_event['referrer'] = 'Cryolog does not capture what text is selected, only lines and columns of start and end positions' #figure out what text is selected
-        if(new_events == None):
+        # new_event['referrer'] = 'Cryolog does not capture what text is selected, only lines and columns of start and end positions' #figure out what text is selected
+        if (new_events == None):
             new_events = new_event
         else:
             new_events.append(new_event)
@@ -372,11 +380,11 @@ class Converter:
         """
 
         new_event = self.new_event(event)
-        if('path' in event.keys()):
+        if ('path' in event.keys()):
             document_name = event['path']
         else:
             document_name = event['title']
-	
+
         new_event['action'] = action
         new_event['target'] = os.path.basename(document_name)
         new_event['referrer'] = document_name
@@ -388,24 +396,24 @@ class Converter:
         nodes. Queues the click events and adds them after other events have been
         generated because PFIS can't handle the natural order of events.
         """
+
         def normalizer(s):
-            if s!=None:
+            if s != None:
                 s = FQNUtils.normalizer(s)
             else:
-                s=''
+                s = ''
             return s
 
         def get_events_on_newly_opened_document(event_type, target, referrer):
-            new_event = self.new_event(event, increment_timestamp = True)
+            new_event = self.new_event(event, increment_timestamp=True)
             new_event['action'] = event_type
             new_event['referrer'] = referrer
             new_event['target'] = target
             return new_event
 
-        def event_tuple_generate(new_events,self,item,event,declaration_type,document_name):
+        def event_tuple_generate(new_events, self, item, event, declaration_type, document_name):
 
-            if(declaration_type == "Method declaration" or declaration_type == "Variable declaration"):
-
+            if (declaration_type == 'Changelog'):
                 declaration_file = normalizer(item["src"])
                 nesting_path = normalizer(item["filepath"])
                 header = normalizer(item["header"])
@@ -413,7 +421,25 @@ class Converter:
                 methodFQN = FQNUtils.getFullMethodPath(declaration_file, nesting_path, header)
                 contents = normalizer(item["contents"])
 
-                new_event = get_events_on_newly_opened_document(declaration_type, FQNUtils.getFullClassPath(declaration_file), methodFQN)
+                scent_event_type = declaration_type + ' scent'
+                new_event = get_events_on_newly_opened_document(scent_event_type, methodFQN, contents)
+                FQNUtils.addFQNPrefixForEvent(new_event)
+                new_events.append(new_event)
+
+                return new_events
+
+
+
+            if (declaration_type == "Method declaration" or declaration_type == "Variable declaration"):
+                declaration_file = normalizer(item["src"])
+                nesting_path = normalizer(item["filepath"])
+                header = normalizer(item["header"])
+
+                methodFQN = FQNUtils.getFullMethodPath(declaration_file, nesting_path, header)
+                contents = normalizer(item["contents"])
+
+                new_event = get_events_on_newly_opened_document(declaration_type,
+                                                                FQNUtils.getFullClassPath(declaration_file), methodFQN)
                 FQNUtils.addFQNPrefixForEvent(new_event)
                 new_events.append(new_event)
 
@@ -434,8 +460,7 @@ class Converter:
 
                 return new_events
 
-            if(declaration_type == "Method invocation"):
-
+            if (declaration_type == "Method invocation"):
                 invoking_file = normalizer(item["src"])
                 invocation_path_within_file = normalizer(item["filepath"])
                 header = normalizer(item["header"])
@@ -445,7 +470,8 @@ class Converter:
 
                 invoking_method_fqn = FQNUtils.getFullMethodPath(invoking_file, invocation_path_within_file, header)
 
-                new_event = get_events_on_newly_opened_document(declaration_type, invoking_method_fqn, invoked_method_fqn)
+                new_event = get_events_on_newly_opened_document(declaration_type, invoking_method_fqn,
+                                                                invoked_method_fqn)
                 FQNUtils.addFQNPrefixForEvent(new_event)
                 new_events.append(new_event)
 
@@ -466,56 +492,72 @@ class Converter:
 
                 return new_events
 
-        
         new_events = []
         function_list = []
         call_list = []
         var_dec_list = []
 
-        # Add declarations after nav to first location, only after nav can a person see what's in there.
-        # This is a PFIS assumption
-        for item in miv_array:
+        if 'changes.txt' in document_name:
 
-            if(item['functions'] ==None):
-                pass
-            else:
-                function_list += item['functions']
-            if(item['invocations'] ==None):
-                pass
-            else:
-                call_list += item['invocations']
+            declaration_type = 'Changelog'
+            changelogMessage = fileUtils.getChangelogFromDb(document_name)
 
-            #if(item['variables'] ==None):
-                #pass
-            #else:
-                #var_dec_list += item['variables']
-        declaration_type = 'Method declaration'
-        for item in function_list:
-            if(item['src']==document_name):
-                new_events = event_tuple_generate(new_events,self,item,event,declaration_type,document_name)
+            item = dict()
+            item['src'] = document_name
+            item['start'] = 0
+            item['end'] = len(changelogMessage)
+            item['length'] = len(changelogMessage)
+            item['filepath'] = 'u\''
+            item['header'] = ''
+            item['contents'] = changelogMessage
 
-        declaration_type = 'Method invocation'
-        for item in call_list:
-            if(item['src']==document_name):
-                new_events = event_tuple_generate(new_events,self,item,event,declaration_type,document_name)
+            new_events = event_tuple_generate(new_events, self, item, event, declaration_type, document_name)
 
-        declaration_type = 'Variable declaration'
-        for item in var_dec_list:
-            if(item['src']==document_name):
-                new_events = event_tuple_generate(new_events,self,item,event,declaration_type,document_name)
+        else:
+            # Add declarations after nav to first location, only after nav can a person see what's in there.
+            # This is a PFIS assumption
+            for item in miv_array:
+
+                if (item['functions'] == None):
+                    pass
+                else:
+                    function_list += item['functions']
+                if (item['invocations'] == None):
+                    pass
+                else:
+                    call_list += item['invocations']
+
+                    # if(item['variables'] ==None):
+                    # pass
+                    # else:
+                    # var_dec_list += item['variables']
+            declaration_type = 'Method declaration'
+            for item in function_list:
+                if (item['src'] == document_name):
+                    new_events = event_tuple_generate(new_events, self, item, event, declaration_type, document_name)
+
+            declaration_type = 'Method invocation'
+            for item in call_list:
+                if (item['src'] == document_name):
+                    new_events = event_tuple_generate(new_events, self, item, event, declaration_type, document_name)
+
+            declaration_type = 'Variable declaration'
+            for item in var_dec_list:
+                if (item['src'] == document_name):
+                    new_events = event_tuple_generate(new_events, self, item, event, declaration_type, document_name)
+
         return new_events
-
 
     def convert_select_workspace_tree_nodes_event(self, event):
         """When the user actually selects a node"""
         new_events = []
         paths = event['paths']
-        #paths = paths.replace('/', '\\')
+        # paths = paths.replace('/', '\\')
 
         for path in paths:
             new_event = self.new_event(event)
             new_event['action'] = 'Package Explorer tree selection'
-            new_event['target'] = path    # this needs to be formatted to match pfig, which has a crazy format
+            new_event['target'] = path  # this needs to be formatted to match pfig, which has a crazy format
             new_event['referrer'] = ''
 
             new_events.append(new_event)
@@ -550,7 +592,7 @@ class Converter:
         return new_events
 
     def convert_cryolog_to_pfislog(self, cryolog):
-        """Iterates through cryolog events and calls the approprate converter
+        """Iterates through cryolog events and calls the appropriate converter
         functions for each type of event.
         These map to every type of event that we are converting.
         """
@@ -560,35 +602,38 @@ class Converter:
         k = 'title'
         for event in cryolog.events:
             print str(event['sequence-id']) + " " + event['event-type'] + " " + event['logged-timestamp']
-            if((k in event) and ((event['title'] in ["Immediate","Terminal","Preferences"]) or "[P]" in event['title'])):
+            if ((k in event) and (
+                (event['title'] in ["Immediate", "Terminal", "Preferences"]) or "[P]" in event['title'])):
+                pass
+            if (('path' in event) and ('searchresults' in event['path'])):
                 pass
             else:
                 event_type = event['event-type']
                 if event_type == 'activate-tab':
                     self.append_event(self.convert_tab_event(event, 'Part activated'), new_events)
 
-                    if('path' in event.keys() and event['path'][-2:] == 'js' and "[B]" not in event['path']):
-                        event['position'] = {"line":1, "column":0}
+                    if ('path' in event.keys() and "[B]" not in event['path']):
+                        event['position'] = {"line": 1, "column": 0}
 
                         new_events = self.append_event(self.convert_change_cursor_event(event), new_events)
 
-                        new_doc_events = self.check_doc_opened(event,event['path'])
+                        new_doc_events = self.check_doc_opened(event, event['path'])
                         if new_doc_events:
-                            new_events = self.append_event(new_doc_events, new_events)
+                                new_events = self.append_event(new_doc_events, new_events)
 
                 elif event_type == 'change-document':
                     document_name = event['path']
 
-                    #TODO: Now: SS, BP: Revisit and add js check if things break
-                    if(event['syntax'] in ['text','css', 'html']):
+                    # TODO: Now: SS, BP: Revisit and add js check if things break
+                    if (event['syntax'] in ['text', 'css', 'html']):
                         pass
                     else:
                         action = event['action']
                         text = ""
                         if action == "insert" or action == "remove":
-                            for i in range(0,len(event['lines'])-1):
-                                text+=event['lines'][i]+'\n'
-                            text+=event['lines'][-1]
+                            for i in range(0, len(event['lines']) - 1):
+                                text += event['lines'][i] + '\n'
+                            text += event['lines'][-1]
                         elif action == "insertLines" or action == "removeLines":
                             lines = event['lines']
                             for line in lines:
@@ -598,44 +643,43 @@ class Converter:
                         new_events = self.append_event(self.convert_change_document_event(event), new_events)
                         update_file(document_name, action, text, line, column)
                         array_gen_single_folder(event['path'])
-                        #slightly increase the timestamp of the event to make sure that it's AFTER change and BEFORE text selection/offset
-                        #event['action-timestamp'] = event['action-timestamp'][:-1]+'3'+event['action-timestamp'][-1:]
-                        new_events = self.append_event(self.convert_open_document_event(event, document_name), new_events)
+                        # slightly increase the timestamp of the event to make sure that it's AFTER change and BEFORE text selection/offset
+                        # event['action-timestamp'] = event['action-timestamp'][:-1]+'3'+event['action-timestamp'][-1:]
+                        new_events = self.append_event(self.convert_open_document_event(event, document_name),
+                                                       new_events)
                 elif event_type == 'copy-workspace-directory':
                     copy_dir(event['paths'][0], event['paths'][1])
                     add_dir_to_miv(event['paths'][1])
                 elif event_type == 'close-tab':
                     new_events = self.append_event(self.convert_tab_event(event, 'Part closed'), new_events)
                 elif event_type == 'create-tab':
-                    new_events = self.append_event(self.convert_tab_event(event, 'Part opened'), new_events)
+                    if 'path' in event:
+                            new_events = self.append_event(self.convert_tab_event(event, 'Part opened'), new_events)
+
                 elif event_type == 'deactivate-tab':
                     new_events = self.append_event(self.convert_tab_event(event, 'Part deactivated'), new_events)
                 # elif event_type == 'expand-workspace-tree-node':
                 #     new_events = self.check_keys(self.convert_expand_workspace_tree_node_event(event),new_events)
                 #     pass
-                elif event_type == 'change-cursor': 
-                    #slightly increase the timestamp of the event to make sure that it's AFTER change and AFTER Method/Invocation stuff and AFTER Text selection
-                    #print event['action-timestamp']
-                    #event['action-timestamp'] = event['action-timestamp'][:-1]+'2'+event['action-timestamp'][-1:]
-                    #print event['action-timestamp']
-                    if event['path'][-2:] != 'js':
-                        pass
-                    else:
-                        new_events = self.append_event(self.convert_change_cursor_event(event), new_events)
+                elif event_type == 'change-cursor':
+                    # slightly increase the timestamp of the event to make sure that it's AFTER change and AFTER Method/Invocation stuff and AFTER Text selection
+                    # print event['action-timestamp']
+                    # event['action-timestamp'] = event['action-timestamp'][:-1]+'2'+event['action-timestamp'][-1:]
+                    # print event['action-timestamp']
+
+                    new_events = self.append_event(self.convert_change_cursor_event(event), new_events)
                 elif event_type == 'change-selection':
-                    #slightly increase the timestamp of the event to make sure that it's AFTER change and AFTER Method/Invocation stuff and BEFORE Text selection offset
-                   # event['action-timestamp'] = event['action-timestamp'][:-1]+'1'+event['action-timestamp'][-1:]
-                    if event['path'][-2:] != 'js':
-                        pass
-                    else:
-                        new_events = self.append_event(self.convert_change_selection_event(event), new_events)
+                    # slightly increase the timestamp of the event to make sure that it's AFTER change and AFTER Method/Invocation stuff and BEFORE Text selection offset
+                    # event['action-timestamp'] = event['action-timestamp'][:-1]+'1'+event['action-timestamp'][-1:]
+
+                    new_events = self.append_event(self.convert_change_selection_event(event), new_events)
                 elif event_type == 'select-workspace-tree-nodes':
                     new_events = self.append_event(self.convert_select_workspace_tree_nodes_event(event), new_events)
                 elif event_type == 'start-logging':
                     new_events = self.append_event(self.convert_start_logging_event(event), new_events)
                 elif event_type == 'update-workspace-tree':
                     # commenting out package explorer stuff
-                    #new_events = self.check_keys(self.convert_update_workspace_tree_event(event),new_events)
+                    # new_events = self.check_keys(self.convert_update_workspace_tree_event(event),new_events)
                     pass
                 # keep track of the events that are not converted and how many instances occur
                 if event_type in unconverted_events:
@@ -646,12 +690,11 @@ class Converter:
         queued_events = []
         for event in queued_cryolog_events:
             event_type = event['event-type']
-
             if event_type == 'change-cursor':
                 queued_events.extend(self.convert_change_cursor_event(event))
             elif event_type == 'change-selection':
                 queued_events.extend(self.convert_change_selection_event(event))
-        
+
         print 'Queued {0} click/selection-related events. Adding to the existing {1} events.'.format(len(queued_events), len(new_events))
         new_events.extend(queued_events)
         '''
@@ -659,91 +702,98 @@ class Converter:
 
         print 'There were {0} unique unconverted event types:'.format(len(unconverted_events))
         print_dict(unconverted_events)
-
-        new_pfislog = Pfislog(events=new_events);
+        new_pfislog = Pfislog(events=new_events)
         return new_pfislog
+
+
 def copy_dir(old, new):
-    old = rootdir+old
-    new = rootdir+new 
-    if(not(os.path.isdir(new)) and os.path.isdir(old)):
-        shutil.copytree(old,new)
+    old = rootdir + old
+    new = rootdir + new
+    if (not (os.path.isdir(new)) and os.path.isdir(old)):
+        shutil.copytree(old, new)
+
 
 def update_file(file_path, actionType, text, line_number, column):
     # open file and read in string
-    file = open(rootdir+ "/" + file_path, "r")
+    file = open(rootdir + "/" + file_path, "r")
     i = 0
     sum = 0
     for line in file:
-        if i == line_number-1:
-            sum+=column
+        if i == line_number - 1:
+            sum += column
             break
-        sum+=len(line)
-        i+=1
+        sum += len(line)
+        i += 1
     file.seek(0)
     contents = file.read()
     file.close()
-       
-    #calculate position
+
+    # calculate position
     cur_line = 1
     cur_index = 0
-    while(cur_index<len(contents)):
-        if(contents[cur_index] == "\n"):
+    while (cur_index < len(contents)):
+        if (contents[cur_index] == "\n"):
             cur_line = cur_line + 1
-        if(cur_line ==line_number):
+        if (cur_line == line_number):
             break
-        cur_index = cur_index + 1 
-    # column numbers in log not zero indexed
+        cur_index = cur_index + 1
+        # column numbers in log not zero indexed
     index = cur_index + column - 1
-    #print "Index: %d" % index
-    #print "Contents before index: %s" % contents[:index]
-    #print "text - " +text
-    #print "Contents after index: %s" % contents[index:]
-    #print actionType
-    #print contents
-    #print "updated contents"
+    # print "Index: %d" % index
+    # print "Contents before index: %s" % contents[:index]
+    # print "text - " +text
+    # print "Contents after index: %s" % contents[index:]
+    # print actionType
+    # print contents
+    # print "updated contents"
     if actionType == "insert" or actionType == "insertLines":
-        #insert text into string
-        updated_contents = contents[:sum-1] + text + contents[sum-1:]
-        #print updated_contents[sum-20:sum+20]
+        # insert text into string
+        updated_contents = contents[:sum - 1] + text + contents[sum - 1:]
+        # print updated_contents[sum-20:sum+20]
     else:
-        #skip over deleted text while copying string
-        updated_contents = contents[:sum-1] + contents[(sum-1 + len(text)):]
-        #print updated_contents
-       
+        # skip over deleted text while copying string
+        updated_contents = contents[:sum - 1] + contents[(sum - 1 + len(text)):]
+        # print updated_contents
+
     # write updated string to file
-    file = open(rootdir+ "/" + file_path, "w")
+    file = open(rootdir + "/" + file_path, "w")
     file.write(updated_contents)
     file.close()
+
+
 def get_array(dir, out_file):
     if dir not in ['.c9', '.cryolite']:
         f = ''
-        if(out_file):
-            f = open(out_file,'a')
+        if (out_file):
+            f = open(out_file, 'a')
         dir_to_run = "./jsparser/src/hexcom/" + dir
         out = subprocess.check_output(["php", "./jsparser/fileIterator.php", dir_to_run])
 
-        if(out_file):
+        if (out_file):
             f.write(out)
             f.close()
         else:
             return out
 
-        #call(["php", "fileIterator.php", dir_to_run]);
+            # call(["php", "fileIterator.php", dir_to_run]);
+
+
 def add_dir_to_miv(fn):
-    #print "adding " + fn + " to miv"
+    # print "adding " + fn + " to miv"
     k = fn.rfind('/')
-    #print k
+    # print k
     global miv_array
     global doc_line_list
-    #print "sending " + fn[k:] + " as an arg to get_array"
+    # print "sending " + fn[k:] + " as an arg to get_array"
     new_data = json.loads(get_array(fn[k:], None))
-    #print "got new data"
+    # print "got new data"
     lengths = new_data[-1]
     new_data.pop()
     for item in lengths['lengths']:
-    	doc_line_list.append(item)
+        doc_line_list.append(item)
     for item in new_data:
         miv_array.append(item)
+
 
 def array_gen_single_folder(fn):
     k = fn.rfind('/')
@@ -753,72 +803,71 @@ def array_gen_single_folder(fn):
     lengths = new_data[-1]
     new_data.pop()
     for item in lengths['lengths']:
-    	i=0
+        i = 0
         for doc in doc_line_list:
-            if(doc['file']  == item['file']):
+            if (doc['file'] == item['file']):
                 doc_line_list[i] = item
                 break
-            i=i+1
+            i = i + 1
     for item in new_data:
-        i=0
+        i = 0
         for doc in miv_array:
-            if((doc['functions'] != [] and item['functions'] != []) and (item['functions'][0]['src'] == doc['functions'][0]['src'])):
+            if ((doc['functions'] != [] and item['functions'] != []) and (
+                item['functions'][0]['src'] == doc['functions'][0]['src'])):
                 for j in range(0, len(item['functions'])):
-                    item['functions'][j]['start'] +=1
-                    item['functions'][j]['end'] +=1
+                    item['functions'][j]['start'] += 1
+                    item['functions'][j]['end'] += 1
                 miv_array[i] = item
 
-            i=i+1
+            i = i + 1
+
 
 def array_gen(fn):
-    i=0
-    if(os.path.isfile("fullAST.txt")==False):   
-        
-        while(i<=len(src_list)-4):
+    i = 0
+    if (os.path.isfile("fullAST.txt") == False):
+
+        while (i <= len(src_list) - 4):
             # print str(i) + src_list[i]
-            p=multiprocessing.Process(target=get_array, args=(src_list[i], fn+'1.txt',))
+            p = multiprocessing.Process(target=get_array, args=(src_list[i], fn + '1.txt',))
             p.start()
-            q=multiprocessing.Process(target=get_array, args=(src_list[i+1],fn+'2.txt',))
+            q = multiprocessing.Process(target=get_array, args=(src_list[i + 1], fn + '2.txt',))
             q.start()
-            r=multiprocessing.Process(target=get_array, args=(src_list[i+2],fn+'3.txt',))
+            r = multiprocessing.Process(target=get_array, args=(src_list[i + 2], fn + '3.txt',))
             r.start()
-            s=multiprocessing.Process(target=get_array, args=(src_list[i+3],fn+'4.txt',))
+            s = multiprocessing.Process(target=get_array, args=(src_list[i + 3], fn + '4.txt',))
             s.start()
             p.join()
-            if(i+1 < len(src_list)):
+            if (i + 1 < len(src_list)):
                 q.join()
-            if(i+2 < len(src_list)):
+            if (i + 2 < len(src_list)):
                 r.join()
-            if(i+3 < len(src_list)):
+            if (i + 3 < len(src_list)):
                 s.join()
-            i=i+4
+            i = i + 4
         results = []
-        f = open(fn+'1.txt', 'r')
+        f = open(fn + '1.txt', 'r')
         for line in f:
             results.append(json.loads(line))
-        
 
-        f = open(fn+'2.txt', 'r')
+        f = open(fn + '2.txt', 'r')
         for line in f:
             results.append(json.loads(line))
-        
 
-        f = open(fn+'3.txt', 'r')
+        f = open(fn + '3.txt', 'r')
         for line in f:
             results.append(json.loads(line))
-        
 
-        f = open(fn+'4.txt', 'r')
+        f = open(fn + '4.txt', 'r')
         for line in f:
             results.append(json.loads(line))
-        
+
         lengths = []
         folder_arrays = []
         for singleFolderArray in results:
             lengths.append(singleFolderArray[-1])
             singleFolderArray.pop()
             folder_arrays.append(singleFolderArray)
-        
+
         compressedLengths = []
         for x in lengths:
             if x:
@@ -834,22 +883,24 @@ def array_gen(fn):
         f = open("fullAST.txt", 'a+')
         f.write(json.dumps(miv_array))
     else:
-       f = open("fullAST.txt", 'r')
-       miv_array = json.loads(f.read())
+        f = open("fullAST.txt", 'r')
+        miv_array = json.loads(f.read())
     global doc_line_list
 
-    doc_line_list =miv_array.pop()
+    doc_line_list = miv_array.pop()
     doc_line_list = doc_line_list["lengths"]
-    miv_array = miv_array[0] #collapse the array
+    miv_array = miv_array[0]  # collapse the array
+
 
 def create_db(pfislog_name):
     f = open(pfislog_name, 'r')
     db_name = pfislog_name[:-4] + '.db'
-    if(os.path.exists(db_name)):
+    if (os.path.exists(db_name)):
         os.remove(db_name)
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    c.execute('create table logger_log("index" int(10), user varchar(50), timestamp varchar(50), action varchar(50), target varchar(50), referrer varchar(50), agent varchar(50), elapsed_time varchar(50));')
+    c.execute(
+        'create table logger_log("index" int(10), user varchar(50), timestamp varchar(50), action varchar(50), target varchar(50), referrer varchar(50), agent varchar(50), elapsed_time varchar(50));')
     conn.commit()
     for line in f:
         c.execute(line)

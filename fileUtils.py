@@ -7,13 +7,14 @@ class fileUtils:
     @staticmethod
     def getOffset(self, rootdir, document_name, line, column):
 
+        #Calculates TSOs for changelogs
         count = 1
         offset = 0
 
         completeFilePath = rootdir + document_name
 
         #This is a hack for a participant who copied Current and created Current 2
-        completeFilePath.replace("Current 2", "Current")
+        completeFilePath = completeFilePath.replace("Current 2", "Current")
 
         file = open(completeFilePath, 'r')
 
@@ -30,6 +31,7 @@ class fileUtils:
     @staticmethod
     def readChangelogs():
 
+        #For entering the changelogs' contents in the database.
         DB_FILE_NAME = "variations_topologyAndTextSimilarity.db"
         CHANGELOG_INSERT_QUERY = 'UPDATE VARIANTS SET CHANGELOG = ? WHERE NAME = ?'
         conn = sqlite3.connect(DB_FILE_NAME)
@@ -65,18 +67,45 @@ class fileUtils:
         conn.commit()
 
 
+    @staticmethod
+    def getVariantName(filename):
+        regex = re.compile('/hexcom/([^/]*)/.*')
+        match = regex.match(filename)
+        if match == None:
+            raise Exception("No such file: " + filename)
+        return match.groups()[0]
+
+
+    @staticmethod
+    def getChangelogFromDb(filePath):
+
+        #Returns the changelog content for a particular variant which is used in logconverter for event_tuple generation for changelogs.
+        DB_FILE_NAME = "variations_topologyAndTextSimilarity.db"
+        GET_CHANGELOG_QUERY = 'SELECT CHANGELOG FROM VARIANTS WHERE NAME = ?'
+        conn = sqlite3.connect(DB_FILE_NAME)
+        c = conn.cursor()
+
+        variantName = fileUtils.getVariantName(filePath)
+        c.execute(GET_CHANGELOG_QUERY, [variantName])
+        changelog =  (c.next()[0]).strip()
+
+        return changelog
+
 
     @staticmethod
     def getWeight():
 
+        #This weight calculation logic was just for trial purposes. This calculates what weights get assigned
+        #to each changelog based on how many words the changelog has in common with the goalwords.
         DB_FILE_NAME = "variations_topologyAndTextSimilarity.db"
         GET_CHANGELOG_CONTENT_QUERY = 'SELECT CHANGELOG FROM VARIANTS WHERE NAME = ?'
 
         goalWordsFrequency = {}
         conn = sqlite3.connect(DB_FILE_NAME)
         c = conn.cursor()
-        changelogScoresFile = open('changelogScores.txt',pfis3'w')
+        changelogScoresFile = open('changelogScores.txt','w')
 
+        #Normally, this would be the input from the bug report
         goalWords = ['score',
                      'indicator',
                      'above', 'hexagon',
@@ -86,6 +115,8 @@ class fileUtils:
                      'used', 'wants', 'stay', 'Users', 'have', 'requested', 'that', 'put',
                      'back', 'bonus', 'multiplier', 'parentheses', 'next',  'score']
 
+        #The variants below were hard-coded on a trial basis. If this weight calculation logic is ever to be used,
+        #get these variants from the DB.
         variantsVisited = ['2014-05-17-16:17:28',
                      '2014-05-17-15:22:12', '2014-05-17-15:22:12',
                      'Current', '2014-07-20-18:47:08', '2014-07-20-18:47:08',
@@ -122,3 +153,4 @@ class fileUtils:
 
 if __name__ == '__main__':
     fileUtils.getWeight()
+

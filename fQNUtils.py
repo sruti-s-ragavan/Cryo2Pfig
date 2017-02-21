@@ -17,6 +17,8 @@ class FQNUtils:
 		def isFQN(obj):
 			string = str(obj)
 			#FQ method names (standard or not) have a ;.
+			if 'changes.txt' in string:
+				return True
 			if ';.' in string:
 				return True
 			#FQ file names
@@ -31,6 +33,8 @@ class FQNUtils:
 
 	@staticmethod
 	def getFullClassPath(filepath):
+		if 'changes.txt' in filepath:
+			return filepath
 		#TODO: this currently does not handle non-JS files
 		return filepath + ";"
 
