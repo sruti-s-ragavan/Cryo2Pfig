@@ -30,8 +30,7 @@ To bulk-convert logs:
 	** ALWAYS COPY THE DB after conversion and just operate on the copy!**
 
 To create variations information (collapse) databases
-    - python scripts/createEquivalentPatchesByExactText.py --> This creates a database called variations_textSimilarity.db in Cryo2Pfig folder
-    - python scripts/createEquivalentPatchesByTextAndEdgeSimilarity.py --> This creates a database called variations_topologyAndTextSimilarity.db in Cryo2Pfig
+    - python scripts/createEquivalentPatchesOfBothTypes.py --> This creates two databases called variations_textSimilarity.db and variations_topologyAndTextSimilarity.db in Cryo2Pfig folder
 
     ********
     NOTE: - Make sure the two databases are in Cryo2Pfig golder, if not copy and paste them there.
