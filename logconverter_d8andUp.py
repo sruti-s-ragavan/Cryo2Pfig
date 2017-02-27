@@ -421,6 +421,7 @@ class Converter:
                 methodFQN = FQNUtils.getFullMethodPath(declaration_file, nesting_path, header)
                 contents = normalizer(item["contents"])
 
+                #TODO: add change log declaration event
                 scent_event_type = declaration_type + ' scent'
                 new_event = get_events_on_newly_opened_document(scent_event_type, methodFQN, contents)
                 FQNUtils.addFQNPrefixForEvent(new_event)
