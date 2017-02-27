@@ -29,45 +29,6 @@ class fileUtils:
         return offset
 
     @staticmethod
-    def readChangelogs():
-
-        #For entering the changelogs' contents in the database.
-        DB_FILE_NAME = "variations_topologyAndTextSimilarity.db"
-        CHANGELOG_INSERT_QUERY = 'UPDATE VARIANTS SET CHANGELOG = ? WHERE NAME = ?'
-        conn = sqlite3.connect(DB_FILE_NAME)
-        c = conn.cursor()
-        root = './jsparser/src/hexcom'
-
-        for folder in os.listdir(root):
-
-            message = ''
-
-            if 'Store' in folder:
-                continue
-
-            changelog = open(os.path.join(root, folder, 'changes.txt'), 'r')
-            linelist = changelog.readlines()
-
-            for line in linelist:
-                if re.match('commit|Merge|Author|Date', line) or line == '':
-                    continue
-                else:
-                    if line in message:
-                        continue
-                    else:
-                        message = message + ' ' + line
-
-            message.strip()
-            c.execute(CHANGELOG_INSERT_QUERY, [message, folder])
-            # message = folder + ': ' + message + '\n'
-            # with open("test1.txt", "a") as myfile:
-            #     myfile.write(message)
-
-        c.close()
-        conn.commit()
-
-
-    @staticmethod
     def getVariantName(filename):
         regex = re.compile('/hexcom/([^/]*)/.*')
         match = regex.match(filename)
@@ -152,5 +113,5 @@ class fileUtils:
 
 
 if __name__ == '__main__':
-    fileUtils.getWeight()
+    fileUtils.readChangelogs()
 
