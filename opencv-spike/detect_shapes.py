@@ -26,8 +26,11 @@ thresh = cv2.threshold(blurred, 60, 255, cv2.THRESH_BINARY)[1]
 
 # find contours in the thresholded image and initialize the
 # shape detector
-cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
+# cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
+	# cv2.CHAIN_APPROX_SIMPLE)
+cnts = cv2.findContours(thresh.copy(), cv2.RETR_TREE,
 	cv2.CHAIN_APPROX_SIMPLE)
+
 cnts = cnts[0] if imutils.is_cv2() else cnts[1]
 sd = ShapeDetector()
 
@@ -47,7 +50,7 @@ for c in cnts:
 	c = c.astype("int")
 	cv2.drawContours(image, [c], -1, (0, 0, 0), 2)
 	cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
-		0.5, (255, 255, 255), 2)
+		0.5, (255, 0, 0), 2)
 
 	# show the output image
 	cv2.imshow("Image", image)
