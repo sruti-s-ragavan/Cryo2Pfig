@@ -111,7 +111,30 @@ class fileUtils:
 
         c.close()
 
+    @staticmethod
+    def readFile():
+        #D09 has changelog navs interleaved between sourcecode navs.
+        # The following code removes the changelogs navs from the results file
+        # and retains navs to sourcecode files only
+        # The list in the 'if' condition contains the sourcecode navs.
+        reg = re.compile('([^\\t]+)')
+        pathToFile = '/Users/eecs/Desktop/temp_withchangelogs_withgoalwords/d09/pfis_history_spread2__DM4.txt'
+        fileRead = open(pathToFile, 'r')
+        newFileToWrite = open('SourceCodeNavsOnly.txt', 'w+')
+
+        for line in fileRead:
+            start = reg.match(line)
+
+            try:
+               val = int(start.groups()[0])
+            except Exception:
+                continue
+
+            if val in [56,57,59,61,62,63,64,65,66,67,79,80,81,82,83,97,98,99,100,101,102,103,104]:
+                continue
+            newFileToWrite.write(line)
+
 
 if __name__ == '__main__':
-    fileUtils.readChangelogs()
+    fileUtils.readFile()
 

@@ -413,7 +413,7 @@ class Converter:
 
         def event_tuple_generate(new_events, self, item, event, declaration_type, document_name):
 
-            if (declaration_type == 'Changelog'):
+            if (declaration_type == 'Changelog declaration'):
                 declaration_file = normalizer(item["src"])
                 nesting_path = normalizer(item["filepath"])
                 header = normalizer(item["header"])
@@ -421,15 +421,16 @@ class Converter:
                 methodFQN = FQNUtils.getFullMethodPath(declaration_file, nesting_path, header)
                 contents = normalizer(item["contents"])
 
-                #TODO: add change log declaration event
+                new_event = get_events_on_newly_opened_document(declaration_type, FQNUtils.getFullClassPath(declaration_file), methodFQN)
+                FQNUtils.addFQNPrefixForEvent(new_event)
+                new_events.append(new_event)
+
                 scent_event_type = declaration_type + ' scent'
                 new_event = get_events_on_newly_opened_document(scent_event_type, methodFQN, contents)
                 FQNUtils.addFQNPrefixForEvent(new_event)
                 new_events.append(new_event)
 
                 return new_events
-
-
 
             if (declaration_type == "Method declaration" or declaration_type == "Variable declaration"):
                 declaration_file = normalizer(item["src"])
@@ -499,8 +500,7 @@ class Converter:
         var_dec_list = []
 
         if 'changes.txt' in document_name:
-
-            declaration_type = 'Changelog'
+            declaration_type = 'Changelog declaration'
             changelogMessage = fileUtils.getChangelogFromDb(document_name)
 
             item = dict()

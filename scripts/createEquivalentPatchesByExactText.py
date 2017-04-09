@@ -30,7 +30,7 @@ def getFilePath(path):
 
 def readASTFile():
 	obj = None
-	file = open('fullAST.txt')
+	file = open('../fullAST.txt')
 	obj = json.loads(file.read())
 	file.close()
 	return obj[0]

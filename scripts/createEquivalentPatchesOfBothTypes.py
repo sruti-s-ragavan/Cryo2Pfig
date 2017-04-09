@@ -230,7 +230,7 @@ def insertNodesToDb(index, variants, variantsToFunctionsMap, graph, prevGraph, c
 		methodBody = getMethodBody(function)
 		# print "Node Name: ", nodeName
 
-		if prevGraph is None or nodeName not in prevGraph.nodes():
+		if prevGraph is None or nodeName not in prevGraph.nodes() or variants[index-1] not in variantsToFunctionsMap: #The last check is to check if the previous variant has any functions associated with it.
 			# print "Node insert: ", nodeName
 			uuidValue = uuid.uuid1()
 			c.execute(FUNCTION_INSERT_QUERY, [FQNUtils.normalizer(nodeName), index+1, index+1, FQNUtils.normalizer(methodBody), str(uuidValue)])
@@ -260,6 +260,35 @@ def insertNodesToDb(index, variants, variantsToFunctionsMap, graph, prevGraph, c
 	c.close()
 	conn.commit()
 
+def createTextAndTopologyBasedDb(variantNames, variantsToFunctionsMap, variantsToInvocationsMap):
+	conn = sqlite3.connect(DB_FILE_NAME_TEXT_TOPOLOGY)
+	prevVariantGraph = None
+
+	for i in range(0, len(variantNames)):
+		variant = variantNames[i]
+		if variant in variantsToFunctionsMap and variant in variantsToInvocationsMap: #This check is made to check if the variant has any functions associated with it. If not, continue.
+			graph = buildGraph(variantsToFunctionsMap[variant], variantsToInvocationsMap[variant])
+			insertNodesToDb(i, variantNames, variantsToFunctionsMap, graph, prevVariantGraph, conn)
+			prevVariantGraph = graph
+
+	conn.close()
+
+def createTextOnlyBasedDb(variantNames, variantsToFunctionsMap):
+	conn = sqlite3.connect(DB_FILE_NAME_TEXT)
+
+	for i in range(0, len(variantNames)):
+		variant = variantNames[i]
+		if variant in variantsToFunctionsMap: #This check is made to check if the variant has any functions associated with it. If not, continue.
+			prevVariantFunctions = None
+			if i > 0 and variantNames[i - 1] in variantsToFunctionsMap:
+				prevVariantFunctions = variantsToFunctionsMap[variantNames[i - 1]]
+
+			for function in variantsToFunctionsMap[variant]:
+				variantPos = i + 1
+				insertFunctionToDb(variantPos, function, prevVariantFunctions, conn)
+
+	conn.close()
+
 def getMethodBody(function):
 	return FQNUtils.normalizer(function['contents'])
 
@@ -278,25 +307,13 @@ def main():
 
 	variantNames = variantsToFunctionsMap.keys()
 	variantNames.sort()
-	insertVariants(variantNames, variant_changelog_map, (conn_text_only, conn_text_topology))
-	prevVariantGraph = None
+	insertVariants(sorted(variant_changelog_map.keys()), variant_changelog_map, (conn_text_only, conn_text_topology))
 
-	for i in range(0, len(variantNames)):
-		prevVariantFunctions = None
-		variant = variantNames[i]
-		graph = buildGraph(variantsToFunctionsMap[variant], variantsToInvocationsMap[variant])
-		insertNodesToDb(i, variantNames, variantsToFunctionsMap, graph, prevVariantGraph, conn_text_topology)
-		prevVariantGraph = graph
-
-		if i > 0:
-			prevVariantFunctions = variantsToFunctionsMap[variantNames[i - 1]]
-
-		for function in variantsToFunctionsMap[variant]:
-			variantPos = i + 1
-			insertFunctionToDb(variantPos, function, prevVariantFunctions, conn_text_only)
-
-	conn_text_only.close()
 	conn_text_topology.close()
+	conn_text_only.close()
+
+	createTextOnlyBasedDb(sorted(variant_changelog_map.keys()), variantsToFunctionsMap)
+	createTextAndTopologyBasedDb(sorted(variant_changelog_map.keys()), variantsToFunctionsMap, variantsToInvocationsMap)
 
 	moveDBToCryo2Pfig()
 
