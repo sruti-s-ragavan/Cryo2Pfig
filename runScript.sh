@@ -7,12 +7,12 @@ python "$repo_root/PFIS/pfis3/scripts/runScript.py" \
 	-A \
 	-e "$repo_root/PFIS/pfis3/src/python/pfis3.py" \
     -d "$db_folder" \
-	-s "$repo_root/variationsGoalWords.txt" \
+	-s "$repo_root/PFIS/je.txt" \
 	-l "JS" \
 	-t 1 \
 	-p "$repo_root/jsparser/src" \
 	-o "$repo_root/PFIS/results" \
-	-x "$repo_root/configs/algorithm-config.xml" \
+	-x "$repo_root/configs/algorithm-config-variantNavPath.xml" \
 	-c "combined-results.txt" \
 	-m "multi-factors.txt" \
 	-h "10" \
