@@ -6,17 +6,17 @@
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithVariants" suffix = "DM2">
+	<algorithms graphType="VariantAwarePfisGraph" suffix = "DM2">
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="DM3">
+	<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_textSimilarity.db" suffix="DM3">
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4">
+	<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4">
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
@@ -26,18 +26,18 @@
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithVariants" suffix = "DM2-V" navPathType="VariantAware">
+	<algorithms graphType="VariantAwarePfisGraph" suffix = "DM2-V" navPathType="VariantAware">
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="DM3-V"
+	<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_textSimilarity.db" suffix="DM3-V"
 	navPathType="VariantAwareCollapsed">
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_topologyAndTextSimilarity.db"
+	<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db"
 				suffix = "DM4-V" navPathType="VariantAwareCollapsed">
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >

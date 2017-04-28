@@ -24,9 +24,9 @@
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
-	</algorithms-->
+	</algorithms>
 	<algorithms graphType="PfisGraph" suffix = "DM1-V" navPathType="VariantAware">
-		<!--algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
 			fileName="undirected_call_graph.txt" enabled="true" >
@@ -44,13 +44,13 @@
 		</algorithm>
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
 			enabled="true" fileName="working_set.txt">
-		</algorithm-->
+		</algorithm>
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithVariants" suffix = "DM2-V" navPathType="VariantAware">
-		<!--algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+	<algorithms graphType="VariantAwarePfisGraph" suffix = "DM2-V" navPathType="VariantAware">
+		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
 			fileName="undirected_call_graph.txt" enabled="true" >
@@ -68,12 +68,36 @@
 		</algorithm>
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
 			enabled="true" fileName="working_set.txt">
-		</algorithm-->
+		</algorithm>
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="DM3-V" navPathType="VariantAwareCollapsed">
+	<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_textSimilarity.db" suffix="DM3-V" navPathType="VariantAwareCollapsed">
+		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="CallDepth" name="Undirected Call Graph"
+			fileName="undirected_call_graph.txt" enabled="true" >
+		</algorithm>
+		<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">
+		</algorithm>
+		<algorithm class="Recency" name="Recency"
+			enabled="true" fileName="recency.txt" >
+		</algorithm>
+		<algorithm class="SourceTopology" name="Source Topology"
+			enabled="true" fileName="source_topology.txt">
+		</algorithm>
+		<algorithm class="TFIDF" name="TF-IDF (method)"
+			enabled="true" fileName="tfidf.txt" >
+		</algorithm>
+		<algorithm class="WorkingSet" name="Working Set, delta 10"
+			enabled="true" fileName="working_set.txt">
+		</algorithm>
+		<algorithm class="PFIS" name="PFIS with history, spread2"
+			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
+		</algorithm>
+	</algorithms-->
+	<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4-V" navPathType="VariantAwareCollapsed">
 		<!--algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
@@ -93,32 +117,14 @@
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
 			enabled="true" fileName="working_set.txt">
 		</algorithm-->
-		<algorithm class="PFIS" name="PFIS with history, spread2"
-			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
+		<algorithm class="PFIS" name="PFIS_hist"
+			enabled="true" fileName="pfis_history.txt" history="true" numSpread="2" >
 		</algorithm>
-	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4-V" navPathType="VariantAwareCollapsed">
-		<!--algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+		<algorithm class="PFIS" name="PFIS_hist_goal"
+			enabled="true" fileName="pfis_hist_goal.txt" history="true" numSpread="2" goal="true">
 		</algorithm>
-		<algorithm class="CallDepth" name="Undirected Call Graph"
-			fileName="undirected_call_graph.txt" enabled="true" >
-		</algorithm>
-		<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">
-		</algorithm>
-		<algorithm class="Recency" name="Recency"
-			enabled="true" fileName="recency.txt" >
-		</algorithm>
-		<algorithm class="SourceTopology" name="Source Topology"
-			enabled="true" fileName="source_topology.txt">
-		</algorithm>
-		<algorithm class="TFIDF" name="TF-IDF (method)"
-			enabled="true" fileName="tfidf.txt" >
-		</algorithm>
-		<algorithm class="WorkingSet" name="Working Set, delta 10"
-			enabled="true" fileName="working_set.txt">
-		</algorithm-->
-		<algorithm class="PFIS" name="PFIS with history, spread2"
-			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
+		<algorithm class="PFIS" name="PFIS_hist_goal_var"
+			enabled="true" fileName="pfis_hist_goal_var.txt" history="true" numSpread="2" goal="true" decayVariants="0.2">
 		</algorithm>
 	</algorithms>
 </options>
