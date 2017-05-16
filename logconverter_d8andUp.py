@@ -206,13 +206,12 @@ class Converter:
     Creates the list of pfislog events and returns a Pfislog object containing them.
     """
 
-    def check_doc_opened(self, event, document_name):
-        method_declaration_events = []
-
+    def get_declaration_events_if_applicable(self, event, document_name):
         global opened_doc_list
+
         if (document_name in opened_doc_list):
             return None
-        if (document_name[-2:] != 'js' and document_name[-3:] != 'txt'):
+        if (document_name[-2:] != 'js' and document_name[-3:] != 'txt' and '[B]' not in document_name):
             return None
         else:
             opened_doc_list.append(document_name)
@@ -251,19 +250,23 @@ class Converter:
 
     """Cryolog Event Converters (1:1 mapping to Cryolog event-types, for the most part)"""
 
-    def convert_change_cursor_event(self, event):
+    def convert_change_cursor_event(self, event, setToBeginning = False):
         """The event when someone clicks a different place in the code"""
         new_events = []
         change_cursor_event = self.new_event(event)
-        document_name = event['path']
-        position = event['position']
-        line = position['line']
-        column = position['column']
+
+        if setToBeginning:
+            line=0
+            column=0
+        else:
+            line = event['position']['line']
+            column = event['position']['column']
+
         offset = 0
         document_name = event['path']
         doc_prev_len = len(opened_doc_list)
 
-        method_declartion_events = self.check_doc_opened(event, document_name)
+        method_declartion_events = self.get_declaration_events_if_applicable(event, document_name)
 
         doc_curr_len = len(opened_doc_list)
         # add one millisecond from time if this is the first time a document has been opened.
@@ -332,7 +335,7 @@ class Converter:
         new_event = self.new_event(event)
         document_name = event['path']
         doc_prev_len = len(opened_doc_list)
-        new_events = self.check_doc_opened(event, document_name)
+        new_events = self.get_declaration_events_if_applicable(event, document_name)
         doc_curr_len = len(opened_doc_list)
         # add one millisecond from time if this is the first time a document has been opened.
         # This is because there is no initial text selection event upon opening a file, so this navigation occurs AFTER the particpant sees the methods, etc.
@@ -512,7 +515,13 @@ class Converter:
             item['header'] = ''
             item['contents'] = changelogMessage
 
-            new_events = event_tuple_generate(new_events, self, item, event, declaration_type, document_name)
+            return event_tuple_generate(new_events, self, item, event, declaration_type, document_name)
+
+        elif '[B]' in document_name:
+            declaration_type = 'Output declaration'
+            new_event = get_events_on_newly_opened_document(declaration_type, document_name, document_name)
+            print "Output: ", new_event
+            return self.append_event(new_event, new_events)
 
         else:
             # Add declarations after nav to first location, only after nav can a person see what's in there.
@@ -547,7 +556,7 @@ class Converter:
                 if (item['src'] == document_name):
                     new_events = event_tuple_generate(new_events, self, item, event, declaration_type, document_name)
 
-        return new_events
+            return new_events
 
     def convert_select_workspace_tree_nodes_event(self, event):
         """When the user actually selects a node"""
@@ -585,7 +594,7 @@ class Converter:
 
     def append_event(self, new, new_events):
         if new == None:
-            return None
+            return new_events
         elif 'target' in new:
             new_events.append(new)
         else:
@@ -601,6 +610,7 @@ class Converter:
         queued_cryolog_events = []
         unconverted_events = dict()
         k = 'title'
+
         for event in cryolog.events:
             print str(event['sequence-id']) + " " + event['event-type'] + " " + event['logged-timestamp']
             if ((k in event) and (
@@ -611,16 +621,14 @@ class Converter:
             else:
                 event_type = event['event-type']
                 if event_type == 'activate-tab':
-                    self.append_event(self.convert_tab_event(event, 'Part activated'), new_events)
+                    new_events = self.append_event(self.convert_tab_event(event, 'Part activated'), new_events)
 
                     if ('path' in event.keys() and "[B]" not in event['path']):
-                        event['position'] = {"line": 1, "column": 0}
+                        new_events = self.append_event(self.convert_change_cursor_event(event, setToBeginning=True), new_events)
+                        new_events = self.append_event(self.get_declaration_events_if_applicable(event, event['path']), new_events)
 
-                        new_events = self.append_event(self.convert_change_cursor_event(event), new_events)
-
-                        new_doc_events = self.check_doc_opened(event, event['path'])
-                        if new_doc_events:
-                                new_events = self.append_event(new_doc_events, new_events)
+                    elif 'title' in event.keys() and "[B]" in event['title']:
+                        new_events = self.append_event(self.get_declaration_events_if_applicable(event, event['title']), new_events)
 
                 elif event_type == 'change-document':
                     document_name = event['path']
