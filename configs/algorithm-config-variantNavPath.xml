@@ -97,7 +97,7 @@
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms-->
-	<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4-V" navPathType="VariantAwareCollapsed">
+	<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4-V" navPathType="PFIS-V">
 		<!--algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
@@ -119,12 +119,6 @@
 		</algorithm-->
 		<algorithm class="PFIS" name="PFIS_hist"
 			enabled="true" fileName="pfis_history.txt" history="true" numSpread="2" >
-		</algorithm>
-		<algorithm class="PFIS" name="PFIS_hist_goal"
-			enabled="true" fileName="pfis_hist_goal.txt" history="true" numSpread="2" goal="true">
-		</algorithm>
-		<algorithm class="PFIS" name="PFIS_hist_goal_var"
-			enabled="true" fileName="pfis_hist_goal_var.txt" history="true" numSpread="2" goal="true" decayVariants="0.2">
 		</algorithm>
 	</algorithms>
 </options>
