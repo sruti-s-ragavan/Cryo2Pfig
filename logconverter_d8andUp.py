@@ -263,7 +263,12 @@ class Converter:
             column = event['position']['column']
 
         offset = 0
-        document_name = event['path']
+
+        if 'path' in event.keys():
+            document_name = event['path']
+        else:
+            document_name = event['title']
+
         doc_prev_len = len(opened_doc_list)
 
         method_declartion_events = self.get_declaration_events_if_applicable(event, document_name)
@@ -315,9 +320,12 @@ class Converter:
 
     def get_offset_position(self, document_name, line, column):
 
-        if ("changes.txt" in document_name):
+        if "changes.txt" in document_name:
             sum = fileUtils.getOffset(self, rootdir, document_name, line, column)
             return sum
+
+        elif '[B]' in document_name:
+            return 0
 
         elif (".js" in document_name):
             sum = 0
@@ -520,7 +528,6 @@ class Converter:
         elif '[B]' in document_name:
             declaration_type = 'Output declaration'
             new_event = get_events_on_newly_opened_document(declaration_type, document_name, document_name)
-            print "Output: ", new_event
             return self.append_event(new_event, new_events)
 
         else:
@@ -625,10 +632,10 @@ class Converter:
 
                     if ('path' in event.keys() and "[B]" not in event['path']):
                         new_events = self.append_event(self.convert_change_cursor_event(event, setToBeginning=True), new_events)
-                        new_events = self.append_event(self.get_declaration_events_if_applicable(event, event['path']), new_events)
 
-                    elif 'title' in event.keys() and "[B]" in event['title']:
-                        new_events = self.append_event(self.get_declaration_events_if_applicable(event, event['title']), new_events)
+                    elif ('title' in event.keys() and ('[B]' in event['title'] or '[P]' in event['title'])):
+                        event['title'] = event['title'].replace('[P]', '[B]')
+                        new_events = self.append_event(self.convert_change_cursor_event(event, setToBeginning=True), new_events)
 
                 elif event_type == 'change-document':
                     document_name = event['path']
