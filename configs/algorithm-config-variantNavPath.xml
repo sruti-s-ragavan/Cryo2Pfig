@@ -116,9 +116,15 @@
 		</algorithm>
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
 			enabled="true" fileName="working_set.txt">
-		</algorithm-->
+		</algorithm>
 		<algorithm class="PFIS" name="PFIS_hist"
 			enabled="true" fileName="pfis_history.txt" history="true" numSpread="2" >
+		</algorithm-->
+		<algorithm class="VariantOf" name="Variant Of"
+			enabled="true" fileName="variant_of.txt">
+		</algorithm>
+		<algorithm class="GoalWordSimilarity" name="Goal Word Similarity"
+		   enabled="true" fileName="goal_word_similarity.txt">
 		</algorithm>
 	</algorithms>
 </options>
