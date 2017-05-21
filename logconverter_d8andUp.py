@@ -224,7 +224,8 @@ class Converter:
 
         if (document_name in opened_doc_list):
             return None
-        if (document_name[-2:] != 'js' and document_name[-3:] != 'txt' and '.output' not in document_name):
+        if (document_name[-2:] != 'js' and document_name[-3:] != 'txt' and
+                    '[B]' not in document_name and '.output' not in document_name):
             return None
         else:
             opened_doc_list.append(document_name)
@@ -241,7 +242,7 @@ class Converter:
             raise Exception("Invalid event document name: ", event)
 
         #Normalize output patch name
-        if document_name.endswith('.html') and '[B]' in document_name or '[P]' in document_name:
+        if document_name.endswith('.html') and ('[B]' in document_name or '[P]' in document_name):
             document_name = document_name.replace('[B]', '')
             document_name = document_name.replace('[P]', '')
             document_name = document_name.replace('index.html', 'index.html.output')
