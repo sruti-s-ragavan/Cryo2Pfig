@@ -17,9 +17,9 @@ class FQNUtils:
 		def isFQN(obj):
 			string = str(obj)
 			#FQ method names (standard or not) have a ;.
-			if 'changes.txt' in string:
-				return True
-			if ';.' in string:
+			if 'changes.txt' in string \
+					or '.output' in string \
+					or ';.' in string:
 				return True
 			#FQ file names
 			if string.startswith("/hexcom") and string.endswith(";"):

@@ -13,7 +13,7 @@ def convert_log(log_file_name, log_folder, db_folder):
 
     print "Converting: ", log_file
     output_txt_file = os.path.join(db_folder, file_name_without_extn) + "txt"
-    args = ['python', 'logconverter_d8andUp.py', 'file', log_file, output_txt_file]
+    args = ['python', 'logconverter.py', 'file', log_file, output_txt_file]
     output_log_name = os.path.join(db_folder, "_"+file_name_without_extn) + "log"
     output_log = open(output_log_name, "w")
 

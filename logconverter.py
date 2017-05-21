@@ -35,7 +35,6 @@ miv_array = []
 opened_doc_list = []
 doc_line_list = []
 
-
 def print_list(to_print):
     """Sorts a list and prints it out with an asterisk in front of each one
     """
@@ -247,6 +246,12 @@ class Converter:
             document_name = document_name.replace('[P]', '')
             document_name = document_name.replace('index.html', 'index.html.output')
             document_name = document_name.strip()
+
+        if '/hexcom' in document_name:
+            # This is to normalize paths when participant opened file in browser,
+            # and path has the server name in the URL.
+            position = document_name.index('/hexcom')
+            document_name = document_name[position:]
 
         return document_name
 
@@ -539,6 +544,7 @@ class Converter:
         elif '.output' in document_name:
             declaration_type = 'Output declaration'
             new_event = get_events_on_newly_opened_document(declaration_type, document_name, document_name)
+            FQNUtils.addFQNPrefixForEvent(new_event)
             return self.append_event(new_event, new_events)
 
         else:
