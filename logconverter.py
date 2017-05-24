@@ -279,6 +279,11 @@ class Converter:
 
     def convert_change_cursor_event(self, event, setToBeginning = False):
         """The event when someone clicks a different place in the code"""
+        document_name = self.get_document_name_for_event(event)
+
+        if 'hexcom' not in document_name:
+            return None
+
         new_events = []
         change_cursor_event = self.new_event(event)
 
@@ -291,7 +296,6 @@ class Converter:
 
         offset = 0
 
-        document_name = self.get_document_name_for_event(event)
         doc_prev_len = len(opened_doc_list)
         method_declartion_events = self.get_declaration_events_if_applicable(event)
 
@@ -318,8 +322,12 @@ class Converter:
 
     def convert_change_document_event(self, event):
         """When the user edits code"""
-        new_event = self.new_event(event)
         document_name = self.get_document_name_for_event(event)
+
+        if 'hexcom' not in document_name:
+            return None
+
+        new_event = self.new_event(event)
         code_summary = event['code-summary']
         ast_node_count = code_summary['ast-node-count']
 
@@ -361,6 +369,10 @@ class Converter:
 
     def convert_change_selection_event(self, event):
         """When the user highlights code"""
+        document_name = self.get_document_name_for_event(event)
+        if 'hexcom' not in document_name:
+            return None
+
         new_event = self.new_event(event)
         doc_prev_len = len(opened_doc_list)
         new_events = self.get_declaration_events_if_applicable(event)
@@ -372,10 +384,10 @@ class Converter:
                 datetime.datetime.strptime(new_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(
                     milliseconds=+1)) + '000'
         new_event['action'] = 'Text selection'
-        new_event['target'] = self.get_document_name_for_event(event)
+        new_event['target'] = document_name
 
         lines = []
-        f = open(rootdir + "/" + self.get_document_name_for_event(event), 'r')  # Open the file the user is in
+        f = open(rootdir + "/" + document_name, 'r')  # Open the file the user is in
         # Read the log of the event to get the start and end line then read the file the user is in through the relevant range
         if (event['selection'] == []):
             pass
@@ -409,9 +421,12 @@ class Converter:
         """Converts a tab event (create/activate/deactivate/close) to the pfislog action
         passed in (Part opened/activated/deactivated/closed).
         """
+        document_name = self.get_document_name_for_event(event)
+
+        if 'hexcom' not in document_name:
+            return None
 
         new_event = self.new_event(event)
-        document_name = self.get_document_name_for_event(event)
         new_event['action'] = action
         new_event['target'] = os.path.basename(document_name)
         new_event['referrer'] = document_name
@@ -525,6 +540,9 @@ class Converter:
         function_list = []
         call_list = []
         var_dec_list = []
+
+        if 'hexcom' not in document_name:
+            return None
 
         if 'changes.txt' in document_name:
             declaration_type = 'Changelog declaration'
@@ -668,42 +686,27 @@ class Converter:
                         new_events = self.append_event(self.convert_change_document_event(event), new_events)
                         update_file(document_name, action, text, line, column)
                         array_gen_single_folder(document_name)
-                        # slightly increase the timestamp of the event to make sure that it's AFTER change and BEFORE text selection/offset
-                        # event['action-timestamp'] = event['action-timestamp'][:-1]+'3'+event['action-timestamp'][-1:]
-                        new_events = self.append_event(self.convert_open_document_event(event, document_name),
-                                                       new_events)
-                elif event_type == 'copy-workspace-directory':
-                    copy_dir(event['paths'][0], event['paths'][1])
-                    add_dir_to_miv(event['paths'][1])
+                        new_events = self.append_event(self.convert_open_document_event(event, document_name), new_events)
+
                 elif event_type == 'close-tab':
                     new_events = self.append_event(self.convert_tab_event(event, 'Part closed'), new_events)
                 elif event_type == 'create-tab':
                     if 'path' in event:
-                            new_events = self.append_event(self.convert_tab_event(event, 'Part opened'), new_events)
-
+                        new_events = self.append_event(self.convert_tab_event(event, 'Part opened'), new_events)
                 elif event_type == 'deactivate-tab':
                     new_events = self.append_event(self.convert_tab_event(event, 'Part deactivated'), new_events)
-                # elif event_type == 'expand-workspace-tree-node':
-                #     new_events = self.check_keys(self.convert_expand_workspace_tree_node_event(event),new_events)
-                #     pass
                 elif event_type == 'change-cursor':
-                    # slightly increase the timestamp of the event to make sure that it's AFTER change and AFTER Method/Invocation stuff and AFTER Text selection
-                    # print event['action-timestamp']
-                    # event['action-timestamp'] = event['action-timestamp'][:-1]+'2'+event['action-timestamp'][-1:]
-                    # print event['action-timestamp']
-
                     new_events = self.append_event(self.convert_change_cursor_event(event), new_events)
                 elif event_type == 'change-selection':
-                    # slightly increase the timestamp of the event to make sure that it's AFTER change and AFTER Method/Invocation stuff and BEFORE Text selection offset
-                    # event['action-timestamp'] = event['action-timestamp'][:-1]+'1'+event['action-timestamp'][-1:]
-
                     new_events = self.append_event(self.convert_change_selection_event(event), new_events)
-                elif event_type == 'select-workspace-tree-nodes':
-                    new_events = self.append_event(self.convert_select_workspace_tree_nodes_event(event), new_events)
                 elif event_type == 'start-logging':
                     new_events = self.append_event(self.convert_start_logging_event(event), new_events)
+                elif event_type == 'copy-workspace-directory':
+                    copy_dir(event['paths'][0], event['paths'][1])
+                    add_dir_to_miv(event['paths'][1])
+                elif event_type == 'select-workspace-tree-nodes':
+                    new_events = self.append_event(self.convert_select_workspace_tree_nodes_event(event), new_events)
                 elif event_type == 'update-workspace-tree':
-                    # commenting out package explorer stuff
                     # new_events = self.check_keys(self.convert_update_workspace_tree_event(event),new_events)
                     pass
                 # keep track of the events that are not converted and how many instances occur
@@ -711,21 +714,10 @@ class Converter:
                     unconverted_events[event_type] += 1
                 else:
                     unconverted_events[event_type] = 1
-        '''
-        queued_events = []
-        for event in queued_cryolog_events:
-            event_type = event['event-type']
-            if event_type == 'change-cursor':
-                queued_events.extend(self.convert_change_cursor_event(event))
-            elif event_type == 'change-selection':
-                queued_events.extend(self.convert_change_selection_event(event))
 
-        print 'Queued {0} click/selection-related events. Adding to the existing {1} events.'.format(len(queued_events), len(new_events))
-        new_events.extend(queued_events)
-        '''
         print 'Converted {0} cryolog events to {1} pfislog events.\n'.format(len(cryolog.events), len(new_events))
-
         print 'There were {0} unique unconverted event types:'.format(len(unconverted_events))
+
         print_dict(unconverted_events)
         new_pfislog = Pfislog(events=new_events)
         return new_pfislog
