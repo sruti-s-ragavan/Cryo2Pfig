@@ -20,7 +20,7 @@ from fQNUtils import FQNUtils
 # what each insert statement in pfig is made up of
 PFIS_ID = '1'
 PFIS_USER = 'c486980a-74df-40a1-b4eb-07ff1c1dff93'
-PFIS_TIMESTAMP = '2014-03-14 09:34:58.231000000'
+PFIS_TIMESTAMP = '2014-03-14 09:34:58.231000'
 PFIS_ACTION = 'Variable declaration'
 PFIS_TARGET = 'com.blah.blah'  # varies depending on the event
 PFIS_REFERRER = 'com.blah.blah.blah'  # varies depending on the event
@@ -304,8 +304,8 @@ class Converter:
         # This is because there is no initial text selection event upon opening a file, so this navigation occurs AFTER the particpant sees the methods, etc.
         if (doc_curr_len > doc_prev_len):
             change_cursor_event['timestamp'] = str(
-                datetime.datetime.strptime(change_cursor_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") +
-                datetime.timedelta(microseconds=50)) + '000'
+                datetime.datetime.strptime(change_cursor_event['timestamp'], "%Y-%m-%d %H:%M:%S.%f") +
+                datetime.timedelta(microseconds=50))
         change_cursor_event['referrer'] = offset
         change_cursor_event['action'] = 'Text selection offset'
         change_cursor_event['target'] = document_name
@@ -381,8 +381,8 @@ class Converter:
         # This is because there is no initial text selection event upon opening a file, so this navigation occurs AFTER the particpant sees the methods, etc.
         if (doc_curr_len > doc_prev_len):
             new_event['timestamp'] = str(
-                datetime.datetime.strptime(new_event['timestamp'][:-3], "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(
-                    milliseconds=+1)) + '000'
+                datetime.datetime.strptime(new_event['timestamp'], "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(
+                    milliseconds=+1))
         new_event['action'] = 'Text selection'
         new_event['target'] = document_name
 
