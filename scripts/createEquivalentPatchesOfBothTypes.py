@@ -20,11 +20,7 @@ FUNCTION_INSERT_QUERY = 'INSERT INTO VARIANTS_TO_FUNCTIONS VALUES (?,?,?,?,?)'
 UPDATE_QUERY = 'UPDATE VARIANTS_TO_FUNCTIONS SET END = ? WHERE END = ? AND METHOD = ? AND BODY = ?'
 
 def getVariantName(filename):
-	regex = re.compile('/hexcom/([^/]*)/.*')
-	match = regex.match(filename)
-	if match == None:
-		raise Exception("No such file: "+ filename)
-	return match.groups()[0]
+	return FQNUtils.getVariantName(fileName)
 
 def getFilePath(path):
 	regex = re.compile('/[^h0-9]\w.*')

@@ -26,6 +26,8 @@ PFIS_TARGET = 'com.blah.blah'  # varies depending on the event
 PFIS_REFERRER = 'com.blah.blah.blah'  # varies depending on the event
 PFIS_AGENT = '8ea5d9be-d1b5-4319-9def-495bdccb7f51'
 
+GET_VARIANT_OUTPUT = 'SELECT output FROM variant_output WHERE variant=?'
+
 # Global Variables
 rootdir = './jsparser/src'
 src_list = [name for name in os.listdir("./jsparser/src/hexcom") if os.path.isdir(os.path.join(
@@ -34,6 +36,8 @@ DEBUG = True
 miv_array = []
 opened_doc_list = []
 doc_line_list = []
+
+variant_output_db = None
 
 def print_list(to_print):
     """Sorts a list and prints it out with an asterisk in front of each one
@@ -439,6 +443,21 @@ class Converter:
         generated because PFIS can't handle the natural order of events.
         """
 
+        def getOutputContent(outputFileName):
+            variant_name = FQNUtils.getVariantName(outputFileName)
+
+            conn = sqlite3.connect(variant_output_db)
+            if conn is None:
+                raise Exception("No output DB file in project directory: ", variant_output_db)
+
+            c = conn.cursor()
+            c.execute(GET_VARIANT_OUTPUT, [variant_name])
+            content = None
+            for row in c:
+                content = row[0]
+            c.close()
+            conn.close()
+
         def normalizer(s):
             if s != None:
                 s = FQNUtils.normalizer(s)
@@ -560,10 +579,17 @@ class Converter:
             return event_tuple_generate(new_events, self, item, event, declaration_type, document_name)
 
         elif '.output' in document_name:
+
             declaration_type = 'Output declaration'
-            new_event = get_events_on_newly_opened_document(declaration_type, document_name, document_name)
-            FQNUtils.addFQNPrefixForEvent(new_event)
-            return self.append_event(new_event, new_events)
+            declarationEvent = get_events_on_newly_opened_document(declaration_type, document_name, document_name)
+            FQNUtils.addFQNPrefixForEvent(declarationEvent)
+
+            declaration_type = 'Output declaration scent'
+            output_content = getOutputContent(document_name)
+            scentEvent = get_events_on_newly_opened_document(declaration_type, document_name, output_content)
+            FQNUtils.addFQNPrefixForEvent(scentEvent)
+
+            return self.append_event([declarationEvent, scentEvent], new_events)
 
         else:
             # Add declarations after nav to first location, only after nav can a person see what's in there.
@@ -926,6 +952,7 @@ def create_db(pfislog_name):
 
 
 if __name__ == '__main__':
+    variant_output_db = 'variants-output.db'
     cryolog = Cryolog(sys.argv[2])
     timeConverter = TimeFormatConverter(cryolog.start_time)
     converter = Converter(timeConverter)

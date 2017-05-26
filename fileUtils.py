@@ -43,12 +43,22 @@ class fileUtils:
         #Returns the changelog content for a particular variant which is used in logconverter for event_tuple generation for changelogs.
         DB_FILE_NAME = "variations_topologyAndTextSimilarity.db"
         GET_CHANGELOG_QUERY = 'SELECT CHANGELOG FROM VARIANTS WHERE NAME = ?'
+
         conn = sqlite3.connect(DB_FILE_NAME)
+
+        if conn is None:
+            raise RuntimeError('Missing DB to fetch changelog', DB_FILE_NAME)
+
         c = conn.cursor()
 
         variantName = fileUtils.getVariantName(filePath)
+       
         c.execute(GET_CHANGELOG_QUERY, [variantName])
-        changelog =  (c.next()[0]).strip()
+        changelog = None
+        for row in c:
+            changelog = row[0].strip()
+
+        # changelog = (c.next()[0]).strip()
 
         return changelog
 

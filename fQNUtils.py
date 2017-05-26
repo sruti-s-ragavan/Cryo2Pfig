@@ -70,3 +70,11 @@ class FQNUtils:
 		s = s.replace("'", "''")
 		s = s.replace(",", "\",\"")
 		return s
+
+	@staticmethod
+	def getVariantName(filename):
+		regex = re.compile('/hexcom/([^/]*)/.*')
+		match = regex.match(filename)
+		if match == None:
+			raise Exception("No such file: "+ filename)
+		return match.groups()[0]
