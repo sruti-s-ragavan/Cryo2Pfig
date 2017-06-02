@@ -98,33 +98,76 @@
 		</algorithm>
 	</algorithms-->
 	<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4-V" navPathType="PFIS-V">
-		<!--algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
-		</algorithm>
-		<algorithm class="CallDepth" name="Undirected Call Graph"
-			fileName="undirected_call_graph.txt" enabled="true" >
-		</algorithm>
-		<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">
-		</algorithm>
-		<algorithm class="Recency" name="Recency"
-			enabled="true" fileName="recency.txt" >
-		</algorithm>
-		<algorithm class="SourceTopology" name="Source Topology"
-			enabled="true" fileName="source_topology.txt">
-		</algorithm>
-		<algorithm class="TFIDF" name="TF-IDF (method)"
-			enabled="true" fileName="tfidf.txt" >
-		</algorithm>
-		<algorithm class="WorkingSet" name="Working Set, delta 10"
-			enabled="true" fileName="working_set.txt">
-		</algorithm>
-		<algorithm class="PFIS" name="PFIS_hist"
+		<!--<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="CallDepth" name="Undirected Call Graph"-->
+			<!--fileName="undirected_call_graph.txt" enabled="true" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">-->
+		<!--</algorithm>-->
+		<!--<algorithm class="Recency" name="Recency"-->
+			<!--enabled="true" fileName="recency.txt" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="SourceTopology" name="Source Topology"-->
+			<!--enabled="true" fileName="source_topology.txt">-->
+		<!--</algorithm>-->
+		<!--<algorithm class="TFIDF" name="TF-IDF (method)"-->
+			<!--enabled="true" fileName="tfidf.txt" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="WorkingSet" name="Working Set, delta 10"-->
+			<!--enabled="true" fileName="working_set.txt">-->
+		<!--</algorithm>-->
+		<algorithm class="PFIS" name="PFIS-CHI17" decayVariant="0.0"
 			enabled="true" fileName="pfis_history.txt" history="true" numSpread="2" >
-		</algorithm-->
-		<algorithm class="VariantOf" name="Variant Of"
-			enabled="true" fileName="variant_of.txt">
 		</algorithm>
-		<algorithm class="GoalWordSimilarity" name="Goal Word Similarity"
-		   enabled="true" fileName="goal_word_similarity.txt">
+		<algorithm class="PFISWithVariantHierarchy" name="PFIS: Variant decay: None" decayVariant="0.0"
+			enabled="true" fileName="pfis_hierarchy_no_within_variant.txt" history="true" numSpread="2" >
 		</algorithm>
+		<algorithm class="PFISWithVariantHierarchy" name="PFIS: decay Variant: 0.85" decayVariant="0.85"
+			enabled="true" fileName="pfis_hierarchy_within_variant.txt" history="true" numSpread="2" >
+		</algorithm>
+		<!--<algorithm class="VariantOf" name="Variant Of"-->
+			<!--enabled="true" fileName="variant_of.txt">-->
+		<!--</algorithm>-->
+		<!--<algorithm class="GoalWordSimilarity" name="Goal Word Similarity"-->
+		   <!--enabled="true" fileName="goal_word_similarity.txt">-->
+		<!--</algorithm>-->
 	</algorithms>
+	<!--<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4-VDUM" navPathType="PFIS-V" divorcedUntilMarried="true">-->
+		<!--<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="CallDepth" name="Undirected Call Graph"-->
+			<!--fileName="undirected_call_graph.txt" enabled="true" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">-->
+		<!--</algorithm>-->
+		<!--<algorithm class="Recency" name="Recency"-->
+			<!--enabled="true" fileName="recency.txt" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="SourceTopology" name="Source Topology"-->
+			<!--enabled="true" fileName="source_topology.txt">-->
+		<!--</algorithm>-->
+		<!--<algorithm class="TFIDF" name="TF-IDF (method)"-->
+			<!--enabled="true" fileName="tfidf.txt" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="WorkingSet" name="Working Set, delta 10"-->
+			<!--enabled="true" fileName="working_set.txt">-->
+		<!--</algorithm>-->
+		<!--<algorithm class="PFIS" name="PFIS-CHI17" decayVariant="0.0"-->
+			<!--enabled="true" fileName="pfis_history.txt" history="true" numSpread="2" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="PFISWithVariantHierarchy" name="PFIS: between variant" decayVariant="0.0"-->
+			<!--enabled="true" fileName="pfis_hierarchy_BW.txt" history="true" numSpread="2" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="PFISWithVariantHierarchy" name="PFIS: between and within variant" decayVariant="0.85"-->
+			<!--enabled="true" fileName="pfis_hierarchy_BWV.txt" history="true" numSpread="2" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="VariantOf" name="Variant Of"-->
+			<!--enabled="true" fileName="variant_of.txt">-->
+		<!--</algorithm>-->
+		<!--<algorithm class="GoalWordSimilarity" name="Goal Word Similarity"-->
+		   <!--enabled="true" fileName="goal_word_similarity.txt">-->
+		<!--</algorithm>-->
+	<!--</algorithms>-->
+
 </options>
