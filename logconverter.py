@@ -457,6 +457,7 @@ class Converter:
                 content = row[0]
             c.close()
             conn.close()
+            return content
 
         def normalizer(s):
             if s != None:
