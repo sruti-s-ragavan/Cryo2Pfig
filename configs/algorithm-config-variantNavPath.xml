@@ -116,22 +116,26 @@
 		<!--</algorithm>-->
 		<!--<algorithm class="WorkingSet" name="Working Set, delta 10"-->
 			<!--enabled="true" fileName="working_set.txt">-->
-		<!--</algorithm>-->
-		<algorithm class="PFIS" name="PFIS: word, non-variant patches (CHI 17)" decayVariant="0.0"
-			enabled="true" fileName="pfis_chi17.txt" history="true" numSpread="2" >
-		</algorithm>
-		<algorithm class="PFIS" name="PFIS:word, all patches" decayVariant="0.85"
-			enabled="true" fileName="pfis_allPatches.txt" history="true" numSpread="2" >
-		</algorithm>
+		<!--</algorithm>
 		<algorithm class="PFISWithChangelogGoalWordActivation" name="PFIS: word, all patches, CLXGoal activation" decayVariant="0.85"
 			enabled="true" fileName="pfis_changelog_goal.txt" history="true" numSpread="2" >
-		</algorithm>
-		<algorithm class="PfisSpreadToAllPatches" name="PFIS:PisaPisaP (word, all patches)" decayVariant="0.85"
-			enabled="true" fileName="pfis_patchisaPatchisaPatch.txt" history="true" numSpread="2" >
-		</algorithm>
+		</algorithm-->
+		<!--<algorithm class="PFIS" name="PFIS: word, non-variant patches (CHI 17)" decayVariant="0.0"-->
+			<!--enabled="true" fileName="pfis_chi17.txt" history="true" numSpread="2" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="PFIS" name="PFIS:word, all patches" decayVariant="0.85"-->
+			<!--enabled="true" fileName="pfis_allPatches.txt" history="true" numSpread="2" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="PfisSpreadToAllPatches" name="PFIS:PisaPisaP (word, all patches)" decayVariant="0.85"-->
+			<!--enabled="true" fileName="pfis_patchisaPatchisaPatch.txt" history="true" numSpread="2" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="PfisSpreadWordVariantPatches" name="PFIS:Word, Variant, All patches" decayVariant="0.85"-->
+			<!--enabled="true" fileName="pfis_variant_hierarchy.txt" history="true" numSpread="2" >-->
+		<!--</algorithm>-->
 		<algorithm class="PfisSpreadWordVariantPatches" name="PFIS:Word, Variant, All patches" decayVariant="0.85"
-			enabled="true" fileName="pfis_variant_hierarchy.txt" history="true" numSpread="2" >
+			enabled="true" fileName="pfis_variant_hierarchy.txt" history="true" numSpread="2" changelogGoalActivation="true" >
 		</algorithm>
+
 		<!--<algorithm class="VariantOf" name="Variant Of"-->
 			<!--enabled="true" fileName="variant_of.txt">-->
 		<!--</algorithm>-->
@@ -148,7 +152,7 @@
 		<!--<algorithm class="Frequency" name="Frequency" fileName="frequency.txt" enabled="true">-->
 		<!--</algorithm>-->
 		<!--<algorithm class="Recency" name="Recency"-->
-			<!--enabled="true" fileName="recency.txt" >-->
+			<!--enabled="true" fileName="recency.txt" >-->a
 		<!--</algorithm>-->
 		<!--<algorithm class="SourceTopology" name="Source Topology"-->
 			<!--enabled="true" fileName="source_topology.txt">-->
