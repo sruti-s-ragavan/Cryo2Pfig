@@ -117,14 +117,20 @@
 		<!--<algorithm class="WorkingSet" name="Working Set, delta 10"-->
 			<!--enabled="true" fileName="working_set.txt">-->
 		<!--</algorithm>-->
-		<algorithm class="PFIS" name="PFIS-CHI17" decayVariant="0.0"
-			enabled="true" fileName="pfis_history.txt" history="true" numSpread="2" >
+		<algorithm class="PFIS" name="PFIS: word, non-variant patches (CHI 17)" decayVariant="0.0"
+			enabled="true" fileName="pfis_chi17.txt" history="true" numSpread="2" >
 		</algorithm>
-		<algorithm class="PFISWithVariantHierarchy" name="PFIS: Variant decay: None" decayVariant="0.0"
-			enabled="true" fileName="pfis_hierarchy_no_within_variant.txt" history="true" numSpread="2" >
+		<algorithm class="PFIS" name="PFIS:word, all patches" decayVariant="0.85"
+			enabled="true" fileName="pfis_allPatches.txt" history="true" numSpread="2" >
 		</algorithm>
-		<algorithm class="PFISWithVariantHierarchy" name="PFIS: decay Variant: 0.85" decayVariant="0.85"
-			enabled="true" fileName="pfis_hierarchy_within_variant.txt" history="true" numSpread="2" >
+		<algorithm class="PFISWithChangelogGoalWordActivation" name="PFIS: word, all patches, CLXGoal activation" decayVariant="0.85"
+			enabled="true" fileName="pfis_changelog_goal.txt" history="true" numSpread="2" >
+		</algorithm>
+		<algorithm class="PfisSpreadToAllPatches" name="PFIS:PisaPisaP (word, all patches)" decayVariant="0.85"
+			enabled="true" fileName="pfis_patchisaPatchisaPatch.txt" history="true" numSpread="2" >
+		</algorithm>
+		<algorithm class="PfisSpreadWordVariantPatches" name="PFIS:Word, Variant, All patches" decayVariant="0.85"
+			enabled="true" fileName="pfis_variant_hierarchy.txt" history="true" numSpread="2" >
 		</algorithm>
 		<!--<algorithm class="VariantOf" name="Variant Of"-->
 			<!--enabled="true" fileName="variant_of.txt">-->
@@ -155,12 +161,6 @@
 		<!--</algorithm>-->
 		<!--<algorithm class="PFIS" name="PFIS-CHI17" decayVariant="0.0"-->
 			<!--enabled="true" fileName="pfis_history.txt" history="true" numSpread="2" >-->
-		<!--</algorithm>-->
-		<!--<algorithm class="PFISWithVariantHierarchy" name="PFIS: between variant" decayVariant="0.0"-->
-			<!--enabled="true" fileName="pfis_hierarchy_BW.txt" history="true" numSpread="2" >-->
-		<!--</algorithm>-->
-		<!--<algorithm class="PFISWithVariantHierarchy" name="PFIS: between and within variant" decayVariant="0.85"-->
-			<!--enabled="true" fileName="pfis_hierarchy_BWV.txt" history="true" numSpread="2" >-->
 		<!--</algorithm>-->
 		<!--<algorithm class="VariantOf" name="Variant Of"-->
 			<!--enabled="true" fileName="variant_of.txt">-->
