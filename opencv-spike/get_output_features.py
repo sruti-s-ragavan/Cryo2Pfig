@@ -3,11 +3,18 @@ import os.path
 from PIL import Image, ImageEnhance, ImageFilter
 import sys
 import cv2
+import shutil
 
 import time
 import requests
 import urllib
 
+import sqlite3
+
+
+DB_FILE_NAME = "../variants-output.db"
+_url = 'https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr'
+_key = 'b159b988956a4ff19006b468698d1ac0' #Here you have to paste your primary key
 
 
 def convertToGrayscaleAndCorrect(outputImageFilePath, correctedImagePath):
@@ -23,19 +30,13 @@ def convertToGrayscaleAndCorrect(outputImageFilePath, correctedImagePath):
 	im = cv2.blur(im,(4,4))
 
 	_, im = cv2.threshold(im, 200 , 200, cv2.THRESH_BINARY_INV)
-	cv2.imshow('gray', im)
-	cv2.waitKey(0)
-	cv2.destroyAllWindows()
 
 	cv2.imwrite(correctedImagePath, im)
 
-	print str.format("Corrected: {}; writted to: {}", outputImageFilePath, correctedImagePath)
+	print str.format("Corrected: {}; written to: {}", outputImageFilePath, correctedImagePath)
 
 
 def getImageFeaturesFromMicrosoftVisionAPI(imgPath):
-	_url = 'https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr'
-	_key = 'b159b988956a4ff19006b468698d1ac0' #Here you have to paste your primary key
-
 	headers = {
 		'Ocp-Apim-Subscription-Key':_key,
 		'Content-Type': 'application/octet-stream'
@@ -51,6 +52,7 @@ def getImageFeaturesFromMicrosoftVisionAPI(imgPath):
 		data = f.read()
 
 	json = None
+	print "Sending request for: ", imgPath
 	result = processRequest(_url, json, data, headers, params)
 
 	if result is not None:
@@ -62,10 +64,9 @@ def processRequest(url, json, data, headers, params ):
 	result = None
 
 	while True:
-
 		response = requests.request( 'post', url, json = json, data = data, headers = headers, params = params )
 		if response.status_code == 429:
-
+			print response.json()
 			print( "Message: %s" % ( response.json()['error']['message'] ) )
 
 			if retries <= MAX_NUM_RETRIES:
@@ -98,9 +99,11 @@ def main():
 
 	correctedImagesFolder = os.path.join(imagesFolder, "corrected")
 	if os.path.exists(correctedImagesFolder):
-		os.remove(correctedImagesFolder)
+		shutil.rmtree(correctedImagesFolder)
 
 	os.mkdir(correctedImagesFolder)
+
+	setupDB()
 
 	outputs = [f for f in os.listdir(imagesFolder) if f.endswith(".png")]
 	for op in outputs:
@@ -109,11 +112,40 @@ def main():
 		correctedImagePath = os.path.join(correctedImagesFolder, variantName)
 		convertToGrayscaleAndCorrect(opFilePath, correctedImagePath)
 
-	convertedImages = [f for f in os.listdir(correctedImagesFolder) if f.endswith(".jpg")]
+	convertedImages = [f for f in os.listdir(correctedImagesFolder) if f.endswith(".png")]
+
+	resultsMap = {}
 	for op in convertedImages:
-		variantName = op
-		opFilePath = os.path.join(correctedImagesFolder, variantName)
-		getImageFeaturesFromMicrosoftVisionAPI(opFilePath)
+		output = None
+
+		opFilePath = os.path.join(correctedImagesFolder, op)
+		response = getImageFeaturesFromMicrosoftVisionAPI(opFilePath)
+		output = response['regions']
+
+		if len(output) == 0:
+			opFilePath = os.path.join(imagesFolder, op)
+			time.sleep(3)
+			response = getImageFeaturesFromMicrosoftVisionAPI(opFilePath)
+			output = response['regions']
+
+		variantName = op[:-4].replace("/", ":")
+		resultsMap[variantName] = response
+		time.sleep(3)
+
+	for variant in resultsMap.keys():
+		print variant, resultsMap[variant]
+
+def setupDB():
+	conn = sqlite3.connect(DB_FILE_NAME)
+	if conn is not None:
+		c = conn.cursor()
+		c.execute("DROP TABLE IF EXISTS variant_output_features")
+		c.execute("CREATE TABLE variant_output_features (variant text, output text)")
+		conn.commit()
+
+		c.close()
+		conn.close()
+
 
 if __name__ == "__main__":
 	# python get_output_features.py /path/to/output/screenshots/folder

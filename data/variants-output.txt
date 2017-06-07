@@ -28,7 +28,8 @@
 2014-05-24-10:24:03|hexagon falls to bottom of page - game broken
 2014-05-24-12:07:58|hexagon falls to bottom of page - game broken
 2014-05-24-12:42:40|hexagon falls to bottom of page - game broken
-2014-05-24-12:52:38hexagon falls to bottom of page - game broken
+2014-05-24-12:52:38|hexagon falls to bottom of page - game broken
+2014-05-24-15:28:38|hexagon falls to bottom of page - game broken
 2014-05-24-21:41:01|None - game broken
 2014-05-24-21:44:25|hexagon falls to bottom of page - game broken
 2014-05-25-07:42:09|hexagon misaligned - game broken
