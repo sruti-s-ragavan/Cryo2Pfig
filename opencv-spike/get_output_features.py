@@ -12,7 +12,7 @@ import urllib
 import sqlite3
 
 
-DB_FILE_NAME = "../variants-output.db"
+DB_FILE_NAME = "variants-output.db"
 _url = 'https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr'
 _key = 'b159b988956a4ff19006b468698d1ac0' #Here you have to paste your primary key
 
@@ -129,11 +129,20 @@ def main():
 			output = response['regions']
 
 		variantName = op[:-4].replace("/", ":")
-		resultsMap[variantName] = response
+		resultsMap[variantName] = output
 		time.sleep(3)
 
-	for variant in resultsMap.keys():
-		print variant, resultsMap[variant]
+	conn = sqlite3.connect(DB_FILE_NAME)
+	if conn is not None:
+		c = conn.cursor()
+
+		for variantName in resultsMap.keys():
+			c.execute("INSERT INTO variant_output_features(variant, output) VALUES (?, ?)", [variantName, str(resultsMap[variantName])])
+
+	conn.commit()
+	c.close()
+	conn.close()
+
 
 def setupDB():
 	conn = sqlite3.connect(DB_FILE_NAME)
