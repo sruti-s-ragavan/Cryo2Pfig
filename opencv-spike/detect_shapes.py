@@ -9,10 +9,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=True,
 	help="path to the input image")
 args = vars(ap.parse_args())
-
 image = cv2.imread(args["image"])
-# resized = imutils.resize(image, width=300)
-# ratio = image.shape[0] / float(resized.shape[0])
 
 # convert the resized image to grayscale, blur it slightly,
 # and threshold it
@@ -22,9 +19,9 @@ edged = cv2.Canny(gray, 70, 350)
 # blurred = cv2.GaussianBlur(edged, (5, 5), 0)
 _,thresh = cv2.threshold(edged, 127, 255, cv2.THRESH_BINARY)
 
-cv2.imshow("Image", thresh)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# cv2.imshow("Image", thresh)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
 
 # find contours in the thresholded image and initialize the
 # shape detector
@@ -41,6 +38,8 @@ for c in cnts:
 	# compute the center of the contour, then detect the name of the
 	# shape using only the contour
 	M = cv2.moments(c)
+	if M["m00"] == 0.0:
+		continue
 	cX = int((M["m10"] / M["m00"]))
 	cY = int((M["m01"] / M["m00"]))
 	shape = sd.detect(c)
@@ -51,11 +50,12 @@ for c in cnts:
 		c = c.astype("float")
 		# c *= ratio
 		c = c.astype("int")
+
+		# x,y,w,h = cv2.boundingRect(c)
+		# cv2.rectangle(image,(x,y),(x+w,y+h),(0,255,0),2)
+
 		cv2.drawContours(image, [c], -1, (0, 0, 0), 2)
-
-		cv2.putText(image, shape, (cX, cY+200), cv2.FONT_HERSHEY_SIMPLEX,
+		cv2.putText(image, str(c), (cX, cY+200), cv2.FONT_HERSHEY_SIMPLEX,
 			0.5, (255, 0, 0), 2)
-
-		# show the output image
 		cv2.imshow("Image", image)
 		cv2.waitKey(0)
