@@ -120,21 +120,15 @@
 		<!--<algorithm class="PFISWithChangelogGoalWordActivation" name="PFIS: word, all patches, CL Goal activation" decayVariant="0.85"-->
 			<!--enabled="true" fileName="pfis_changelog_goal.txt" history="true" numSpread="2">-->
 		<!--</algorithm>-->
-		<algorithm class="PFIS" name="PFIS:all nodes" decayVariant="0.85"
-			enabled="true" fileName="pfis_allNodes.txt" history="true" numSpread="2" >
+		<!--<algorithm class="PFIS" name="PFIS:Word, NonPatchLocations, Patches" decayVariant="0.85"-->
+			<!--enabled="true" fileName="pfis.txt" history="true" numSpread="3" >-->
+		<!--</algorithm>-->
+		<algorithm class="PFISStartFromCurrentNode" name="PFIS:start from current: topology's topology" decayVariant="0.85"
+			enabled="true" fileName="pfis_current_2.txt" history="true" numSpread="3" >
 		</algorithm>
-		<algorithm class="PfisSpreadWordAllPatches" name="PFIS:Word, All patches" decayVariant="0.85"
-			enabled="true" fileName="pfis_word_allpatches.txt" history="true" numSpread="2" >
-		</algorithm>
-		<!--algorithm class="PfisSpreadWordAllPatches" name="PFIS:Word, All patches, CL" decayVariant="0.85"
-			enabled="true" fileName="pfis_word_allpatches_cl.txt" history="true" numSpread="2" changelogGoalActivation="true" >
-		</algorithm>
-		<algorithm class="PfisSpreadWordVariantPatches" name="PFIS:Word, Variant, All patches" decayVariant="0.85"
-			enabled="true" fileName="pfis_hierarchy.txt" history="true" numSpread="3" >
-		</algorithm>
-		<algorithm class="PfisSpreadWordVariantPatches" name="PFIS:Word, Variant, All patches with CL Goal activation" decayVariant="0.85"
-			enabled="true" fileName="pfis_hierarchy_cl.txt" history="true" numSpread="3" changelogGoalActivation="true" >
-		</algorithm-->
+		<!--<algorithm class="PFIS" name="PFIS:Word, NonPatchLocations, Patches | CL" decayVariant="0.85"-->
+			<!--enabled="true" fileName="pfis_cl.txt" history="true" numSpread="3" changelogGoalActivation = "true">-->
+		<!--</algorithm>-->
 		<!--<algorithm class="VariantOf" name="Variant Of"-->
 			<!--enabled="true" fileName="variant_of.txt">-->
 		<!--</algorithm>-->
