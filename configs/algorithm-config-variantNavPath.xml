@@ -120,30 +120,24 @@
 		<!--<algorithm class="PFISBetweenAndWithin" name="PFIS: word, all patches, CL Goal activation" decayVariant="0.85"-->
 			<!--enabled="true" fileName="pfis_changelog_goal.txt" history="true" numSpread="2">-->
 		<!--</algorithm>-->
-		<algorithm class="PFIS" name="PFIS" decayVariant="0.85"
-			enabled="true" fileName="pfis.txt" history="true" numSpread="2" >
+		<algorithm class="PFISHierarchy" name="PFISHierarchy" decayVariant="0.85"
+			enabled="true" fileName="pfis_hierarchy.txt" history="true" numSpread="2" >
 		</algorithm>
-		<algorithm class="PFIS" name="PFIS with goal" decayVariant="0.85"
-			enabled="true" fileName="pfis_goal.txt" history="true" numSpread="2" goal="true">
-		</algorithm>
-		<algorithm class="PFIS3" name="PFIS3 with goal" decayVariant="0.85"
-			enabled="true" fileName="pfis3_goal.txt" history="true" numSpread="2" goal="true">
-		</algorithm>
-		<algorithm class="PFIS" name="PFIS with CL-Goal activation" decayVariant="0.85" changelogGoalActivation = "True"
-			enabled="true" fileName="pfis_cl.txt" history="true" numSpread="2" >
-		</algorithm>
-		<algorithm class="PFIS3" name="PFIS3" decayVariant="0.85"
-			enabled="true" fileName="pfis3.txt" history="true" numSpread="2" >
-		</algorithm>
-		<algorithm class="PFIS3" name="PFIS3 with CL-Goal activation" decayVariant="0.85"
-			enabled="true" fileName="pfis3_cl.txt" history="true" numSpread="2" changelogGoalActivation = "True">
-		</algorithm>
-		<algorithm class="VariantOf" name="Variant Of"
-			enabled="true" fileName="variant_of.txt">
-		</algorithm>
-		<algorithm class="GoalWordSimilarity" name="Goal Word Similarity"
-		   enabled="true" fileName="goal_word_similarity.txt">
-		</algorithm>
+		<!--<algorithm class="PFIS" name="PFIS" decayVariant="0.85"-->
+			<!--enabled="true" fileName="pfis.txt" history="true" numSpread="2" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="PFIS" name="PFIS with goal" decayVariant="0.85"-->
+			<!--enabled="true" fileName="pfis_goal.txt" history="true" numSpread="2" goal="true">-->
+		<!--</algorithm>-->
+		<!--<algorithm class="PFIS" name="PFIS with CL-Goal activation" decayVariant="0.85" changelogGoalActivation = "True"-->
+			<!--enabled="true" fileName="pfis_cl.txt" history="true" numSpread="2" >-->
+		<!--</algorithm>-->
+		<!--<algorithm class="VariantOf" name="Variant Of"-->
+			<!--enabled="true" fileName="variant_of.txt">-->
+		<!--</algorithm>-->
+		<!--<algorithm class="GoalWordSimilarity" name="Goal Word Similarity"-->
+		   <!--enabled="true" fileName="goal_word_similarity.txt">-->
+		<!--</algorithm>-->
 	</algorithms>
 	<!--<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4-VDUM" navPathType="PFIS-V" divorcedUntilMarried="true">-->
 		<!--<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >-->
