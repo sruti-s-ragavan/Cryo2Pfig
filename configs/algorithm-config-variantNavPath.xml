@@ -120,9 +120,15 @@
 		<!--<algorithm class="PFISBetweenAndWithin" name="PFIS: word, all patches, CL Goal activation" decayVariant="0.85"-->
 			<!--enabled="true" fileName="pfis_changelog_goal.txt" history="true" numSpread="2">-->
 		<!--</algorithm>-->
-		<algorithm class="PFISHierarchy" name="PFISHierarchy" decayVariant="0.85"
-			enabled="true" fileName="pfis_hierarchy.txt" history="true" numSpread="2" >
+		<algorithm class="PFISHierarchy" name="PFIS Hierarchy" decayVariant="0.85"
+			enabled="true" fileName="pfis_hierarchy.txt" history="true" numSpread="3" >
 		</algorithm>
+		<!--<algorithm class="PFISHierarchy" name="PFIS Hierarchy with goal" decayVariant="0.85"-->
+			<!--enabled="true" fileName="pfis_hierarchy_goal.txt" history="true" numSpread="3" goal="true">-->
+		<!--</algorithm>-->
+		<!--<algorithm class="PFISHierarchy" name="PFIS Hierarchy + CL-Goal activation" decayVariant="0.85" changelogGoalActivation = "True"-->
+			<!--enabled="true" fileName="pfis_hierarchy_cl.txt" history="true" numSpread="3" >-->
+		<!--</algorithm>-->
 		<!--<algorithm class="PFIS" name="PFIS" decayVariant="0.85"-->
 			<!--enabled="true" fileName="pfis.txt" history="true" numSpread="2" >-->
 		<!--</algorithm>-->
