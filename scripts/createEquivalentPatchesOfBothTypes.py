@@ -1,5 +1,4 @@
 #Running this will create two DBs in Cryo2Pfig folder - 1. Text Similarity Only and 2. Text & Topology Similarity.
-
 import re
 import json
 import os
@@ -7,20 +6,29 @@ import sqlite3
 import uuid
 import shutil
 import networkx as nx
+import filecmp
 from fQNUtils import FQNUtils
 
-DB_FILE_NAME_TEXT= "variations_textSimilarity.db"
-DB_FILE_NAME_TEXT_TOPOLOGY= "variations_topologyAndTextSimilarity.db"
+
+DB_FILE_NAME_TEXT= "_variations_textSimilarity.db"
+DB_FILE_NAME_TEXT_TOPOLOGY= "_variations_topologyAndTextSimilarity.db"
 
 CREATE_VARIANTS_TABLE_QUERY = 'CREATE TABLE VARIANTS(NUM INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR(50), CHANGELOG TEXT)'
-CREATE_PATCHES_TABLE_QUERY = 'CREATE TABLE VARIANTS_TO_FUNCTIONS(METHOD VARCHAR(30), START INTEGER, END INTEGER, BODY TEXT, UUID VARCHAR)'
 VARIANT_INSERT_QUERY = 'INSERT INTO VARIANTS(NAME, CHANGELOG) VALUES (?,?)'
-FUNCTION_INSERT_QUERY = 'INSERT INTO VARIANTS_TO_FUNCTIONS VALUES (?,?,?,?,?)'
 
-UPDATE_QUERY = 'UPDATE VARIANTS_TO_FUNCTIONS SET END = ? WHERE END = ? AND METHOD = ? AND BODY = ?'
+CREATE_PATCHES_TABLE_QUERY = 'CREATE TABLE VARIANTS_TO_FUNCTIONS(METHOD VARCHAR(30), START INTEGER, END INTEGER, BODY TEXT, UUID VARCHAR)'
+FUNCTION_INSERT_QUERY = 'INSERT INTO VARIANTS_TO_FUNCTIONS VALUES (?,?,?,?,?)'
+UPDATE_PATCHES_QUERY = 'UPDATE VARIANTS_TO_FUNCTIONS SET END = ? WHERE END = ? AND METHOD = ? AND BODY = ?'
+
+CREATE_FILE_TABLE_QUERY = 'CREATE TABLE VARIANTS_TO_FILES(FILE VARCHAR(30), START INTEGER, END INTEGER, UUID VARCHAR)'
+FILE_INSERT_QUERY = 'INSERT INTO VARIANTS_TO_FILES VALUES (?,?,?,?)'
+UPDATE_FILES_QUERY = 'UPDATE VARIANTS_TO_FILES SET END = ? WHERE END = ? AND FILE = ?'
+
+VARIANTS_DIR = "../jsparser/src/hexcom"
+
 
 def getVariantName(filename):
-	return FQNUtils.getVariantName(fileName)
+	return FQNUtils.getVariantName(filename)
 
 def getFilePath(path):
 	regex = re.compile('/[^h0-9]\w.*')
@@ -64,8 +72,18 @@ def insertFunctionToDb(index, function, prevVarFunctions, conn):
 
 	else:
 		#Update will break -- update where end = prev var name
-		c.execute(UPDATE_QUERY,[index, index-1, FQNUtils.normalizer(methodFQN), FQNUtils.normalizer(methodBody)])
+		c.execute(UPDATE_PATCHES_QUERY, [index, index - 1, FQNUtils.normalizer(methodFQN), FQNUtils.normalizer(methodBody)])
 
+	conn.commit()
+
+
+def insertFileToDb(conn, filePathRelativeToVariant, variantIndex, equivalentVariantIndex=None):
+	c = conn.cursor()
+	if equivalentVariantIndex is None:
+		uuidValue = uuid.uuid1()
+		c.execute(FILE_INSERT_QUERY, [filePathRelativeToVariant, variantIndex, variantIndex, str(uuidValue)])
+	else:
+		c.execute(UPDATE_FILES_QUERY, [variantIndex, equivalentVariantIndex, filePathRelativeToVariant])
 	conn.commit()
 
 def getMethodFqnRelativeToVariant(function):
@@ -111,17 +129,15 @@ def insertVariants(sortedVariants, variant_changelog_map, connection_tuple):
 
 	    conn.commit()
 
-def createDbAndInitialTables(db_tuple):
-	if(os.path.exists(DB_FILE_NAME_TEXT)):
-		os.remove(DB_FILE_NAME_TEXT)
+def createDbAndInitialTables(db_array):
+	for db in db_array:
+		if(os.path.exists(db)):
+			os.remove(db)
 
-	if(os.path.exists(DB_FILE_NAME_TEXT_TOPOLOGY)):
-		os.remove(DB_FILE_NAME_TEXT_TOPOLOGY)
-
-	for db in db_tuple:
 		conn = sqlite3.connect(db)
 		c = conn.cursor()
 		c.execute(CREATE_PATCHES_TABLE_QUERY)
+		c.execute(CREATE_FILE_TABLE_QUERY)
 		c.execute(CREATE_VARIANTS_TABLE_QUERY)
 		c.close()
 		conn.commit()
@@ -245,7 +261,7 @@ def insertNodesToDb(index, variants, variantsToFunctionsMap, graph, prevGraph, c
 
 			if isEquivalent:
 				# print "Update: ", nodeName
-				c.execute(UPDATE_QUERY,[index+1, index, FQNUtils.normalizer(nodeName), FQNUtils.normalizer(methodBody)])
+				c.execute(UPDATE_PATCHES_QUERY, [index + 1, index, FQNUtils.normalizer(nodeName), FQNUtils.normalizer(methodBody)])
 
 			else:
 				# print "Node insert: ", nodeName
@@ -266,12 +282,11 @@ def createTextAndTopologyBasedDb(variantNames, variantsToFunctionsMap, variantsT
 			graph = buildGraph(variantsToFunctionsMap[variant], variantsToInvocationsMap[variant])
 			insertNodesToDb(i, variantNames, variantsToFunctionsMap, graph, prevVariantGraph, conn)
 			prevVariantGraph = graph
-
+	updateFileEquivalence(conn, variantNames)
 	conn.close()
 
 def createTextOnlyBasedDb(variantNames, variantsToFunctionsMap):
 	conn = sqlite3.connect(DB_FILE_NAME_TEXT)
-
 	for i in range(0, len(variantNames)):
 		variant = variantNames[i]
 		if variant in variantsToFunctionsMap: #This check is made to check if the variant has any functions associated with it. If not, continue.
@@ -282,8 +297,48 @@ def createTextOnlyBasedDb(variantNames, variantsToFunctionsMap):
 			for function in variantsToFunctionsMap[variant]:
 				variantPos = i + 1
 				insertFunctionToDb(variantPos, function, prevVariantFunctions, conn)
-
+	updateFileEquivalence(conn, variantNames)
 	conn.close()
+
+def updateFileEquivalence(conn, variantNames):
+	def getFiles(variantFolder):
+		files = []
+		variantFolderContent = os.listdir(variantFolder)
+		files = [f for f in variantFolderContent if os.path.isfile(os.path.join(variantFolder, f))
+		         and not f.startswith(".") and f.endswith(".js") and not f.endswith(".min.js")]
+		jsFolder = [f for f in variantFolderContent if os.path.isdir(os.path.join(variantFolder, f))
+		            and "js" in f and not f.startswith(".")]
+		if any(jsFolder):
+			jsFolder = jsFolder[0]
+			jsFolderPath = os.path.join(variantFolder, jsFolder)
+			jsFolderFiles = [os.path.join(jsFolder, f) for f in os.listdir(jsFolderPath)
+			                 if os.path.isfile(os.path.join(jsFolderPath, f))
+			                 and not f.startswith(".") and f.endswith(".js") and not f.endswith(".min.js")]
+			files.extend(jsFolderFiles)
+		return files
+
+	for i in range(0, len(variantNames)):
+		variantName = variantNames[i]
+		variantFolder = os.path.join(VARIANTS_DIR, variantName)
+		files = getFiles(variantFolder)
+
+		prevVarFolder = None
+		if i > 0:
+			prevVarFolder = os.path.join(VARIANTS_DIR, variantNames[i-1])
+
+		for file in files:
+			filePath = os.path.join(variantFolder, file)
+			isEquivalentToPrevVariant = False
+			if prevVarFolder is not None:
+				prevVarFilePath = os.path.join(prevVarFolder, file)
+				if os.path.exists(prevVarFilePath):
+					isEquivalentToPrevVariant = filecmp.cmp(filePath, prevVarFilePath, shallow=False)
+
+			variantIndex = i+1
+			if isEquivalentToPrevVariant:
+				insertFileToDb(conn, file, variantIndex, variantIndex-1)
+			else:
+				insertFileToDb(conn, file, variantIndex)
 
 def getMethodBody(function):
 	return FQNUtils.normalizer(function['contents'])
@@ -293,7 +348,7 @@ def moveDBToCryo2Pfig():
 	shutil.move(DB_FILE_NAME_TEXT_TOPOLOGY, os.path.join('../', DB_FILE_NAME_TEXT_TOPOLOGY))
 
 def main():
-	createDbAndInitialTables((DB_FILE_NAME_TEXT, DB_FILE_NAME_TEXT_TOPOLOGY))
+	createDbAndInitialTables([DB_FILE_NAME_TEXT, DB_FILE_NAME_TEXT_TOPOLOGY])
 	ast = readASTFile()
 	variant_changelog_map = variantChangelogMap()
 	variantsToFunctionsMap, variantsToInvocationsMap = getFunctionsAndInvocationsInVariants(ast)
@@ -309,7 +364,7 @@ def main():
 	conn_text_only.close()
 
 	createTextOnlyBasedDb(sorted(variant_changelog_map.keys()), variantsToFunctionsMap)
-	createTextAndTopologyBasedDb(sorted(variant_changelog_map.keys()), variantsToFunctionsMap, variantsToInvocationsMap)
+	# createTextAndTopologyBasedDb(sorted(variant_changelog_map.keys()), variantsToFunctionsMap, variantsToInvocationsMap)
 
 	moveDBToCryo2Pfig()
 
