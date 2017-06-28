@@ -364,7 +364,7 @@ def main():
 	conn_text_only.close()
 
 	createTextOnlyBasedDb(sorted(variant_changelog_map.keys()), variantsToFunctionsMap)
-	# createTextAndTopologyBasedDb(sorted(variant_changelog_map.keys()), variantsToFunctionsMap, variantsToInvocationsMap)
+	createTextAndTopologyBasedDb(sorted(variant_changelog_map.keys()), variantsToFunctionsMap, variantsToInvocationsMap)
 
 	moveDBToCryo2Pfig()
 
