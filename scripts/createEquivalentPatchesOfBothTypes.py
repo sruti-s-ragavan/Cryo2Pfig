@@ -10,8 +10,8 @@ import filecmp
 from fQNUtils import FQNUtils
 
 
-DB_FILE_NAME_TEXT= "_variations_textSimilarity.db"
-DB_FILE_NAME_TEXT_TOPOLOGY= "_variations_topologyAndTextSimilarity.db"
+DB_FILE_NAME_TEXT= "variations_textSimilarity.db"
+DB_FILE_NAME_TEXT_TOPOLOGY= "variations_topologyAndTextSimilarity.db"
 
 CREATE_VARIANTS_TABLE_QUERY = 'CREATE TABLE VARIANTS(NUM INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR(50), CHANGELOG TEXT)'
 VARIANT_INSERT_QUERY = 'INSERT INTO VARIANTS(NAME, CHANGELOG) VALUES (?,?)'
