@@ -13,7 +13,7 @@ python "$repo_root/PFIS/pfis3/scripts/runScript.py" \
 	-t 1 \
 	-p "$repo_root/jsparser/src" \
 	-o "$repo_root/PFIS/results" \
-	-x "$repo_root/configs/algorithm-config-variantNavPath.xml" \
+	-x "$repo_root/configs/variant-hierarchy.xml" \
 	-c "combined-results.txt" \
 	-m "multi-factors.txt" \
 	-h "10" \
