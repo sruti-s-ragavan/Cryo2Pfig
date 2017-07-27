@@ -242,5 +242,5 @@ def test():
 
 if __name__ == "__main__":
     # python get_output_features.py /path/to/output/screenshots/folder
-    # main()
-    test()
+     main()
+    # test()
