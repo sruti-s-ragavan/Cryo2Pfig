@@ -2,12 +2,14 @@
 <!-- Include substrings PFIS, __ (double underscore) for suffix and filenames with discretion. See runScript.py for details. -->
 <options>
     <algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db"
-				navPathType="PFIS-V" suffix="methods">
+				navPathType="PFIS-V" suffix="methods" excludeChangelog="True" excludeOutput="True">
 		<algorithm class="PFIS" name="PFIS" decayVariant="0.85"
-			enabled="true" fileName="pfis.txt" history="true" numSpread="2">
+			enabled="true" fileName="pfis.txt" history="true" numSpread="2"
+				excludeChangelog="True" excludeOutput="True">
 		</algorithm>
 		<algorithm class="PFISHierarchy" name="PFIS Hierarchy" decayVariant="0.85"
-			enabled="true" fileName="pfis_hierarchy.txt" history="true" numSpread="3">
+			enabled="true" fileName="pfis_hierarchy.txt" history="true" numSpread="3"
+				excludeChangelog="True" excludeOutput="True">
 		</algorithm>
 	</algorithms>
 	<!--<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db"-->
