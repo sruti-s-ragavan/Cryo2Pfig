@@ -2,34 +2,33 @@
 <!-- Include substrings PFIS, __ (double underscore) for suffix and filenames with discretion. See runScript.py for details. -->
 <options>
     <algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db"
-				navPathType="PFIS-V" suffix="methods" excludeChangelog="True" excludeOutput="True">
-		<algorithm class="PFIS" name="PFIS" decayVariant="0.85"
-			enabled="true" fileName="pfis.txt" history="true" numSpread="2"
-				excludeChangelog="True" excludeOutput="True">
-		</algorithm>
-		<algorithm class="PFISHierarchy" name="PFIS Hierarchy" decayVariant="0.85"
-			enabled="true" fileName="pfis_hierarchy.txt" history="true" numSpread="3"
-				excludeChangelog="True" excludeOutput="True">
-		</algorithm>
-	</algorithms>
-	<!--<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db"-->
-				<!--navPathType="PFIS-V" suffix="methods+cl" excludeChangelog="False">-->
-		<!--<algorithm class="PFIS" name="PFIS" decayVariant="0.85"-->
-			<!--enabled="true" fileName="pfis.txt" history="true" numSpread="2" excludeChangelog="False">-->
-		<!--</algorithm>-->
-		<!--<algorithm class="PFISHierarchy" name="PFIS Hierarchy" decayVariant="0.85"-->
-			<!--enabled="true" fileName="pfis_hierarchy.txt" history="true" numSpread="3" excludeChangelog="False">-->
-		<!--</algorithm>-->
-	<!--</algorithms>-->
-	<!--<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db"-->
-				<!--navPathType="PFIS-V" suffix="methods+cl+op" excludeOutput="False" excludeChangelog="False">-->
+				navPathType="PFIS-V" suffix="methods" excludeChangelog="True" excludeOutput="True" excludeVariant="True" excludePackage="True">
 		<!--<algorithm class="PFIS" name="PFIS" decayVariant="0.85"-->
 			<!--enabled="true" fileName="pfis.txt" history="true" numSpread="2"-->
-				   <!--excludeOutput="False" excludeChangelog="False">-->
+				<!--excludeChangelog="True" excludeOutput="True">-->
+		<!--</algorithm>-->
+		<algorithm class="PFIS3" name="CHI17"
+			enabled="True" fileName="chi17.txt" history="True" numSpread="2">
+		</algorithm>
+		<!--<algorithm class="PFISHierarchy" name="PFIS Hierarchy" decayVariant="0.85"-->
+			<!--enabled="true" fileName="pfis_hierarchy.txt" history="true" numSpread="3"-->
+				<!--excludeChangelog="True" excludeOutput="True">-->
+		<!--</algorithm>-->
+	</algorithms>
+	<!--<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db"-->
+				<!--navPathType="PFIS-V" suffix="methods+cl" excludeChangelog="False" excludeOutput="True">-->
+		<!--<algorithm class="PFIS" name="PFIS" decayVariant="0.85"-->
+			<!--enabled="true" fileName="pfis.txt" history="true" numSpread="2"-->
+				<!--excludeChangelog="False" excludeOutput="True">-->
+		<!--</algorithm>-->
+		<!--<algorithm class="PFIS" name="CHI17" decayVariant="0.85"-->
+			<!--enabled="true" fileName="chi17.txt" history="true" numSpread="2"-->
+				<!--excludeChangelog="False" excludeOutput="True"-->
+         		<!--excludeVariant="True" excludePackage="True">-->
 		<!--</algorithm>-->
 		<!--<algorithm class="PFISHierarchy" name="PFIS Hierarchy" decayVariant="0.85"-->
 			<!--enabled="true" fileName="pfis_hierarchy.txt" history="true" numSpread="3"-->
-		<!--excludeOutput="False" excludeChangelog="False">-->
+				<!--excludeChangelog="False" excludeOutput="True">-->
 		<!--</algorithm>-->
 	<!--</algorithms>-->
 </options>
