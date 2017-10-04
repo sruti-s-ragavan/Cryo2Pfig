@@ -24,7 +24,7 @@ CREATE_FILE_TABLE_QUERY = 'CREATE TABLE VARIANTS_TO_FILES(FQN VARCHAR(30), START
 FILE_INSERT_QUERY = 'INSERT INTO VARIANTS_TO_FILES VALUES (?,?,?,?)'
 UPDATE_FILES_QUERY = 'UPDATE VARIANTS_TO_FILES SET END = ? WHERE END = ? AND FQN = ?'
 
-VARIANTS_DIR = "../jsparser/src/hexcom"
+VARIANTS_DIR = "jsparser/src/hexcom"
 
 
 def getVariantName(filename):
@@ -39,7 +39,7 @@ def getFilePath(path):
 
 def readASTFile():
 	obj = None
-	file = open('../fullAST.txt')
+	file = open('fullAST.txt')
 	obj = json.loads(file.read())
 	file.close()
 	return obj[0]
@@ -96,7 +96,7 @@ def getMethodFqnRelativeToVariant(function):
 
 def variantChangelogMap():
 	#For creating a map of variant -> changelog.
-	root = '../jsparser/src/hexcom'
+	root = 'jsparser/src/hexcom'
 	variant_changelog_map = {}
 
 	for directory in os.listdir(root):
@@ -367,7 +367,7 @@ def main():
 	createTextOnlyBasedDb(sorted(variant_changelog_map.keys()), variantsToFunctionsMap)
 	createTextAndTopologyBasedDb(sorted(variant_changelog_map.keys()), variantsToFunctionsMap, variantsToInvocationsMap)
 
-	moveDBToCryo2Pfig()
+	# moveDBToCryo2Pfig()
 
 
 if __name__ == '__main__':
