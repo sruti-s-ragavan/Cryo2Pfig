@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- Include substrings PFIS, __ (double underscore) for suffix and filenames with discretion. See runScript.py for details. -->
+<options>
+    <algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db"
+				navPathType="PFIS-V" suffix="methods" excludeChangelog="True" excludeOutput="True" excludeVariant="False" excludePackage="False">
+		<algorithm class="PFIS" name="PFIS"
+			enabled="true" fileName="pfis.txt" history="true" numSpread="2">
+		</algorithm>
+		<algorithm class="PFISHierarchy" name="PFIS Hierarchy"
+			enabled="true" fileName="pfis_hierarchy.txt" history="true" numSpread="3">
+		</algorithm>
+	</algorithms>
+</options>

@@ -167,6 +167,7 @@ herein
 hereupon
 hers
 herself
+hexcom
 him
 himself
 his
@@ -356,6 +357,7 @@ try
 twelve
 twenty
 two
+txt
 typeof
 u
 un

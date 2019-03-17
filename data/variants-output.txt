@@ -1,0 +1,128 @@
+2014-05-17-07:23:29|None - game broken
+2014-05-17-07:52:25|None - game broken
+2014-05-17-08:15:53|black and yellow lines - game broken
+2014-05-17-10:55:10|red hexagon falls - game broken
+2014-05-17-14:15:55|all blocks fall - game broken
+2014-05-17-14:38:11|score and multiplier way above hexagon
+2014-05-17-15:22:12|score and multiplier at left bottom corner
+2014-05-17-15:54:37|score and multiplier at left bottom corner
+2014-05-18-08:43:49|score and multiplier above hexagon
+2014-05-18-11:12:33|score and multiplier above hexagon
+2014-05-19-07:36:13|score and multiplier above hexagon
+2014-05-20-17:39:19|score and multiplier above hexagon
+2014-07-20-18:47:08|score in middle, multiplier flashes
+2014-05-20-19:33:50|score and multiplier above hexagon
+2014-05-21-15:39:02|score and multiplier above hexagon
+2014-05-22-10:26:44|score and multiplier above hexagon
+2014-05-22-12:42:05|score and multiplier above hexagon
+2014-05-22-18:06:33|score and multiplier above hexagon
+2014-05-22-22:10:12|score and multiplier above hexagon
+2014-05-22-21:51:03|score and multiplier above hexagon
+2014-05-23-10:01:51|score and multiplier above hexagon
+2014-05-23-13:13:23|hexagon falls to bottom of page - game broken
+2014-05-23-17:23:41|hexagon falls to bottom of page - game broken
+2014-05-23-17:49:57|hexagon falls to bottom of page - game broken
+2014-05-23-18:36:59|hexagon falls to bottom of page - game broken
+2014-05-24-09:09:46|hexagon falls to bottom of page - game broken
+2014-05-24-09:48:46|hexagon falls to bottom of page - game broken
+2014-05-24-10:24:03|hexagon falls to bottom of page - game broken
+2014-05-24-12:07:58|hexagon falls to bottom of page - game broken
+2014-05-24-12:42:40|hexagon falls to bottom of page - game broken
+2014-05-24-12:52:38|hexagon falls to bottom of page - game broken
+2014-05-24-15:28:38|hexagon falls to bottom of page - game broken
+2014-05-24-21:41:01|None - game broken
+2014-05-24-21:44:25|hexagon falls to bottom of page - game broken
+2014-05-25-07:42:09|hexagon misaligned - game broken
+2014-05-25-08:15:22|hexagon misaligned - game broken
+2014-05-25-08:31:05|no score or multiplier
+2014-05-25-15:32:49|no score or multiplier
+2014-05-25-19:06:15|no score or multiplier
+2014-05-25-19:27:16|no score or multiplier
+2014-05-25-19:29:34|no score or multiplier
+2014-05-25-19:29:36|no score or multiplier
+2014-05-25-20:42:17|score in middle, no multiplier
+2014-05-25-20:55:20|None - game broken
+2014-05-25-21:06:41|score in middle, no multiplier
+2014-05-25-22:28:37|blocks dont fall - game broken
+2014-05-26-08:22:52|blocks dont fall - game broken
+2014-05-26-09:27:30|blocks dont fall - game broken
+2014-05-26-09:30:30|blocks dont fall - game broken
+2014-05-26-09:30:45|blocks dont fall - game broken
+2014-05-26-09:41:04|blocks dont fall - game broken
+2014-05-26-10:04:23|blocks dont fall - game broken
+2014-05-26-10:09:59|blocks dont fall - game broken
+2014-05-26-10:11:23|blocks dont fall - game broken
+2014-05-26-10:18:27|blocks dont fall - game broken
+2014-05-26-10:18:35|blocks dont fall - game broken
+2014-05-26-10:38:59|blocks dont fall - game broken
+2014-05-26-10:46:11|blocks dont fall - game broken
+2014-05-26-11:07:07|blocks dont fall - game broken
+2014-05-26-11:14:30|blocks dont fall - game broken
+2014-05-26-11:24:38|blocks dont fall - game broken
+2014-05-26-11:43:05|blocks dont fall - game broken
+2014-05-26-18:05:58|blocks dont fall - game broken
+2014-05-31-06:56:38|score in middle, multiplier flashes
+2014-05-31-07:55:36|score in middle, multiplier flashes
+2014-05-31-12:32:01|score in middle, multiplier flashes
+2014-05-31-16:39:07|score in middle, multiplier flashes
+2014-05-31-17:17:00|score in middle, multiplier flashes
+2014-06-04-11:33:40|score in middle, multiplier flashes
+2014-06-22-08:16:00|score in middle, multiplier flashes
+2014-06-22-09:32:23|score in middle, multiplier flashes
+2014-06-22-10:25:20|score in middle, multiplier flashes
+2014-06-22-10:25:33|score in middle, no multiplier
+2014-06-22-19:58:15|score in middle, multiplier flashes
+2014-06-22-12:16:28|score in middle, multiplier flashes
+2014-06-22-12:17:00|score in middle, multiplier flashes
+2014-06-22-19:53:36|score in middle, multiplier flashes
+2014-06-23-12:31:05|score in middle, multiplier flashes
+2014-06-23-12:46:14|score in middle, multiplier flashes
+2014-06-23-14:59:51|score in middle, multiplier flashes
+2014-06-23-15:35:28|blocks collapse - game broken
+2014-06-23-16:21:09|score in middle, multiplier flashes
+2014-06-23-19:21:36|score in middle, multiplier flashes
+2014-06-23-19:26:00|score in middle, multiplier flashes
+2014-06-23-19:26:05|score in middle, multiplier flashes
+2014-06-23-17:55:04|score in middle, multiplier flashes
+2014-06-24-06:23:43|score in middle, multiplier flashes
+2014-06-24-07:53:26|score in middle, multiplier flashes
+2014-06-24-07:53:53|score in middle, multiplier flashes
+2014-06-24-08:44:40|score in middle, multiplier flashes
+2014-06-24-10:41:40|score in middle, multiplier flashes
+2014-06-27-18:19:57|score in middle, multiplier flashes
+2014-06-27-19:15:16|score in middle, multiplier flashes
+2014-06-28-08:48:45|score in middle, multiplier flashes
+2014-06-28-08:57:22|score in middle, multiplier flashes
+2014-06-30-18:44:22|score in middle, multiplier flashes
+2014-06-30-18:56:35|score in middle, multiplier flashes
+2014-07-03-13:39:29|score in middle, multiplier flashes
+2014-07-04-06:46:14|score in middle, multiplier flashes
+2014-07-04-09:42:22|score in middle, multiplier flashes
+2014-07-04-09:45:51|None - game broken
+2014-07-04-09:46:42|score in middle, multiplier flashes
+2014-07-04-09:48:44|score in middle, multiplier flashes
+2014-07-04-11:45:05|score in middle, multiplier flashes
+2014-07-04-13:08:01|score in middle, multiplier flashes
+2014-07-04-13:43:01|score in middle, multiplier flashes, blocks fall faster
+2014-07-05-14:44:31|score in middle, multiplier flashes
+2014-07-07-07:55:26|score in middle, multiplier flashes
+2014-07-15-20:58:23|score in middle, multiplier flashes
+2014-08-17-21:04:26|no blocks - game broken
+2014-08-18-17:10:08|score in middle, multiplier flashes, color blind
+2014-08-19-20:43:32|score in middle, multiplier flashes
+2014-07-20-15:25:31|score in middle, multiplier flashes
+2014-07-20-19:37:00|score in middle, multiplier flashes
+2014-08-20-21:37:25|score in middle, multiplier flashes
+2014-08-20-21:44:34|score in middle, multiplier flashes, blocks fall after a lot of delay
+2014-08-22-18:54:19|None - game broken
+2014-08-25-20:09:21|score in middle, multiplier flashes
+2014-08-25-08:44:06|score in middle, multiplier flashes
+2014-08-25-22:26:48|score in middle, multiplier flashes
+2014-08-25-22:40:23|score in middle, multiplier flashes
+2014-09-02-12:34:41|score in middle, multiplier flashes
+2014-09-04-16:17:36|score in middle, multiplier flashes
+2014-09-24-20:17:03|score in middle, multiplier flashes
+2014-09-28-15:13:20|score in middle, multiplier flashes
+2014-10-12-14:26:06|score in middle, multiplier flashes
+Current|score in middle, multiplier flashes
+Current 2|score in middle, multiplier flashes

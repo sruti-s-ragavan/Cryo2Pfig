@@ -42,8 +42,11 @@ def getInfo(dbName):
 				checkedMethodsArr.append(variantName)
 
 
+	variantsArr.sort()
 
 	print "The number of unique variants: ", len(set(variantsArr))
+	for variant in set(checkedMethodsArr):
+		print variant, '\n'
 	print "Number of outputs viewed: ", len(set(checkedOutputArr))
 	print "Number of readmes viewed: ", len(set(checkedReadmeArr))
 	print "Number of variants in which JS files were visited: ", len(set(checkedMethodsArr))

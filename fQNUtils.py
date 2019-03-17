@@ -17,7 +17,9 @@ class FQNUtils:
 		def isFQN(obj):
 			string = str(obj)
 			#FQ method names (standard or not) have a ;.
-			if ';.' in string:
+			if 'changes.txt' in string \
+					or '.output' in string \
+					or ';.' in string:
 				return True
 			#FQ file names
 			if string.startswith("/hexcom") and string.endswith(";"):
@@ -31,6 +33,8 @@ class FQNUtils:
 
 	@staticmethod
 	def getFullClassPath(filepath):
+		if 'changes.txt' in filepath:
+			return filepath
 		#TODO: this currently does not handle non-JS files
 		return filepath + ";"
 
@@ -66,3 +70,11 @@ class FQNUtils:
 		s = s.replace("'", "''")
 		s = s.replace(",", "\",\"")
 		return s
+
+	@staticmethod
+	def getVariantName(filename):
+		regex = re.compile('/hexcom/([^/]*)/.*')
+		match = regex.match(filename)
+		if match == None:
+			raise Exception("No such file: "+ filename)
+		return match.groups()[0]

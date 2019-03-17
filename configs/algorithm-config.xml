@@ -9,7 +9,7 @@
 
 <options>
 	<algorithms graphType="PfisGraph" suffix = "DM1">
-		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+		<!--algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
 			fileName="undirected_call_graph.txt" enabled="true" >
@@ -27,13 +27,13 @@
 		</algorithm>
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
 			enabled="true" fileName="working_set.txt">
-		</algorithm>
+		</algorithm-->
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithVariants" suffix = "DM2">
-		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+	<algorithms graphType="VariantAwarePfisGraph" suffix = "DM2">
+		<!--algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
 			fileName="undirected_call_graph.txt" enabled="true" >
@@ -51,13 +51,13 @@
 		</algorithm>
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
 			enabled="true" fileName="working_set.txt">
-		</algorithm>
+		</algorithm-->
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_textSimilarity.db" suffix="DM3">
-		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+	<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_textSimilarity.db" suffix="DM3">
+		<!--algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
 			fileName="undirected_call_graph.txt" enabled="true" >
@@ -75,13 +75,13 @@
 		</algorithm>
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
 			enabled="true" fileName="working_set.txt">
-		</algorithm>
+		</algorithm-->
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
 	</algorithms>
-	<algorithms graphType="PfisGraphWithSimilarPatches" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4">
-		<algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
+	<algorithms graphType="VariantAndEquivalenceAwarePfisGraph" variantsDb="variations_topologyAndTextSimilarity.db" suffix = "DM4">
+		<!--algorithm class="Adjacency" name="Adjacency" fileName="adjacency.txt" enabled="true" >
 		</algorithm>
 		<algorithm class="CallDepth" name="Undirected Call Graph"
 			fileName="undirected_call_graph.txt" enabled="true" >
@@ -99,7 +99,7 @@
 		</algorithm>
 		<algorithm class="WorkingSet" name="Working Set, delta 10"
 			enabled="true" fileName="working_set.txt">
-		</algorithm>
+		</algorithm-->
 		<algorithm class="PFIS" name="PFIS with history, spread2"
 			enabled="true" fileName="pfis_history_spread2.txt" history="true" numSpread="2" >
 		</algorithm>
