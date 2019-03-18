@@ -1,5 +1,0 @@
-commit 14b17eb243a17a9027895c96aa9ca4baafd48311
-Author: Logan Engstrom <meadowstream@users.noreply.github.com>
-Date:   Sat Nov 1 19:23:58 2014 -0400
-
-    added spd
