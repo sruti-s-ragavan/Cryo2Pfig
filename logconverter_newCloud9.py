@@ -29,7 +29,7 @@ PFIS_AGENT = '8ea5d9be-d1b5-4319-9def-495bdccb7f51'
 GET_VARIANT_OUTPUT = 'SELECT output FROM variant_output WHERE variant=?'
 
 # Global Variables
-rootdir = './jsparser/src/hexcom'
+rootdir = './jsparser/src'
 src_list = [name for name in os.listdir("./jsparser/src/hexcom") if os.path.isdir(os.path.join(
     "./jsparser/src/hexcom", name))]
 DEBUG = True
@@ -295,8 +295,8 @@ class Converter:
             line=0
             column=0
         else:
-            line = event['position']['line']
-            column = event['position']['column']
+            line = event['cursor']['line']
+            column = event['cursor']['column']
 
         offset = 0
 
@@ -332,18 +332,18 @@ class Converter:
             return None
 
         new_event = self.new_event(event)
-        code_summary = event['code-summary']
-        ast_node_count = code_summary['ast-node-count']
+        # code_summary = event['code-summary']
+        # ast_node_count = code_summary['ast-node-count']
 
         action = 'Java element changed'
-        if self.current_document_name != document_name:
-            self.current_document_name = document_name
-            self.current_document_ast_node_count = ast_node_count
-        else:
-            # mark the element changed event with ast_affected if the node count of the ast has changed
-            if self.current_document_ast_node_count != ast_node_count:
-                action += ' ast_affected'
-                self.current_document_ast_node_count = ast_node_count
+        # if self.current_document_name != document_name:
+        #     self.current_document_name = document_name
+        #     self.current_document_ast_node_count = ast_node_count
+        # else:
+        #     # mark the element changed event with ast_affected if the node count of the ast has changed
+        #     if self.current_document_ast_node_count != ast_node_count:
+        #         action += ' ast_affected'
+        #         self.current_document_ast_node_count = ast_node_count
 
         new_event['action'] = action
         new_event['target'] = document_name
@@ -393,10 +393,10 @@ class Converter:
         lines = []
         f = open(rootdir + "/" + document_name, 'r')  # Open the file the user is in
         # Read the log of the event to get the start and end line then read the file the user is in through the relevant range
-        if (event['selection'] == []):
+        if ('selection' not in event or event['selection'] is None or event['selection'] == {} ):
             pass
         else:
-            for x in range((event['selection'][0]['start']['line']), (event['selection'][0]['end']['line'])):
+            for x in range((event['selection']['start']['line']), (event['selection']['end']['line'])):
                 lines.append(FQNUtils.normalizer(f.readline()))
         referrer = ''
         for line in lines:
@@ -628,13 +628,11 @@ class Converter:
             return new_events
 
     def convert_select_workspace_tree_nodes_event(self, event):
-
-        def getPaths(evt):
-            selections = event['selection']
-            paths = [s["path"] for s in selections]
-            return paths
-
         """When the user actually selects a node"""
+        def getPaths(e):
+            selections = e["selection"]
+            return [s["path"] for s in selections]
+
         new_events = []
         paths = getPaths(event)
         # paths = paths.replace('/', '\\')
@@ -765,12 +763,7 @@ def copy_dir(old, new):
 
 def update_file(file_path, actionType, text, line_number, column):
     # open file and read in string
-    if file_path.startswith("/"):
-        f1 = file_path[1:]
-    else:
-        f1 = file_path
-
-    file = open(rootdir + "/" + f1, "r")
+    file = open(rootdir + "/" + file_path, "r")
     i = 0
     sum = 0
     for line in file:
