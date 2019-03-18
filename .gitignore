@@ -5,3 +5,4 @@ fullAST.txt
 *.db
 *_temp
 *.pyc
+.idea/
