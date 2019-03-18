@@ -312,6 +312,9 @@ function function_identifier($sourcefile, $folderPath){
 	$source = ''.$sourcefile;
 	$source = substr($source, strlen($folderPath));
 	$code = file_get_contents($sourcefile);
+	//echo $source, "\n";
+	//echo $code, "\n";
+	//echo "======";
 	$function_stats = identify_functions($code, $source);
 	return $function_stats;
 }
@@ -361,8 +364,9 @@ function extract_header($header_line){
 
 function identify_functions($code, $source){
     $tokens = get_tokens($code);
-	    //echo "passed tokens";
+//	echo "passed tokens", "\n";
     $function_stats = array();
+
     //list functions of type var fName = function(){}, and in a separate array, all variable declarations.
     for($i=0;$i<count($tokens);$i++){
         $j = $i+1;
@@ -396,7 +400,6 @@ function identify_functions($code, $source){
                                 if($tokens[$k][0] !== J_FUNCTION){
                                     break 2;
                                 }else{
-                                	
                                 	$sum = sum_to_token($tokens,$i);
                                     $length = function_length($i,$tokens);
                                     $function_start = sum_to_token($tokens,$j);
@@ -414,7 +417,7 @@ function identify_functions($code, $source){
                                     	"length" => $length, "end" => $end, "contents" => $function_contents, 
                                     	"header" => $function_header, "filepath" => "");
                                     //echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br>End: $end <br>Contents: $function_contents <br>Function Header: $function_header<br>Source File: $source<br><br>";
-                                    gather_functions_if_class($function_header, $function_contents);
+                                    gather_functions_if_class($function_header, $function_contents, $source);
                                     break 2;
                                 }
                             }else{
@@ -428,6 +431,7 @@ function identify_functions($code, $source){
             }
         }
     }
+
     //get function of type function functionName(){}
     for($i=0;$i<count($tokens);$i++){
         $j = $i+1;
@@ -454,14 +458,15 @@ function identify_functions($code, $source){
                         global $src_arg;
 
                         if (strcmp($source, "") === false){
-                        	echo "Empty sourcce : ".$src_arg.$source." ".$function_header;
+                        	echo "Empty source : ".$src_arg.$source." ".$function_header;
                         }
                         $function_stats[] = array("src" => $src_arg.$source, "start" =>$sum, 
                         	"length" => $length, "end" => $end, "contents" => $function_contents, 
                         	"header" => $function_header, "filepath" => "");
+
                         //echo "function header = $function_header <br>";
                         //echo "<b>". $tokens[$j][1]."</b> <br>Start: $sum<br>Length: $length<br> End: $end <br>Contents: $function_contents <br>Function header:$function_header!<br>Source File: $source<br><br>";
-                        gather_functions_if_class($function_header, $function_contents);
+                        gather_functions_if_class($function_header, $function_contents, $source);
                         break;
                     }else{
                         break;
@@ -528,7 +533,6 @@ function get_file_functions_array($file_name_array, $fstring){
 				continue;
 			}
 			$function_sorted = function_identifier($file, $fstring);
-			//echo "this is file $i<br>";
 			//$x = memory_get_usage();
 			//echo "<h1>Memory usage is $x</h1>";
 			if($function_sorted !== NULL){
@@ -718,6 +722,7 @@ function is_not_vendor($s){
 }
 $file_name_array = array_filter($file_name_array, "is_not_vendor");
 $file_functions_array = get_file_functions_array($file_name_array, $file);
+
 $file_functions_array = nested_functions($file_functions_array);
 
 $file_invocations_array = get_file_invocations_array($file_name_array, $file_functions_array,$file);
