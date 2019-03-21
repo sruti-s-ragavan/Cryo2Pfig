@@ -1,0 +1,27 @@
+{
+  "name": "cryolite",
+  "version": "0.4.0-beta3-dev",
+  "author": "Andrew Faulring <faulring@cs.cmu.edu>",
+  "description": "logs user events in the IDE"
+  "contributors": [
+    "Brad Myers <bam@cs.cmu.edu>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:andrewfaulring/cryolite.git"
+  },
+  "plugins": {
+    "cryolite": {
+      "packagePath": "plugins/cryolite/package.json"
+    }
+  },
+  "engines": {
+    "c9": ">=3.0.0"
+  },
+  "categories": [
+    ""
+  ],
+  "licenses": [
+    "GPL"
+  ]
+}
